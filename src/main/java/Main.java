@@ -1,5 +1,5 @@
 import java.util.Scanner;
-import Cadastro.Cadastro;
+import Cadastro.CadastroResiduo;
 
 public class Main {
 
@@ -7,7 +7,7 @@ public class Main {
 
         Scanner sc = new Scanner(System.in);
 
-        Cadastro cadastro = new Cadastro(sc);
+        CadastroResiduo cadastro = new CadastroResiduo(sc);
 
         int opcao;
 

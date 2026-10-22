@@ -1,67 +1,68 @@
 package Cadastro;
 
-import Resíduo.Residuos;
+import Domain.TipoResiduo;
+import Model.Entity.Residuo;
 import Classificador.Classificador;
+import Util.GerarCodigoResiduo;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Cadastro {
+public class CadastroResiduo {
 
-    private static int codigo_numerico = 1;
-
-    private ArrayList<Residuos> residuos = new ArrayList<>();
+    private ArrayList<Residuo> residuos = new ArrayList<>();
 
     private Scanner sc;
 
-    public Cadastro(Scanner sc) {
+    public CadastroResiduo(Scanner sc) {
         this.sc = sc;
 
         cadastrarRegistrosIniciais();
     }
 
-    public String gerarCodigo(String tipo) {
-
-        int restoDesejado = Classificador.obterRestoPorTipo(tipo);
-
-        while (codigo_numerico % 5 != restoDesejado) {
-            codigo_numerico++;
-        }
-
-        return String.format("%06d", codigo_numerico++);
-    }
-
     private void cadastrarRegistrosIniciais() {
 
-        residuos.add(new Residuos(gerarCodigo("Notebook"), "Notebook", 2));
-        residuos.add(new Residuos(gerarCodigo("Computador"), "Computador", 1));
-        residuos.add(new Residuos(gerarCodigo("Celular"), "Celular", 5));
-        residuos.add(new Residuos(gerarCodigo("Tablet"), "Tablet", 3));
-        residuos.add(new Residuos(gerarCodigo("Bateria"), "Bateria", 8));
-        residuos.add(new Residuos(gerarCodigo("Pilha"), "Pilha", 10));
-        residuos.add(new Residuos(gerarCodigo("Cabo"), "Cabo", 4));
-        residuos.add(new Residuos(gerarCodigo("Monitor"), "Monitor", 2));
-        residuos.add(new Residuos(gerarCodigo("Teclado"), "Teclado", 3));
-        residuos.add(new Residuos(gerarCodigo("Mouse"), "Mouse", 2));
-        residuos.add(new Residuos(gerarCodigo("Impressora"), "Impressora", 3));
-        residuos.add(new Residuos(gerarCodigo("Carregador"),"Carregador", 8));
+        GerarCodigoResiduo gerarCodigoResiduo = new GerarCodigoResiduo();
+
+        residuos.add(new Residuo(gerarCodigoResiduo.gerarCodigo(TipoResiduo.COMPUTADORES), TipoResiduo.COMPUTADORES, 3));
+
+
     }
 
     public void cadastrar_produto() {
 
+        GerarCodigoResiduo gerarCodigoResiduo = new GerarCodigoResiduo();
+
         System.out.println("\n--- CADASTRO DE RESÍDUO ---");
 
-        System.out.print("Qual resíduo eletrônico quer cadastrar? ");
-        String tipo_residuo = sc.nextLine();
+        // 1. Exibe as opções listando o resto e a descrição do seu enum
+        System.out.println("Selecione o tipo de resíduo eletrônico:");
+        for (Domain.TipoResiduo tipo : Domain.TipoResiduo.values()) {
+            System.out.println("[" + tipo.getResto() + "] - " + tipo.getDescricao());
+        }
+
+        System.out.print("Digite o número da opção: ");
+        byte opcaoDigitada = sc.nextByte();
+        sc.nextLine(); // Limpa o buffer do teclado
+
+        // 2. Procura qual enum possui o 'resto' igual ao número digitado
+        Domain.TipoResiduo tipoSelecionado = Domain.TipoResiduo.OUTROS; // Padrão caso não encontre
+        for (Domain.TipoResiduo tipo : Domain.TipoResiduo.values()) {
+            if (tipo.getResto() == opcaoDigitada) {
+                tipoSelecionado = tipo;
+                break;
+            }
+        }
 
         System.out.print("Qual a quantidade? ");
         int quantidade = sc.nextInt();
-        sc.nextLine();
+        sc.nextLine(); // Limpa o buffer do teclado
 
-        String codigo = gerarCodigo(tipo_residuo);
+        String codigo = gerarCodigoResiduo.gerarCodigo(tipoSelecionado);
 
-        Residuos residuo = new Residuos(
+        Residuo residuo = new Residuo(
                 codigo,
-                tipo_residuo,
+                tipoSelecionado,
                 quantidade
         );
 
@@ -69,7 +70,7 @@ public class Cadastro {
 
         System.out.println("\nResíduo cadastrado!");
         System.out.println("Código: " + codigo);
-        System.out.println("Resíduo: " + tipo_residuo);
+        System.out.println("Resíduo: " + tipoSelecionado.getDescricao());
         System.out.println("Quantidade: " + quantidade);
 
         System.out.println(
@@ -86,11 +87,11 @@ public class Cadastro {
             return;
         }
 
-        for (Residuos residuo : residuos) {
+        for (Residuo residuo : residuos) {
 
             System.out.println("-------------------------");
             System.out.println("Código: " + residuo.getCodigo());
-            System.out.println("Resíduo: " + residuo.getTipo_residuo());
+            System.out.println("Resíduo: " + residuo.getTipoResiduo());
             System.out.println("Quantidade: " + residuo.getQuantidade());
         }
 
@@ -106,7 +107,7 @@ public class Cadastro {
             return;
         }
 
-        for (Residuos residuo : residuos) {
+        for (Residuo residuo : residuos) {
 
             int resto = Classificador.calcularResto(residuo.getCodigo());
 
@@ -114,7 +115,7 @@ public class Cadastro {
 
             System.out.println("-------------------------");
             System.out.println("Código: " + residuo.getCodigo());
-            System.out.println("Resíduo: " + residuo.getTipo_residuo());
+            System.out.println("Resíduo: " + residuo.getTipoResiduo());
             System.out.println("Quantidade: " + residuo.getQuantidade());
             System.out.println("Resto: " + resto);
             System.out.println("Categoria: " + categoria);
@@ -131,14 +132,14 @@ public class Cadastro {
 
         int total = 0;
 
-        for (Residuos residuo : residuos) {
+        for (Residuo residuo : residuos) {
             total += residuo.getQuantidade();
         }
 
         return total;
     }
 
-    public ArrayList<Residuos> getResiduos() {
+    public ArrayList<Residuo> getResiduos() {
         return residuos;
     }
 }

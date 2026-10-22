@@ -1,12 +1,14 @@
-package Resíduo;
+package Model.Entity;
 
-public class Residuos {
+import Domain.TipoResiduo;
+
+public class Residuo {
 
     private String codigo;
-    private String tipo_residuo;
+    private TipoResiduo tipo_residuo;
     private int quantidade;
 
-    public Residuos(String codigo, String tipo_residuo, int quantidade){
+    public Residuo(String codigo, TipoResiduo tipo_residuo, int quantidade){
         this.codigo = codigo;
         this.tipo_residuo = tipo_residuo;
         this.quantidade = quantidade;
@@ -16,7 +18,11 @@ public class Residuos {
         return codigo;
     }
 
-    public String getTipo_residuo(){
+    public String getTipoResiduo(){
+        return tipo_residuo.getDescricao();
+    }
+
+    public TipoResiduo getResiduo(){
         return tipo_residuo;
     }
 
