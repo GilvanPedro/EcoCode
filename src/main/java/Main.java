@@ -1,5 +1,5 @@
 import java.util.Scanner;
-import Cadastro.CadastroResiduo;
+import Cadastro.TelaCadastroResiduoTerminal;
 
 public class Main {
 
@@ -7,7 +7,7 @@ public class Main {
 
         Scanner sc = new Scanner(System.in);
 
-        CadastroResiduo cadastro = new CadastroResiduo(sc);
+        TelaCadastroResiduoTerminal cadastro = new TelaCadastroResiduoTerminal(sc);
 
         int opcao;
 
@@ -31,7 +31,7 @@ public class Main {
             switch (opcao) {
 
                 case 1:
-                    cadastro.cadastrar_produto();
+                    cadastro.telaCadastrarResiduoTerminal();
                     break;
 
                 case 2:
@@ -41,7 +41,7 @@ public class Main {
                 case 3:
                     System.out.println("\n--- QUANTIDADE ---");
                     System.out.println("Quantidade de cadastros: " + cadastro.quantidade_cadastros());
-                    System.out.println("Quantidade total de resíduos: " + cadastro.quantidade_total_residuos());
+                    System.out.println("Quantidade total de resíduos: " + cadastro.quantidadeTotalResiduos());
                     break;
 
                 case 4:

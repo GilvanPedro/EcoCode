@@ -1,6 +1,4 @@
-package Model.Entity;
-
-import Domain.TipoResiduo;
+package Domain;
 
 public class Residuo {
 
@@ -18,7 +16,7 @@ public class Residuo {
         return codigo;
     }
 
-    public String getTipoResiduo(){
+    public String getCategoriaResiduo(){
         return tipo_residuo.getDescricao();
     }
 
