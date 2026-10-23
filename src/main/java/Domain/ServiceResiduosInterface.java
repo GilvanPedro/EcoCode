@@ -8,4 +8,5 @@ public interface ServiceResiduosInterface {
     public void excluir(String codigoResiduo);
     public List<Residuo> listar();
     public Residuo buscar(String codigoResiduo);
+    public List<Residuo> listarPorTipo(TipoResiduo tipoResiduo);
 }

@@ -24,7 +24,7 @@ deduzidos do código e do enunciado da Missão 02: o grupo deve revisar a seçã
 ```text
 src/main/java/
 ├── Main.java                      menu do terminal
-├── Cadastro/Cadastro.java         telas, lista de resíduos, geração de código, seed
+├── Tela/Tela.java         telas, lista de resíduos, geração de código, seed
 ├── Classificador/Classificador.java  tipo -> resto, código -> resto -> categoria
 └── Resíduo/Residuos.java          entidade (código, tipo, quantidade)
 ```

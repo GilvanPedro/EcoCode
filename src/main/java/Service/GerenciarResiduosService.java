@@ -6,6 +6,7 @@ import Domain.TipoResiduo;
 import Repository.GerenciarResiduosRepository;
 import Util.GerarCodigoResiduo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GerenciarResiduosService implements ServiceResiduosInterface {
@@ -89,5 +90,22 @@ public class GerenciarResiduosService implements ServiceResiduosInterface {
             throw new IllegalArgumentException("Resíduo não encontrado!");
 
         return residuo;
+    }
+
+    @Override
+    public List<Residuo> listarPorTipo(TipoResiduo tipoResiduo) {
+
+        if (tipoResiduo == null)
+            throw new IllegalArgumentException("O tipo do resíduo é obrigatório");
+
+        List<Residuo> filtrados = new ArrayList<>();
+
+        for (Residuo residuo : gerarResiduosRepository.listar()) {
+            if (residuo.getResiduo() == tipoResiduo) {
+                filtrados.add(residuo);
+            }
+        }
+
+        return filtrados;
     }
 }

@@ -1,5 +1,5 @@
 import java.util.Scanner;
-import Cadastro.TelaCadastroResiduoTerminal;
+import Tela.TelaCadastroResiduoTerminal;
 
 public class Main {
 
@@ -46,7 +46,7 @@ public class Main {
                     break;
 
                 case 4:
-                    cadastro.classificar_residuos();
+                    cadastro.listarCategoriaResiduo();
                     break;
 
                 case 5:

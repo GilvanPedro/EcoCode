@@ -1,4 +1,4 @@
-package Cadastro;
+package Tela;
 
 import Domain.TipoResiduo;
 import Domain.Residuo;
@@ -38,24 +38,7 @@ public class TelaCadastroResiduoTerminal {
 
         System.out.println("\n--- CADASTRO DE RESÍDUO ---");
 
-        // 1. Exibe as opções listando o resto e a descrição do enum
-        System.out.println("Selecione o tipo de resíduo eletrônico:");
-        for (TipoResiduo tipo : TipoResiduo.values()) {
-            System.out.println("[" + tipo.getResto() + "] - " + tipo.getDescricao());
-        }
-
-        System.out.print("Digite o número da opção: ");
-        byte opcaoDigitada = sc.nextByte();
-        sc.nextLine(); // limpa o buffer
-
-        // 2. Procura o tipo com o resto digitado
-        TipoResiduo tipoSelecionado = null;
-        for (TipoResiduo tipo : TipoResiduo.values()) {
-            if (tipo.getResto() == opcaoDigitada) {
-                tipoSelecionado = tipo;
-                break;
-            }
-        }
+        TipoResiduo tipoSelecionado = lerTipoResiduo();
 
         if (tipoSelecionado == null) {
             System.out.println("\nOpção inválida. Cadastro cancelado.");
@@ -108,30 +91,62 @@ public class TelaCadastroResiduoTerminal {
         System.out.println("-------------------------");
     }
 
-    public void classificar_residuos() {
+    // mostra o menu de tipos e devolve o escolhido, ou null se a opção não existir
+    private TipoResiduo lerTipoResiduo() {
 
-        List<Residuo> lista = service.listar();
+        System.out.println("Selecione o tipo de resíduo eletrônico:");
+        for (TipoResiduo tipo : TipoResiduo.values()) {
+            System.out.println("[" + tipo.getResto() + "] - " + tipo.getDescricao());
+        }
 
-        System.out.println("\n--- CLASSIFICAÇÃO DOS RESÍDUOS ---");
+        System.out.print("Digite o número da opção: ");
+        byte opcaoDigitada = sc.nextByte();
+        sc.nextLine(); // limpa o buffer
 
-        if (lista.isEmpty()) {
-            System.out.println("Nenhum resíduo cadastrado.");
+        for (TipoResiduo tipo : TipoResiduo.values()) {
+            if (tipo.getResto() == opcaoDigitada) {
+                return tipo;
+            }
+        }
+        return null;
+    }
+
+    public void listarCategoriaResiduo() {
+
+        System.out.println("\n--- LISTAR POR CATEGORIA ---");
+
+        TipoResiduo tipoSelecionado = lerTipoResiduo();
+
+        if (tipoSelecionado == null) {
+            System.out.println("\nOpção inválida.");
             return;
         }
 
+        List<Residuo> lista = service.listarPorTipo(tipoSelecionado);
+
+        System.out.println("\nCategoria: " + tipoSelecionado.getDescricao());
+
+        if (lista.isEmpty()) {
+            System.out.println("Nenhum resíduo cadastrado nessa categoria.");
+            return;
+        }
+
+        int total = 0;
+
         for (Residuo residuo : lista) {
-
-            int resto = residuo.getResiduo().getResto();
-
             System.out.println("-------------------------");
             System.out.println("Código: " + residuo.getCodigo());
-            System.out.println("Resíduo: " + residuo.getResiduo());
             System.out.println("Quantidade: " + residuo.getQuantidade());
-            System.out.println("Resto: " + resto);
-            System.out.println("Categoria: " + residuo.getCategoriaResiduo());
+
+            if (!residuo.getDescricao().isEmpty()) {
+                System.out.println("Descrição: " + residuo.getDescricao());
+            }
+
+            total += residuo.getQuantidade();
         }
 
         System.out.println("-------------------------");
+        System.out.println(lista.size() + " cadastro(s), " + total + " unidade(s) no total.");
     }
 
     public int quantidadeTotalResiduos() {
