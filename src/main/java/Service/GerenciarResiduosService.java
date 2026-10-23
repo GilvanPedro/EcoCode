@@ -53,8 +53,8 @@ public class GerenciarResiduosService implements ServiceResiduosInterface {
     }
 
     @Override
-    public void listar(List<Residuo> residuos) {
-
+    public List<Residuo> listar() {
+        return gerarResiduosRepository.listar();
     }
 
     @Override

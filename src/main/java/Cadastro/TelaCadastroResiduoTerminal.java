@@ -3,9 +3,11 @@ package Cadastro;
 import Domain.TipoResiduo;
 import Domain.Residuo;
 import Classificador.Classificador;
+import Service.GerenciarResiduosService;
 import Util.GerarCodigoResiduo;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class TelaCadastroResiduoTerminal {
@@ -13,6 +15,7 @@ public class TelaCadastroResiduoTerminal {
     private ArrayList<Residuo> residuos = new ArrayList<>();
 
     private Scanner sc;
+    private final GerenciarResiduosService service = new GerenciarResiduosService();
 
     public TelaCadastroResiduoTerminal(Scanner sc) {
         this.sc = sc;
@@ -22,14 +25,18 @@ public class TelaCadastroResiduoTerminal {
 
     private void cadastrarRegistrosIniciais() {
 
-        GerarCodigoResiduo gerarCodigoResiduo = new GerarCodigoResiduo();
+        TipoResiduo[] tipos = {
+                TipoResiduo.COMPUTADORES, TipoResiduo.BATERIAS, TipoResiduo.OUTROS,
+                TipoResiduo.CELULARES,    TipoResiduo.CABOS,    TipoResiduo.COMPUTADORES,
+                TipoResiduo.BATERIAS,     TipoResiduo.OUTROS,   TipoResiduo.CELULARES,
+                TipoResiduo.CABOS
+        };
 
-        residuos.add(new Residuo(gerarCodigoResiduo.gerarCodigo(TipoResiduo.COMPUTADORES), TipoResiduo.COMPUTADORES, 5));
-        residuos.add(new Residuo(gerarCodigoResiduo.gerarCodigo(TipoResiduo.BATERIAS), TipoResiduo.BATERIAS, 2));
-        residuos.add(new Residuo(gerarCodigoResiduo.gerarCodigo(TipoResiduo.OUTROS), TipoResiduo.OUTROS, 6));
-        residuos.add(new Residuo(gerarCodigoResiduo.gerarCodigo(TipoResiduo.CELULARES), TipoResiduo.CELULARES, 5));
-        residuos.add(new Residuo(gerarCodigoResiduo.gerarCodigo(TipoResiduo.CABOS), TipoResiduo.CABOS, 1));
+        int[] quantidades = {5, 2, 6, 5, 1, 3, 8, 4, 2, 7};
 
+        for (int i = 0; i < tipos.length; i++) {
+            service.salvar(tipos[i], quantidades[i]);
+        }
     }
 
     public void telaCadastrarResiduoTerminal() {
@@ -82,13 +89,14 @@ public class TelaCadastroResiduoTerminal {
 
         System.out.println("\n--- LISTA DE RESÍDUOS ---");
 
-        if (residuos.isEmpty()) {
+        List<Residuo> lista = service.listar();
+
+        if (lista.isEmpty()) {
             System.out.println("Nenhum resíduo cadastrado.");
             return;
         }
 
-        for (Residuo residuo : residuos) {
-
+        for (Residuo residuo : lista) {
             System.out.println("-------------------------");
             System.out.println("Código: " + residuo.getCodigo());
             System.out.println("Resíduo: " + residuo.getCategoriaResiduo());

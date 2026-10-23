@@ -3,6 +3,7 @@ package Repository;
 import Domain.RepositoryResiduosInterface;
 import Domain.Residuo;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -27,8 +28,8 @@ public class GerenciarResiduosRepository implements RepositoryResiduosInterface 
     }
 
     @Override
-    public void listar(List<Residuo> residuos) {
-
+    public List<Residuo> listar() {
+        return new ArrayList<>(residuos.values());
     }
 
     @Override

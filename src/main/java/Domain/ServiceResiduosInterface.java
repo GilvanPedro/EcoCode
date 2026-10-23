@@ -6,6 +6,6 @@ public interface ServiceResiduosInterface {
     public void salvar(TipoResiduo tipoResiduo, int quantidadeResiduo);
     public void editar(String codigoResiduo);
     public void excluir(String codigoResiduo);
-    public void listar(List<Residuo> residuos);
+    public List<Residuo> listar();
     public Residuo buscar(String codigoResiduo);
 }

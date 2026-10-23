@@ -6,6 +6,6 @@ public interface RepositoryResiduosInterface {
     public void salvar(Residuo residuo);
     public void editar(String codigoResiduo);
     public void excluir(String codigoResiduo);
-    public void listar(List<Residuo> residuos);
+    public List<Residuo> listar();
     public Residuo buscar(String codigoResiduo);
 }
