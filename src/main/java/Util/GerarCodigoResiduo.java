@@ -5,17 +5,17 @@ import Domain.TipoResiduo;
 
 public class GerarCodigoResiduo {
 
-    private static int codigo_numerico = 1;
+    private static int codigoNumerico = 1;
 
     public String gerarCodigo(TipoResiduo tipoResiduo) {
         ObterRestoPorTipo obterRestoPorTipo = new ObterRestoPorTipo();
 
         int restoDesejado = (int) obterRestoPorTipo.obterResto(tipoResiduo);
 
-        while (codigo_numerico % 5 != restoDesejado) {
-            codigo_numerico++;
+        while (codigoNumerico % 5 != restoDesejado) {
+            codigoNumerico++;
         }
 
-        return String.format("%06d", codigo_numerico++);
+        return String.format("%04d", codigoNumerico++);
     }
 }
