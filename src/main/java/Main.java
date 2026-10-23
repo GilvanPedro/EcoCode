@@ -23,7 +23,8 @@ public class Main {
             System.out.println("3 - Verificar quantidade de resíduos");
             System.out.println("4 - Classificar resíduos");
             System.out.println("5 - Excluir um resíduo");
-            System.out.println("6 - Sair");
+            System.out.println("6 - Editar um resíduo");
+            System.out.println("7 - Sair");
 
             System.out.print("\nEscolha uma opção: ");
             opcao = sc.nextInt();
@@ -32,7 +33,7 @@ public class Main {
             switch (opcao) {
 
                 case 1:
-                    cadastro.telaCadastrarResiduoTerminal();
+                    cadastro.telaCadastrarResiduo();
                     break;
 
                 case 2:
@@ -54,13 +55,17 @@ public class Main {
                     break;
 
                 case 6:
+                    cadastro.editarResiduo();
+                    break;
+
+                case 7:
                     System.out.println("\nEncerrando o programa...");
                     break;
 
                 default:
                     System.out.println("\nOpção inválida!");
             }
-        } while (opcao != 6);
+        } while (opcao != 7);
         sc.close();
     }
 }

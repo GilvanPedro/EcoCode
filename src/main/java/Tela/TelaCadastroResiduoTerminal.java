@@ -4,6 +4,7 @@ import Domain.TipoResiduo;
 import Domain.Residuo;
 import Service.GerenciarResiduosService;
 import java.util.List;
+import java.util.Locale;
 import java.util.Scanner;
 
 public class TelaCadastroResiduoTerminal {
@@ -34,7 +35,7 @@ public class TelaCadastroResiduoTerminal {
         }
     }
 
-    public void telaCadastrarResiduoTerminal() {
+    public void telaCadastrarResiduo() {
 
         System.out.println("\n--- CADASTRO DE RESÍDUO ---");
 
@@ -66,6 +67,64 @@ public class TelaCadastroResiduoTerminal {
 
         } catch (IllegalArgumentException e) {
             System.out.println("\nNão foi possível cadastrar: " + e.getMessage());
+        }
+    }
+
+    public void editarResiduo() {
+
+        System.out.println("\n--- EDITAR RESÍDUO ---");
+        System.out.print("Digite o código do resíduo: ");
+        String codigo = sc.nextLine();
+
+        try {
+            Residuo residuo = service.buscar(codigo);
+
+            System.out.println("\nCódigo: " + residuo.getCodigo());
+            System.out.println("Categoria: " + residuo.getCategoriaResiduo());
+            System.out.println("Quantidade: " + residuo.getQuantidade());
+            if (!residuo.getDescricao().isEmpty()) {
+                System.out.println("Descrição: " + residuo.getDescricao());
+            }
+
+            System.out.print("\nEsse é o resíduo que deseja editar? (s/n): ");
+            String resposta = sc.nextLine();
+
+            if (!resposta.equalsIgnoreCase("s")) {
+                System.out.println("Edição cancelada.");
+                return;
+            }
+
+            // Enter vazio mantém o valor atual
+            System.out.print("Nova quantidade (Enter para manter " + residuo.getQuantidade() + "): ");
+            String quantidadeDigitada = sc.nextLine().trim();
+
+            int quantidade = residuo.getQuantidade();
+            if (!quantidadeDigitada.isEmpty()) {
+                quantidade = Integer.parseInt(quantidadeDigitada);
+            }
+
+            System.out.print("Nova descrição (Enter para manter a atual): ");
+            String descricaoDigitada = sc.nextLine();
+
+            String descricao = residuo.getDescricao();
+            if (!descricaoDigitada.isBlank()) {
+                descricao = descricaoDigitada;
+            }
+
+            Residuo editado = service.editar(codigo, quantidade, descricao);
+
+            System.out.println("\nResíduo editado!");
+            System.out.println("Código: " + editado.getCodigo());
+            System.out.println("Categoria: " + editado.getCategoriaResiduo());
+            System.out.println("Quantidade: " + editado.getQuantidade());
+            if (!editado.getDescricao().isEmpty()) {
+                System.out.println("Descrição: " + editado.getDescricao());
+            }
+
+        } catch (NumberFormatException e) {
+            System.out.println("\nNão foi possível editar o resíduo: a quantidade deve ser um número.");
+        } catch (IllegalArgumentException e) {
+            System.out.println("\nNão foi possível editar o resíduo: " + e.getMessage());
         }
     }
 
