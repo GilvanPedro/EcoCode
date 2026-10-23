@@ -1,8 +1,8 @@
 package Cadastro;
 
+import Util.CalcularRestoResiduo;
 import Domain.TipoResiduo;
 import Domain.Residuo;
-import Classificador.Classificador;
 import Service.GerenciarResiduosService;
 import Util.GerarCodigoResiduo;
 
@@ -117,7 +117,7 @@ public class TelaCadastroResiduoTerminal {
 
         for (Residuo residuo : residuos) {
 
-            int resto = Classificador.calcularResto(residuo.getCodigo());
+            int resto = CalcularRestoResiduo.calcularResto(residuo.getCodigo());
 
             System.out.println("-------------------------");
             System.out.println("Código: " + residuo.getCodigo());
