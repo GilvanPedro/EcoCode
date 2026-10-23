@@ -240,4 +240,29 @@ public class TelaCadastroResiduoTerminal {
             System.out.println("\nNão foi possível excluir: " + e.getMessage());
         }
     }
+
+    public void classificarResiduos() {
+
+        System.out.println("\n--- CLASSIFICAÇÃO DOS RESÍDUOS ---");
+
+        List<Residuo> lista = service.listar();
+
+        if (lista.isEmpty()) {
+            System.out.println("Nenhum resíduo cadastrado.");
+            return;
+        }
+
+        for (Residuo residuo : lista) {
+            System.out.println("-------------------------");
+            System.out.println("Código: " + residuo.getCodigo());
+            System.out.println("Classe calculada: " + residuo.getCodigo() + " mod 5 = " + service.calcularClasse(residuo));
+            System.out.println("Categoria: " + residuo.getCategoriaResiduo());
+
+            if (!service.classeConfere(residuo)) {
+                System.out.println("ATENÇÃO: o código não corresponde a essa categoria!");
+            }
+        }
+
+        System.out.println("-------------------------");
+    }
 }

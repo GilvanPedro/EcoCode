@@ -4,6 +4,7 @@ import Domain.ServiceResiduosInterface;
 import Domain.Residuo;
 import Domain.TipoResiduo;
 import Repository.GerenciarResiduosRepository;
+import Util.CalcularRestoResiduo;
 import Util.GerarCodigoResiduo;
 
 import java.util.ArrayList;
@@ -12,8 +13,8 @@ import java.util.List;
 public class GerenciarResiduosService implements ServiceResiduosInterface {
 
     private GerenciarResiduosRepository gerarResiduosRepository = new GerenciarResiduosRepository();
-    GerarCodigoResiduo gerarCodigoResiduo = new GerarCodigoResiduo();
-
+    private final GerarCodigoResiduo gerarCodigoResiduo = new GerarCodigoResiduo();
+    private final CalcularRestoResiduo calcularResto = new CalcularRestoResiduo();
     @Override
     public Residuo salvar(TipoResiduo tipoResiduo, int quantidadeResiduo, String descricao) {
 
@@ -45,12 +46,6 @@ public class GerenciarResiduosService implements ServiceResiduosInterface {
     @Override
     public Residuo editar(String codigoResiduo, int quantidadeResiduo, String descricao) {
         Residuo editarResiduo = buscar(codigoResiduo);
-
-        if(editarResiduo == null){
-            throw new IllegalArgumentException(
-                    "O Resíduo Buscado Não Foi Encontrado!"
-            );
-        }
 
         if(quantidadeResiduo <= 0){
             throw new IllegalArgumentException(
@@ -108,4 +103,16 @@ public class GerenciarResiduosService implements ServiceResiduosInterface {
 
         return filtrados;
     }
+
+    // Etapa 2: h(k) = k mod 5, calculado a partir do código do resíduo
+    public int calcularClasse(Residuo residuo) {
+        return calcularResto.calcularResto(residuo.getCodigo());
+    }
+
+    // confere se a classe calculada pelo código bate com a categoria do tipo
+    public boolean classeConfere(Residuo residuo) {
+        return calcularClasse(residuo) == residuo.getResiduo().getResto();
+    }
+
+
 }
