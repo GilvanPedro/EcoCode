@@ -5,11 +5,23 @@ public class Residuo {
     private String codigo;
     private TipoResiduo tipo_residuo;
     private int quantidade;
+    private String descricao;
 
-    public Residuo(String codigo, TipoResiduo tipo_residuo, int quantidade){
+    public Residuo(String codigo, TipoResiduo tipo_residuo, int quantidade, String descricao){
+
+        if (tipo_residuo == null)
+            throw new IllegalArgumentException("O tipo do resíduo é obrigatório");
+
+        if (quantidade <= 0)
+            throw new IllegalArgumentException("A quantidade deve ser maior que zero");
+
+        if (codigo == null || !codigo.matches("\\d{1,9}"))
+            throw new IllegalStateException("Erro interno ao gerar o código do resíduo");
+
         this.codigo = codigo;
         this.tipo_residuo = tipo_residuo;
         this.quantidade = quantidade;
+        this.descricao = (descricao == null) ? "" : descricao.trim();
     }
 
     public String getCodigo(){
@@ -26,5 +38,17 @@ public class Residuo {
 
     public int getQuantidade() {
         return quantidade;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setQuantidade(int quantidade) {
+        this.quantidade = quantidade;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
     }
 }

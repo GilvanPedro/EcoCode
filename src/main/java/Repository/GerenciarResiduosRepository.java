@@ -18,8 +18,8 @@ public class GerenciarResiduosRepository implements RepositoryResiduosInterface 
     }
 
     @Override
-    public void editar(String codigoResiduo) {
-
+    public void editar(Residuo residuoEditado) {
+        residuos.put(residuoEditado.getCodigo(), residuoEditado);
     }
 
     @Override

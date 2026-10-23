@@ -14,37 +14,54 @@ public class GerenciarResiduosService implements ServiceResiduosInterface {
     GerarCodigoResiduo gerarCodigoResiduo = new GerarCodigoResiduo();
 
     @Override
-    public void salvar(TipoResiduo tipoResiduo, int quantidadeResiduo) {
+    public Residuo salvar(TipoResiduo tipoResiduo, int quantidadeResiduo, String descricao) {
 
+        // verifica se foi informado um tipo de residuo
         if (tipoResiduo == null)
-            throw new IllegalArgumentException("O tipo do resíduo é obrigatório");
+            throw new IllegalArgumentException(
+                    "O tipo do resíduo é obrigatório"
+            );
 
+        // verifica se a quantidade é maior que 0
         if (quantidadeResiduo <= 0)
-            throw new IllegalArgumentException("A quantidade deve ser maior que zero");
+            throw new IllegalArgumentException("" +
+                    "A quantidade deve ser maior que zero"
+            );
 
         String codigoResiduo = gerarCodigoResiduo.gerarCodigo(tipoResiduo);
 
-        // loop para gerar um código novo até ele não estar cadastrado (evitar bugs)
+        // gera um novo código para o residuo cadastrado caso o código gerado já esteja cadastrado
         while (gerarResiduosRepository.buscar(codigoResiduo) != null) {
             codigoResiduo = gerarCodigoResiduo.gerarCodigo(tipoResiduo);
         }
 
-        // proteção contra bug no gerador (só aceita números para evitar bugs e caso a adição de código seja manual no futuro)
-        if (codigoResiduo == null || !codigoResiduo.matches("\\d{1,9}"))
-            throw new IllegalStateException("Erro interno ao gerar o código do resíduo");
-
-        Residuo residuoNovo = new Residuo(
-                codigoResiduo,
-                tipoResiduo,
-                quantidadeResiduo
-        );
+        Residuo residuoNovo = new Residuo(codigoResiduo, tipoResiduo, quantidadeResiduo, descricao);
 
         gerarResiduosRepository.salvar(residuoNovo);
+        return residuoNovo;
     }
 
     @Override
-    public void editar(String codigoResiduo) {
+    public Residuo editar(String codigoResiduo, int quantidadeResiduo, String descricao) {
+        Residuo editarResiduo = buscar(codigoResiduo);
 
+        if(editarResiduo == null){
+            throw new IllegalArgumentException(
+                    "O Resíduo Buscado Não Foi Encontrado!"
+            );
+        }
+
+        if(quantidadeResiduo <= 0){
+            throw new IllegalArgumentException(
+                    "A quantidade deve ser maior que zero"
+            );
+        }
+
+        editarResiduo.setQuantidade(quantidadeResiduo);
+        editarResiduo.setDescricao(descricao);
+
+        gerarResiduosRepository.editar(editarResiduo);
+        return editarResiduo;
     }
 
     @Override
@@ -59,7 +76,7 @@ public class GerenciarResiduosService implements ServiceResiduosInterface {
 
     @Override
     public Residuo buscar(String codigoResiduo) {
-        return null;
+        return gerarResiduosRepository.buscar(codigoResiduo);
     }
 
 }

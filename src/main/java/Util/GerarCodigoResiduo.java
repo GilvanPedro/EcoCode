@@ -1,6 +1,5 @@
 package Util;
 
-import Classificador.Classificador;
 import Domain.TipoResiduo;
 
 public class GerarCodigoResiduo {

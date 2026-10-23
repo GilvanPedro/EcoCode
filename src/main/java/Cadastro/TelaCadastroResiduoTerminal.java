@@ -35,54 +35,60 @@ public class TelaCadastroResiduoTerminal {
         int[] quantidades = {5, 2, 6, 5, 1, 3, 8, 4, 2, 7};
 
         for (int i = 0; i < tipos.length; i++) {
-            service.salvar(tipos[i], quantidades[i]);
+            service.salvar(tipos[i], quantidades[i], "descriçao padrao inicial de teste");
         }
     }
 
     public void telaCadastrarResiduoTerminal() {
 
-        GerarCodigoResiduo gerarCodigoResiduo = new GerarCodigoResiduo();
-
         System.out.println("\n--- CADASTRO DE RESÍDUO ---");
 
-        // 1. Exibe as opções listando o resto e a descrição do seu enum
+        // 1. Exibe as opções listando o resto e a descrição do enum
         System.out.println("Selecione o tipo de resíduo eletrônico:");
-        for (Domain.TipoResiduo tipo : Domain.TipoResiduo.values()) {
+        for (TipoResiduo tipo : TipoResiduo.values()) {
             System.out.println("[" + tipo.getResto() + "] - " + tipo.getDescricao());
         }
 
         System.out.print("Digite o número da opção: ");
         byte opcaoDigitada = sc.nextByte();
-        sc.nextLine(); // Limpa o buffer do teclado
+        sc.nextLine(); // limpa o buffer
 
-        // 2. Procura qual enum possui o 'resto' igual ao número digitado
-        Domain.TipoResiduo tipoSelecionado = Domain.TipoResiduo.OUTROS; // Padrão caso não encontre
-        for (Domain.TipoResiduo tipo : Domain.TipoResiduo.values()) {
+        // 2. Procura o tipo com o resto digitado
+        TipoResiduo tipoSelecionado = null;
+        for (TipoResiduo tipo : TipoResiduo.values()) {
             if (tipo.getResto() == opcaoDigitada) {
                 tipoSelecionado = tipo;
                 break;
             }
         }
 
+        if (tipoSelecionado == null) {
+            System.out.println("\nOpção inválida. Cadastro cancelado.");
+            return;
+        }
+
         System.out.print("Qual a quantidade? ");
         int quantidade = sc.nextInt();
-        sc.nextLine(); // Limpa o buffer do teclado
+        sc.nextLine(); // limpa o buffer
 
-        String codigo = gerarCodigoResiduo.gerarCodigo(tipoSelecionado);
+        System.out.print("Descrição (opcional, aperte Enter para pular): ");
+        String descricao = sc.nextLine();
 
-        Residuo residuo = new Residuo(
-                codigo,
-                tipoSelecionado,
-                quantidade
-        );
+        try {
+            Residuo residuo = service.salvar(tipoSelecionado, quantidade, descricao);
 
-        residuos.add(residuo);
+            System.out.println("\nResíduo cadastrado!");
+            System.out.println("Código: " + residuo.getCodigo());
+            System.out.println("Categoria: " + residuo.getCategoriaResiduo());
+            System.out.println("Quantidade: " + residuo.getQuantidade());
 
-        System.out.println("\nResíduo cadastrado!");
-        System.out.println("Código: " + codigo);
-        System.out.println("Resíduo: " + tipoSelecionado.getDescricao());
-        System.out.println("Quantidade: " + quantidade);
-        System.out.println("Categoria: " + residuo.getCategoriaResiduo());
+            if (!residuo.getDescricao().isEmpty()) {
+                System.out.println("Descrição: " + residuo.getDescricao());
+            }
+
+        } catch (IllegalArgumentException e) {
+            System.out.println("\nNão foi possível cadastrar: " + e.getMessage());
+        }
     }
 
     public void listar_residuos() {
@@ -101,6 +107,7 @@ public class TelaCadastroResiduoTerminal {
             System.out.println("Código: " + residuo.getCodigo());
             System.out.println("Resíduo: " + residuo.getCategoriaResiduo());
             System.out.println("Quantidade: " + residuo.getQuantidade());
+            System.out.println("Descrição: " + residuo.getDescricao());
         }
 
         System.out.println("-------------------------");
@@ -131,7 +138,7 @@ public class TelaCadastroResiduoTerminal {
     }
 
     public int quantidade_cadastros() {
-        return residuos.size();
+        return service.listar().size();
     }
 
     public int quantidadeTotalResiduos() {
