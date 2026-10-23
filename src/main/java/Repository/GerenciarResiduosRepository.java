@@ -24,7 +24,7 @@ public class GerenciarResiduosRepository implements RepositoryResiduosInterface 
 
     @Override
     public void excluir(String codigoResiduo) {
-
+        residuos.remove(codigoResiduo);
     }
 
     @Override

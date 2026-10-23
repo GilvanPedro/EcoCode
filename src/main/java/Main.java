@@ -22,7 +22,8 @@ public class Main {
             System.out.println("2 - Verificar lista de resíduos");
             System.out.println("3 - Verificar quantidade de resíduos");
             System.out.println("4 - Classificar resíduos");
-            System.out.println("5 - Sair");
+            System.out.println("5 - Excluir um resíduo");
+            System.out.println("6 - Sair");
 
             System.out.print("\nEscolha uma opção: ");
             opcao = sc.nextInt();
@@ -40,7 +41,7 @@ public class Main {
 
                 case 3:
                     System.out.println("\n--- QUANTIDADE ---");
-                    System.out.println("Quantidade de cadastros: " + cadastro.quantidade_cadastros());
+                    System.out.println("Quantidade de cadastros: " + cadastro.quantidadeTotalResiduos());
                     System.out.println("Quantidade total de resíduos: " + cadastro.quantidadeTotalResiduos());
                     break;
 
@@ -49,13 +50,17 @@ public class Main {
                     break;
 
                 case 5:
+                    cadastro.excluirResiduo();
+                    break;
+
+                case 6:
                     System.out.println("\nEncerrando o programa...");
                     break;
 
                 default:
                     System.out.println("\nOpção inválida!");
             }
-        } while (opcao != 5);
+        } while (opcao != 6);
         sc.close();
     }
 }

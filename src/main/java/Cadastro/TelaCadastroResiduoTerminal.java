@@ -1,18 +1,12 @@
 package Cadastro;
 
-import Util.CalcularRestoResiduo;
 import Domain.TipoResiduo;
 import Domain.Residuo;
 import Service.GerenciarResiduosService;
-import Util.GerarCodigoResiduo;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class TelaCadastroResiduoTerminal {
-
-    private ArrayList<Residuo> residuos = new ArrayList<>();
 
     private Scanner sc;
     private final GerenciarResiduosService service = new GerenciarResiduosService();
@@ -23,6 +17,7 @@ public class TelaCadastroResiduoTerminal {
         cadastrarRegistrosIniciais();
     }
 
+    // cadastro inicial como teste inicial, vai ser removido futuramente
     private void cadastrarRegistrosIniciais() {
 
         TipoResiduo[] tipos = {
@@ -115,16 +110,18 @@ public class TelaCadastroResiduoTerminal {
 
     public void classificar_residuos() {
 
+        List<Residuo> lista = service.listar();
+
         System.out.println("\n--- CLASSIFICAÇÃO DOS RESÍDUOS ---");
 
-        if (residuos.isEmpty()) {
+        if (lista.isEmpty()) {
             System.out.println("Nenhum resíduo cadastrado.");
             return;
         }
 
-        for (Residuo residuo : residuos) {
+        for (Residuo residuo : lista) {
 
-            int resto = CalcularRestoResiduo.calcularResto(residuo.getCodigo());
+            int resto = residuo.getResiduo().getResto();
 
             System.out.println("-------------------------");
             System.out.println("Código: " + residuo.getCodigo());
@@ -137,22 +134,36 @@ public class TelaCadastroResiduoTerminal {
         System.out.println("-------------------------");
     }
 
-    public int quantidade_cadastros() {
+    public int quantidadeTotalResiduos() {
         return service.listar().size();
     }
 
-    public int quantidadeTotalResiduos() {
+    public void excluirResiduo() {
 
-        int total = 0;
+        System.out.println("\n--- EXCLUIR RESÍDUO ---");
+        System.out.print("Digite o código do resíduo: ");
+        String codigo = sc.nextLine();
 
-        for (Residuo residuo : residuos) {
-            total += residuo.getQuantidade();
+        try {
+            Residuo residuo = service.buscar(codigo);
+
+            System.out.println("\nCódigo: " + residuo.getCodigo());
+            System.out.println("Categoria: " + residuo.getCategoriaResiduo());
+            System.out.println("Quantidade: " + residuo.getQuantidade());
+
+            System.out.print("\nTem certeza que deseja excluir? (s/n): ");
+            String resposta = sc.nextLine();
+
+            if (!resposta.equalsIgnoreCase("s")) {
+                System.out.println("Exclusão cancelada.");
+                return;
+            }
+
+            service.excluir(codigo);
+            System.out.println("Resíduo excluído!");
+
+        } catch (IllegalArgumentException e) {
+            System.out.println("\nNão foi possível excluir: " + e.getMessage());
         }
-
-        return total;
-    }
-
-    public ArrayList<Residuo> getResiduos() {
-        return residuos;
     }
 }

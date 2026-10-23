@@ -66,7 +66,8 @@ public class GerenciarResiduosService implements ServiceResiduosInterface {
 
     @Override
     public void excluir(String codigoResiduo) {
-
+        Residuo residuo = buscar(codigoResiduo);
+        gerarResiduosRepository.excluir(residuo.getCodigo());
     }
 
     @Override
@@ -76,7 +77,17 @@ public class GerenciarResiduosService implements ServiceResiduosInterface {
 
     @Override
     public Residuo buscar(String codigoResiduo) {
-        return gerarResiduosRepository.buscar(codigoResiduo);
-    }
 
+        if (codigoResiduo == null || !codigoResiduo.trim().matches("\\d{1,9}"))
+            throw new IllegalArgumentException("O código deve conter apenas números");
+
+        String codigo = String.format("%04d", Integer.parseInt(codigoResiduo.trim()));
+
+        Residuo residuo = gerarResiduosRepository.buscar(codigo);
+
+        if (residuo == null)
+            throw new IllegalArgumentException("Resíduo não encontrado!");
+
+        return residuo;
+    }
 }
