@@ -1,6 +1,8 @@
 package Domain;
 
+import Util.ValidacoesUsuario;
 import Util.ValidadorCpf;
+import Util.ValidarEmail;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -16,26 +18,11 @@ public class Usuario {
 
     // Formatador estático para o padrão brasileiro DD/MM/AAAA
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private static final ValidacoesUsuario validar = new ValidacoesUsuario();
 
     public Usuario(String nomeCompleto, String cpf, String email, String senhaCriptografada, CargoUsuario cargoUsuario, String dataNascimento) {
         // Validações de Obrigatoriedade (Fail-Fast)
-        if (cargoUsuario == null) {
-            throw new IllegalArgumentException("O cargo do usuário é obrigatório");
-        }
-        if (nomeCompleto == null || nomeCompleto.isBlank()) {
-            throw new IllegalArgumentException("O nome completo é obrigatório");
-        }
-        if (email == null || email.isBlank()) {
-            throw new IllegalArgumentException("O e-mail é obrigatório");
-        }
-        if(!ValidadorCpf.ehValido(cpf)){
-            throw new IllegalArgumentException("Cpf Inválido");
-        }
-
-        // Validação de Regra de Negócio (CPF)
-        if (!ValidadorCpf.ehValido(cpf)) {
-            throw new IllegalArgumentException("O CPF informado é inválido");
-        }
+        validar.validarUsuario(nomeCompleto, email, cpf, cargoUsuario);
 
         // Validação e Atribuição da Data de Nascimento
         try {
@@ -46,7 +33,7 @@ public class Usuario {
 
         // Atribuição dos demais campos
         this.nomeCompleto = nomeCompleto;
-        this.cpf = cpf;
+        this.cpf = ValidadorCpf.limpar(cpf);
         this.email = email;
         this.senhaCriptografada = senhaCriptografada;
         this.cargoUsuario = cargoUsuario;
@@ -68,8 +55,8 @@ public class Usuario {
         return cargoUsuario;
     }
 
-    public LocalDate getDataNascimento() {
-        return dataNascimento;
+    public String getDataNascimento() {
+        return dataNascimento.format(FORMATTER);   // "14/05/2006"
     }
 
     public String getCpf() {

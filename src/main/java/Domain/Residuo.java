@@ -1,5 +1,7 @@
 package Domain;
 
+import Util.ValidacoesResiduos;
+
 public class Residuo {
 
     private String codigo;
@@ -7,16 +9,11 @@ public class Residuo {
     private int quantidade;
     private String descricao;
 
+    private static final ValidacoesResiduos validar = new ValidacoesResiduos();
+
     public Residuo(String codigo, TipoResiduo tipo_residuo, int quantidade, String descricao){
 
-        if (tipo_residuo == null)
-            throw new IllegalArgumentException("O tipo do resíduo é obrigatório");
-
-        if (quantidade <= 0)
-            throw new IllegalArgumentException("A quantidade deve ser maior que zero");
-
-        if (codigo == null || !codigo.matches("\\d{1,9}"))
-            throw new IllegalStateException("Erro interno ao gerar o código do resíduo");
+        validar.validarResiduo(tipo_residuo, quantidade, codigo);
 
         this.codigo = codigo;
         this.tipo_residuo = tipo_residuo;

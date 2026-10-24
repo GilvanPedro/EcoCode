@@ -6,6 +6,7 @@ import Domain.Usuario;
 import Exceptions.AcessoNegadoException;
 import Repository.GerenciarUsuariosRepository;
 import Util.CifraCesar;
+import Util.ValidadorCpf;
 
 import java.util.List;
 
@@ -22,7 +23,7 @@ public class GerenciarUsuariosService implements ServiceUsuarioInterface {
             );
         }
 
-        if (gerenciarUsuariosRepository.buscar(cpf) != null) {
+        if (gerenciarUsuariosRepository.buscar(ValidadorCpf.limpar(cpf)) != null) {
             throw new IllegalArgumentException("Já existe um usuário com esse CPF.");
         }
 
@@ -50,8 +51,7 @@ public class GerenciarUsuariosService implements ServiceUsuarioInterface {
 
     @Override
     public Usuario buscar(String cpf) {
-
-        Usuario usuario = gerenciarUsuariosRepository.buscar(cpf);
+        Usuario usuario = gerenciarUsuariosRepository.buscar(ValidadorCpf.limpar(cpf));
         if (usuario == null) {
             throw new IllegalArgumentException("Usuário não encontrado.");
         }
