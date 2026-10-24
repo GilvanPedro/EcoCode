@@ -2,66 +2,51 @@ package Util;
 
 import Domain.TipoResiduo;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
 import java.io.Reader;
 import java.io.UncheckedIOException;
 import java.io.Writer;
-import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.EnumMap;
-import java.util.Map;
 
 public class GerarCodigoResiduo {
 
-    private static final Type TIPO_MAPA = new TypeToken<Map<TipoResiduo, Integer>>() {}.getType();
-
-    // estes dois campos precisam vir ANTES do "ultimosCodigos", porque o carregarArquivo() usa os dois
+    // estes dois campos precisam vir ANTES do "ultimoCodigo", porque o carregarArquivo() usa os dois
     private final Path caminho = Path.of(Constantes.CODIGO_PATH);
-    private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    private final Gson gson = new Gson();
 
-    // último código gerado de cada tipo, lido do arquivo
-    private final Map<TipoResiduo, Integer> ultimosCodigos = carregarArquivo();
+    // último código gerado, de qualquer tipo, lido do arquivo (0 se ainda não existe)
+    private int ultimoCodigo = carregarArquivo();
 
-    // próximo código = último do mesmo tipo + 5, para o resto (mod 5) continuar igual
+    // próximo código = menor número depois do último cujo (código mod 5) é o resto do tipo
     public String gerarCodigo(TipoResiduo tipoResiduo) {
 
         if (tipoResiduo == null)
             throw new IllegalArgumentException("O tipo do resíduo é obrigatório");
 
-        Integer ultimo = ultimosCodigos.get(tipoResiduo);
-        int proximo;
+        int candidato = ultimoCodigo + 1;
 
-        if (ultimo == null) {
-            // primeiro código do tipo: o próprio resto (computadores começa em 5, para não usar 0)
-            proximo = tipoResiduo.getResto() == 0 ? 5 : tipoResiduo.getResto();
-        } else {
-            proximo = ultimo + 5;
-        }
+        // quantas casas faltam, a partir do candidato, até chegar no resto do tipo (0 a 4)
+        int distancia = Math.floorMod(tipoResiduo.getResto() - candidato, 5);
 
-        ultimosCodigos.put(tipoResiduo, proximo);
+        int proximo = candidato + distancia;
+
+        ultimoCodigo = proximo;
         salvarArquivo();
 
-        return String.format("%04d", proximo);
+        return String.format("%06d", proximo);
     }
 
-    private Map<TipoResiduo, Integer> carregarArquivo() {
-        Map<TipoResiduo, Integer> mapa = new EnumMap<>(TipoResiduo.class);
-
+    private int carregarArquivo() {
         if (!Files.exists(caminho)) {
-            return mapa;
+            return 0;
         }
 
         try (Reader leitura = Files.newBufferedReader(caminho, StandardCharsets.UTF_8)) {
-            Map<TipoResiduo, Integer> lido = gson.fromJson(leitura, TIPO_MAPA);
-            if (lido != null) {
-                mapa.putAll(lido);
-            }
-            return mapa;
+            Integer lido = gson.fromJson(leitura, Integer.class);
+            return lido != null ? lido : 0;
         } catch (IOException e) {
             throw new UncheckedIOException("Não foi possível ler o arquivo " + caminho, e);
         }
@@ -75,7 +60,7 @@ public class GerarCodigoResiduo {
             }
 
             try (Writer escrita = Files.newBufferedWriter(caminho, StandardCharsets.UTF_8)) {
-                gson.toJson(ultimosCodigos, TIPO_MAPA, escrita);
+                gson.toJson(ultimoCodigo, escrita);
             }
         } catch (IOException e) {
             throw new UncheckedIOException("Não foi possível salvar o arquivo " + caminho, e);
