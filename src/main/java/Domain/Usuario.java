@@ -28,6 +28,9 @@ public class Usuario {
         if (email == null || email.isBlank()) {
             throw new IllegalArgumentException("O e-mail é obrigatório");
         }
+        if(!ValidadorCpf.ehValido(cpf)){
+            throw new IllegalArgumentException("Cpf Inválido");
+        }
 
         // Validação de Regra de Negócio (CPF)
         if (!ValidadorCpf.ehValido(cpf)) {

@@ -15,22 +15,25 @@ public class GerenciarUsuariosService implements ServiceUsuarioInterface {
     CifraCesar cifraCesar = new CifraCesar();
 
     @Override
-    public Usuario cadastrar(Usuario usuarioCadastrando, String cpf, String nomeCompleto, String email, String senha, CargoUsuario cargoUsuario, String dataNascimento) {
+    public Usuario cadastrar(CargoUsuario cargoUsuarioCadastrando, String cpf, String nomeCompleto, String email, String senha, CargoUsuario cargoUsuario, String dataNascimento) {
 
-        if(usuarioCadastrando.getCargoUsuario() != CargoUsuario.GERENTE){
+        if(cargoUsuarioCadastrando != CargoUsuario.GERENTE){
             throw new AcessoNegadoException(
                     "Apenas Gerentes Podem Realizar o Cadastro de Usuario"
             );
         }
 
-        String senhaCriptografada = cifraCesar.cifraCesar(senha);
+        String cpfLimpo = validarCpf(cpf);
+
+        if (gerenciarUsuariosRepository.buscar(cpfLimpo) != null) {
+            throw new IllegalArgumentException("Já existe um usuário com esse CPF.");
+        }
 
         Usuario novoUsuario = new Usuario(
-                nomeCompleto, cpf, email, senhaCriptografada, cargoUsuario, dataNascimento
+                nomeCompleto, cpfLimpo, email, cifraCesar.cifraCesar(senha), cargoUsuario, dataNascimento
         );
 
         gerenciarUsuariosRepository.cadastrar(novoUsuario);
-
         return novoUsuario;
     }
 
@@ -38,10 +41,6 @@ public class GerenciarUsuariosService implements ServiceUsuarioInterface {
     public Usuario editar(String cpf, String nomeEditado, String emailEditado, String senhaEditada) {
 
         Usuario usuarioEditado = buscar(cpf);
-
-        if(usuarioEditado == null){
-            throw new IllegalArgumentException("Usuário buscado para edição não foi encontrado.");
-        }
 
         usuarioEditado.setNomeCompleto(nomeEditado);
         usuarioEditado.setEmail(emailEditado);
@@ -54,16 +53,13 @@ public class GerenciarUsuariosService implements ServiceUsuarioInterface {
 
     @Override
     public Usuario buscar(String cpf) {
+        String cpfLimpo = validarCpf(cpf);
 
-        if(!ValidadorCpf.ehValido(cpf)){
-            throw new IllegalArgumentException("Informe Um CPF Válido");
+        Usuario usuario = gerenciarUsuariosRepository.buscar(cpfLimpo);
+        if (usuario == null) {
+            throw new IllegalArgumentException("Usuário não encontrado.");
         }
-
-        Usuario usuarioBuscado =  gerenciarUsuariosRepository.buscar(cpf);
-
-        if(usuarioBuscado == null) throw new IllegalArgumentException("Usuário não encontrado.");
-
-        return usuarioBuscado;
+        return usuario;
     }
 
     @Override
@@ -72,9 +68,26 @@ public class GerenciarUsuariosService implements ServiceUsuarioInterface {
     }
 
     @Override
-    public void remover(String cpf) {
+    public void remover(CargoUsuario cargoUsuario, String cpf) {
+        if(cargoUsuario != CargoUsuario.GERENTE){
+            throw new AcessoNegadoException(
+                    "Apenas Gerentes Podem Realizar o Cadastro de Usuario"
+            );
+        }
+
         // a busca tem validação de encontrar ou não a pessoa
         Usuario usuario = buscar(cpf);
         gerenciarUsuariosRepository.remover(usuario.getCpf());
+    }
+
+    private String validarCpf(String cpf) {
+        if (cpf == null || cpf.isBlank()) {
+            throw new IllegalArgumentException("Informe um CPF.");
+        }
+        String cpfLimpo = cpf.replaceAll("\\D", ""); // só os dígitos
+        if (!ValidadorCpf.ehValido(cpfLimpo)) {
+            throw new IllegalArgumentException("Informe um CPF válido.");
+        }
+        return cpfLimpo;
     }
 }
