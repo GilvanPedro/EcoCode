@@ -46,7 +46,7 @@ Decisões tomadas a partir da refatoração em camadas (tela, service, repositor
 | [011](ADR-011.md) | Guardar os resíduos num `TreeMap` com o código como chave | Aceita, alterada por [ADR-024](ADR-024.md) |
 | [012](ADR-012.md) | Representar o tipo do resíduo com o enum `TipoResiduo` | Aceita |
 | [013](ADR-013.md) | Gerar o código com 4 dígitos numa classe própria e normalizar o código digitado | Aceita, alterada por [ADR-025](ADR-025.md) |
-| [014](ADR-014.md) | Validar no objeto e no service, sinalizando erros com exceções | Aceita |
+| [014](ADR-014.md) | Validar no objeto e no service, sinalizando erros com exceções | Aceita, alterada por [ADR-030](ADR-030.md) |
 | [015](ADR-015.md) | Calcular a classe pelo código no service, no lugar do `Classificador` | Aceita |
 | [016](ADR-016.md) | Editar e excluir por código, com confirmação e sem alterar tipo nem código | Aceita |
 | [017](ADR-017.md) | Filtrar a listagem por categoria no service | Aceita |
@@ -58,6 +58,11 @@ Decisões tomadas a partir da refatoração em camadas (tela, service, repositor
 | [023](ADR-023.md) | Guardar a senha do usuário cifrada com a Cifra de César | Aceita |
 | [024](ADR-024.md) | Salvar os resíduos em arquivo JSON, com o `Map` em memória como fonte principal | Aceita |
 | [025](ADR-025.md) | Gerar o código por sequência de cada tipo (último + 5), salvando o último em arquivo | Aceita |
+| [026](ADR-026.md) | Salvar os usuários em arquivo JSON, reaproveitando a persistência dos resíduos | Aceita |
+| [027](ADR-027.md) | Guardar e buscar o CPF só com dígitos | Aceita |
+| [028](ADR-028.md) | Reunir as validações do usuário na classe `ValidacoesUsuario` | Aceita |
+| [029](ADR-029.md) | Data de nascimento em AAAA-MM-DD no arquivo e em DD/MM/AAAA para o usuário | Aceita |
+| [030](ADR-030.md) | Reunir as validações do resíduo na classe `ValidacoesResiduos` | Aceita |
 
 ### Estrutura da versão refatorada
 
@@ -70,7 +75,7 @@ src/main/java/
 ├── Domain/                                     Residuo, TipoResiduo, Usuario, CargoUsuario e as interfaces
 ├── Persistency/                                Persistencia e Files/PersistenciaArquivo
 ├── Exceptions/                                 AcessoNegadoException
-└── Util/                                       GerarCodigoResiduo, CifraCesar, Configuracao, ValidadorCpf, Constantes
+└── Util/                                       GerarCodigoResiduo, CifraCesar, Configuracao, Constantes, ValidadorCpf, ValidarEmail, ValidacoesUsuario, ValidacoesResiduos
 ```
 
-Dados salvos em `dados/` na raiz do projeto: `residuos.json` e `contadores.json`.
+Dados salvos em `arquivos/` na raiz do projeto: `residuos.json`, `contadores.json` e `usuarios.json`.
