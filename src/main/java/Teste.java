@@ -30,5 +30,7 @@ public class Teste {
         Usuario user = gerenciarUsuariosService.buscar("065.314.921-20");
         System.out.println(user.getNomeCompleto());
         System.out.println(user.getDataNascimento());
+
+        gerenciarUsuariosService.editar("06531492120", user.getNomeCompleto(), user.getEmail(), "gilvan06");
     }
 }
