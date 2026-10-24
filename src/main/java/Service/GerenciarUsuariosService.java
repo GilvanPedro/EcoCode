@@ -47,6 +47,8 @@ public class GerenciarUsuariosService implements ServiceUsuarioInterface {
         usuarioEditado.setEmail(emailEditado);
         usuarioEditado.setSenhaCriptografada(cifraCesar.cifraCesar(senhaEditada));
 
+        gerenciarUsuariosRepository.editar(usuarioEditado);
+
         return usuarioEditado;
     }
 
