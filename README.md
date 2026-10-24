@@ -34,7 +34,7 @@ O código tem 4 dígitos e é gerado de forma que **`código mod 5`** seja igual
 | 3 | Pilhas e Baterias | 0003, 0008, 0013 |
 | 4 | Outros Eletrônicos | 0004, 0009, 0014 |
 
-O próximo código de um tipo é sempre o último gerado + 5. O último código de cada tipo fica salvo em `../EcoCode - Copia/arquivos/codigo.json`, então a sequência continua entre execuções.
+O próximo código de um tipo é sempre o último gerado + 5. O último código de cada tipo fica salvo em `arquivos/codigo.json`, então a sequência continua entre execuções.
 
 ## Cifra de César
 
@@ -75,11 +75,11 @@ CHAVE_CIFRA=3
 
 O `.env` não vai para o Git. Sem ele, o programa para com o erro `Variável CHAVE_CIFRA não definida no .env`.
 
-> A chave precisa ser a mesma usada quando as senhas de `../EcoCode - Copia/arquivos/usuarios.json` foram cifradas; com outra chave, elas não serão decifradas corretamente.
+> A chave precisa ser a mesma usada quando as senhas de `arquivos/usuarios.json` foram cifradas; com outra chave, elas não serão decifradas corretamente.
 
 ### 2. Compilar e rodar
 
-Pela IDE, rode a classe `Main` (em `../EcoCode - Copia/src/main/java/Main.java`).
+Pela IDE, rode a classe `Main` (em `src/main/java/Main.java`).
 
 Pelo terminal, a partir da raiz do projeto:
 
@@ -91,7 +91,7 @@ java -cp "target/classes:target/dependency/*" Main
 
 No Windows, troque `:` por `;` no classpath: `"target/classes;target/dependency/*"`.
 
-Rode sempre a partir da raiz do projeto: os arquivos de dados são lidos pelo caminho relativo `../EcoCode - Copia/arquivos`.
+Rode sempre a partir da raiz do projeto: os arquivos de dados são lidos pelo caminho relativo `arquivos`.
 
 ## Estrutura do projeto
 
@@ -133,4 +133,4 @@ Tela  →  Service  →  Repository  →  Persistência (JSON)
 
 ## Documentação
 
-As decisões de arquitetura estão em [`../EcoCode - Copia/docs`](../EcoCode%20-%20Copia/docs/README.md), no formato ADR. Lá está o histórico desde a versão 1.0 (tudo numa classe, lista em memória) até a versão atual em camadas com persistência em JSON. Para registrar uma nova decisão, use o [modelo de ADR](../EcoCode%20-%20Copia/docs/ADR-template.md).
+As decisões de arquitetura estão em [`docs`](docs/README.md), no formato ADR. Lá está o histórico desde a versão 1.0 (tudo numa classe, lista em memória) até a versão atual em camadas com persistência em JSON. Para registrar uma nova decisão, use o [modelo de ADR](docs/ADR-template.md).
