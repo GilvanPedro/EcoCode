@@ -54,6 +54,8 @@ Decisões tomadas a partir da refatoração em camadas (tela, service, repositor
 | [019](ADR-019.md) | Implementar a Cifra de César sobre a correspondência A = 0 ... Z = 25 | Aceita, alterada por [ADR-021](ADR-021.md) |
 | [020](ADR-020.md) | Ler a chave da cifra de um arquivo `.env` com `dotenv-java` | Aceita |
 | [021](ADR-021.md) | Preservar maiúsculas e minúsculas na cifra, deslocando cada caixa num sentido | Aceita |
+| [022](ADR-022.md) | Criar o módulo de usuários com CPF como chave e cadastro restrito a gerentes | Aceita |
+| [023](ADR-023.md) | Guardar a senha do usuário cifrada com a Cifra de César | Aceita |
 
 ### Estrutura da versão refatorada
 
@@ -61,8 +63,9 @@ Decisões tomadas a partir da refatoração em camadas (tela, service, repositor
 src/main/java/
 ├── Main.java                                   menu do terminal
 ├── Tela/TelaCadastroResiduoTerminal.java       leitura do teclado e exibição
-├── Service/GerenciarResiduosService.java       regras e casos de uso
-├── Repository/GerenciarResiduosRepository.java armazenamento em TreeMap
-├── Domain/                                     Residuo, TipoResiduo e as interfaces
-└── Util/                                       GerarCodigoResiduo, CifraCesar, Configuracao
+├── Service/                                    GerenciarResiduosService, GerenciarUsuariosService
+├── Repository/                                 GerenciarResiduosRepository, GerenciarUsuariosRepository
+├── Domain/                                     Residuo, TipoResiduo, Usuario, CargoUsuario e as interfaces
+├── Exceptions/                                 AcessoNegadoException
+└── Util/                                       GerarCodigoResiduo, CifraCesar, Configuracao, ValidadorCpf
 ```
