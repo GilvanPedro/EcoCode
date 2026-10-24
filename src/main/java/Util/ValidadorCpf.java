@@ -2,63 +2,56 @@ package Util;
 
 public class ValidadorCpf {
 
-    /**
-     * Valida um CPF informado como String.
-     * Aceita formatos com pontuação (000.000.000-00) ou apenas números (00000000000).
-     */
-    public static boolean ehValido(String cpf) {
+    /** Remove tudo que não for dígito. Não valida nada. */
+    public static String limpar(String cpf) {
         if (cpf == null) {
+            return "";
+        }
+        return cpf.replaceAll("\\D", "");
+    }
+
+    /** Retorna true se o CPF for válido, com ou sem pontuação. */
+    public static boolean ehValido(String cpf) {
+        String numeros = limpar(cpf);
+
+        if (numeros.length() != 11) {
             return false;
         }
 
-        // Remove qualquer caractere que não seja número (pontos, traços, espaços)
-        String cpfNumeros = cpf.replaceAll("\\D", "");
-
-        // Um CPF deve conter exatamente 11 dígitos
-        if (cpfNumeros.length() != 11) {
+        // 111.111.111-11 passa na conta, mas não é um CPF válido
+        if (numeros.matches("(\\d)\\1{10}")) {
             return false;
         }
 
-        // Rejeita CPFs com todos os dígitos iguais (ex: 111.111.111-11),
-        // pois passariam no teste matemático mas são inválidos.
-        if (cpfNumeros.matches("(\\d)\\1{10}")) {
-            return false;
+        int digito1 = calcularDigito(numeros, 9);
+        int digito2 = calcularDigito(numeros, 10);
+
+        return digito1 == Character.getNumericValue(numeros.charAt(9))
+                && digito2 == Character.getNumericValue(numeros.charAt(10));
+    }
+
+    /** Valida e devolve o CPF só com dígitos. Lança exceção se for inválido. */
+    public static String exigirValido(String cpf) {
+        if (cpf == null || cpf.isBlank()) {
+            throw new IllegalArgumentException("Informe um CPF.");
+        }
+        if (!ehValido(cpf)) {
+            throw new IllegalArgumentException("Informe um CPF válido.");
+        }
+        return limpar(cpf);
+    }
+
+    /** Calcula um dígito verificador usando os primeiros 'quantidade' dígitos. */
+    private static int calcularDigito(String numeros, int quantidade) {
+        int soma = 0;
+        int peso = quantidade + 1;
+
+        for (int i = 0; i < quantidade; i++) {
+            soma += Character.getNumericValue(numeros.charAt(i)) * peso;
+            peso--;
         }
 
-        try {
-            // Validação do Primeiro Dígito Verificador
-            int soma = 0;
-            int peso = 10;
-            for (int i = 0; i < 9; i++) {
-                int num = Character.getNumericValue(cpfNumeros.charAt(i));
-                soma += (num * peso);
-                peso--;
-            }
-
-            int resto = 11 - (soma % 11);
-            int digito1 = (resto == 10 || resto == 11) ? 0 : resto;
-
-            // Validação do Segundo Dígito Verificador
-            soma = 0;
-            peso = 11;
-            for (int i = 0; i < 10; i++) {
-                int num = Character.getNumericValue(cpfNumeros.charAt(i));
-                soma += (num * peso);
-                peso--;
-            }
-
-            resto = 11 - (soma % 11);
-            int digito2 = (resto == 10 || resto == 11) ? 0 : resto;
-
-            // Verifica se os dígitos calculados batem com os dígitos do CPF informado
-            int dv1Informado = Character.getNumericValue(cpfNumeros.charAt(9));
-            int dv2Informado = Character.getNumericValue(cpfNumeros.charAt(10));
-
-            return (digito1 == dv1Informado && digito2 == dv2Informado);
-
-        } catch (Exception e) {
-            return false;
-        }
+        int resto = soma % 11;
+        return resto < 2 ? 0 : 11 - resto;
     }
 }
-

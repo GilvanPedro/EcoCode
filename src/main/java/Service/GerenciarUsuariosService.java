@@ -6,7 +6,6 @@ import Domain.Usuario;
 import Exceptions.AcessoNegadoException;
 import Repository.GerenciarUsuariosRepository;
 import Util.CifraCesar;
-import Util.ValidadorCpf;
 
 import java.util.List;
 
@@ -23,14 +22,12 @@ public class GerenciarUsuariosService implements ServiceUsuarioInterface {
             );
         }
 
-        String cpfLimpo = validarCpf(cpf);
-
-        if (gerenciarUsuariosRepository.buscar(cpfLimpo) != null) {
+        if (gerenciarUsuariosRepository.buscar(cpf) != null) {
             throw new IllegalArgumentException("Já existe um usuário com esse CPF.");
         }
 
         Usuario novoUsuario = new Usuario(
-                nomeCompleto, cpfLimpo, email, cifraCesar.cifraCesar(senha), cargoUsuario, dataNascimento
+                nomeCompleto, cpf, email, cifraCesar.cifraCesar(senha), cargoUsuario, dataNascimento
         );
 
         gerenciarUsuariosRepository.cadastrar(novoUsuario);
@@ -53,9 +50,8 @@ public class GerenciarUsuariosService implements ServiceUsuarioInterface {
 
     @Override
     public Usuario buscar(String cpf) {
-        String cpfLimpo = validarCpf(cpf);
 
-        Usuario usuario = gerenciarUsuariosRepository.buscar(cpfLimpo);
+        Usuario usuario = gerenciarUsuariosRepository.buscar(cpf);
         if (usuario == null) {
             throw new IllegalArgumentException("Usuário não encontrado.");
         }
@@ -78,16 +74,5 @@ public class GerenciarUsuariosService implements ServiceUsuarioInterface {
         // a busca tem validação de encontrar ou não a pessoa
         Usuario usuario = buscar(cpf);
         gerenciarUsuariosRepository.remover(usuario.getCpf());
-    }
-
-    private String validarCpf(String cpf) {
-        if (cpf == null || cpf.isBlank()) {
-            throw new IllegalArgumentException("Informe um CPF.");
-        }
-        String cpfLimpo = cpf.replaceAll("\\D", ""); // só os dígitos
-        if (!ValidadorCpf.ehValido(cpfLimpo)) {
-            throw new IllegalArgumentException("Informe um CPF válido.");
-        }
-        return cpfLimpo;
     }
 }
