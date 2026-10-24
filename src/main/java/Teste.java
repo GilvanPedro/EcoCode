@@ -13,32 +13,22 @@ public class Teste {
     static CifraCesar cifraCesar = new CifraCesar();
 
     static void main() {
-        String senha = "Rogério Carlos Pedro V3";
+//        String senha = "Rogério Carlos Pedro V3";
+//
+//        System.out.println(cifraCesar.cifraCesar(senha));
+//
+//        String senhaCriptografada = cifraCesar.cifraCesar(senha);
+//
+//        System.out.println(cifraCesar.descriptografarCifra(senhaCriptografada));
+//
+//        List<String> tentativas = cifraCesar.descriptografarTodasChaves(senhaCriptografada);
+//
+//        for (int chave = 0; chave < tentativas.size(); chave++) {
+//            System.out.println("Chave " + chave + ": " + tentativas.get(chave));
+//        }
 
-        System.out.println(cifraCesar.cifraCesar(senha));
-
-        String senhaCriptografada = cifraCesar.cifraCesar(senha);
-
-        System.out.println(cifraCesar.descriptografarCifra(senhaCriptografada));
-
-        List<String> tentativas = cifraCesar.descriptografarTodasChaves(senhaCriptografada);
-
-        for (int chave = 0; chave < tentativas.size(); chave++) {
-            System.out.println("Chave " + chave + ": " + tentativas.get(chave));
-        }
-
-        Usuario usuario = new Usuario("Carlos", "06531492120", "gilvanpedro2006@gmail.com", senhaCriptografada, CargoUsuario.GERENTE, "31/07/2006");
-
-        Usuario novo = gerenciarUsuariosService.cadastrar(
-                usuario.getCargoUsuario(),
-                "529.982.247-25",           // CPF válido de teste
-                "Rafael Souza Lima",
-                "rafael.lima@empresa.com",
-                "Rafa@2026",
-                CargoUsuario.FUNCIONARIO,
-                "22/07/2001"
-        );
-
-        System.out.println(gerenciarUsuariosService.buscar("529.982.247-25").getNomeCompleto());
+        Usuario user = gerenciarUsuariosService.buscar("065.314.921-20");
+        System.out.println(user.getNomeCompleto());
+        System.out.println(user.getDataNascimento());
     }
 }

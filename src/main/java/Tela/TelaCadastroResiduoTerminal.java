@@ -14,25 +14,6 @@ public class TelaCadastroResiduoTerminal {
 
     public TelaCadastroResiduoTerminal(Scanner sc) {
         this.sc = sc;
-
-        cadastrarRegistrosIniciais();
-    }
-
-    // cadastro inicial como teste inicial, vai ser removido futuramente
-    private void cadastrarRegistrosIniciais() {
-
-        TipoResiduo[] tipos = {
-                TipoResiduo.COMPUTADORES, TipoResiduo.BATERIAS, TipoResiduo.OUTROS,
-                TipoResiduo.CELULARES,    TipoResiduo.CABOS,    TipoResiduo.COMPUTADORES,
-                TipoResiduo.BATERIAS,     TipoResiduo.OUTROS,   TipoResiduo.CELULARES,
-                TipoResiduo.CABOS
-        };
-
-        int[] quantidades = {5, 2, 6, 5, 1, 3, 8, 4, 2, 7};
-
-        for (int i = 0; i < tipos.length; i++) {
-            service.salvar(tipos[i], quantidades[i], "descriçao padrao inicial de teste");
-        }
     }
 
     public void telaCadastrarResiduo() {
