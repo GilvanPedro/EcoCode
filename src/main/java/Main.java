@@ -24,8 +24,7 @@ public class Main {
             System.out.println("4 - Classificar resíduos");
             System.out.println("5 - Excluir um resíduo");
             System.out.println("6 - Editar um resíduo");
-            System.out.println("7 - Classificar resíduos");
-            System.out.println("8 - Sair");
+            System.out.println("7 - Sair");
 
             System.out.print("\nEscolha uma opção: ");
             opcao = sc.nextInt();
@@ -60,17 +59,13 @@ public class Main {
                     break;
 
                 case 7:
-                    cadastro.classificarResiduos();
-                    break;
-
-                case 8:
                     System.out.println("\nEncerrando o programa...");
                     break;
 
                 default:
                     System.out.println("\nOpção inválida!");
             }
-        } while (opcao != 8);
+        } while (opcao != 7);
         sc.close();
     }
 }
