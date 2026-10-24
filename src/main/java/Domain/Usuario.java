@@ -1,11 +1,14 @@
 package Domain;
 
+import Util.ValidadorCpf;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
 public class Usuario {
     private String nomeCompleto;
+    private String cpf;
     private String email;
     private String senhaCriptografada;
     private CargoUsuario cargoUsuario;
@@ -14,20 +17,36 @@ public class Usuario {
     // Formatador estático para o padrão brasileiro DD/MM/AAAA
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-    public Usuario(String nomeCompleto, String email, String senhaCriptografada, CargoUsuario cargoUsuario, String dataNascimento) {
+    public Usuario(String nomeCompleto, String cpf, String email, String senhaCriptografada, CargoUsuario cargoUsuario, String dataNascimento) {
+        // Validações de Obrigatoriedade (Fail-Fast)
+        if (cargoUsuario == null) {
+            throw new IllegalArgumentException("O cargo do usuário é obrigatório");
+        }
+        if (nomeCompleto == null || nomeCompleto.isBlank()) {
+            throw new IllegalArgumentException("O nome completo é obrigatório");
+        }
+        if (email == null || email.isBlank()) {
+            throw new IllegalArgumentException("O e-mail é obrigatório");
+        }
+
+        // Validação de Regra de Negócio (CPF)
+        if (!ValidadorCpf.ehValido(cpf)) {
+            throw new IllegalArgumentException("O CPF informado é inválido");
+        }
+
+        // Validação e Atribuição da Data de Nascimento
+        try {
+            this.dataNascimento = LocalDate.parse(dataNascimento, FORMATTER);
+        } catch (DateTimeParseException e) {
+            throw new IllegalArgumentException("Formato de data inválido! Use o padrão DD/MM/AAAA.");
+        }
+
+        // Atribuição dos demais campos
         this.nomeCompleto = nomeCompleto;
+        this.cpf = cpf;
         this.email = email;
         this.senhaCriptografada = senhaCriptografada;
         this.cargoUsuario = cargoUsuario;
-
-        //adicionar a data de nascimento no formato certo
-        try {
-            // Tenta converter a String "25/12/2000" em um objeto LocalDate
-            this.dataNascimento = LocalDate.parse(dataNascimento, FORMATTER);
-        } catch (DateTimeParseException e) {
-            // Lança uma exceção se a String não estiver no formato correto ou for uma data inválida (ex: 31/02)
-            throw new IllegalArgumentException("Formato de data inválido! Use o padrão DD/MM/AAAA.");
-        }
     }
 
     public String getNomeCompleto() {
@@ -48,6 +67,10 @@ public class Usuario {
 
     public LocalDate getDataNascimento() {
         return dataNascimento;
+    }
+
+    public String getCpf() {
+        return cpf;
     }
 
     public void setNomeCompleto(String nomeCompleto) {
