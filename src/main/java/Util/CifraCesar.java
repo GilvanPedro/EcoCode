@@ -1,5 +1,8 @@
 package Util;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class CifraCesar {
 
     private final Configuracao configuracao = new Configuracao();
@@ -69,12 +72,36 @@ public class CifraCesar {
         return resultadoDescriptografado.toString();
     }
 
-//    static void main() {
-//        CifraCesar cifraCesar = new CifraCesar();
-//        String senha = cifraCesar.cifraCesar("gilvan06");
-//
-//        System.out.println(senha);
-//
-//        System.out.println(cifraCesar.descriptografarCifra(senha));
-//    }
+    public List<String> descriptografarTodasChaves(String mensagem) {
+
+        if (mensagem == null)
+            throw new IllegalArgumentException("A mensagem é obrigatória");
+
+        List<String> resultadoTodasChaves = new ArrayList<>();
+
+        for (int i = 0; i < 26; i++) {
+
+            StringBuilder resultadoDescriptografado = new StringBuilder();
+
+            for (char caractere : mensagem.toCharArray()) {
+
+                int valor = letraEmValor(caractere);
+
+                // não é letra (espaço, número, pontuação, acento): passa sem mudar
+                if (valor == -1) {
+                    resultadoDescriptografado.append(caractere);
+                    continue;
+                }
+
+                // anda "i" casas para trás; o floorMod dá a volta antes do A
+                int valorOriginal = Math.floorMod(valor - i, ALFABETO.length());
+
+                resultadoDescriptografado.append(valorEmLetra(valorOriginal));
+            }
+
+            resultadoTodasChaves.add(resultadoDescriptografado.toString());
+        }
+
+        return resultadoTodasChaves;
+    }
 }
