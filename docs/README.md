@@ -1,7 +1,13 @@
-# Registro de decisões de arquitetura (ADRs) - EcoCode v1.0
+# Registro de decisões de arquitetura (ADRs) - EcoCode
 
-Decisões da versão 1.0 do projeto, como está no commit "Adicionando versao 1.0"
-(2026-10-06), antes da refatoração em camadas.
+Decisões de arquitetura do módulo de resíduos. Um ADR aceito não é editado depois: se a
+decisão mudar, cria-se um ADR novo, e o antigo passa a "Substituída por ADR-XXX".
+
+## Versão 1.0
+
+Decisões da versão 1.0, como está no commit "Adicionando versao 1.0" (2026-10-06), antes
+da refatoração em camadas. Os nomes de classes citados nestes ADRs são os da versão 1.0
+(por exemplo, `Cadastro`), não os atuais.
 
 Estes ADRs foram **reconstruídos a partir do código**. O que o código faz está descrito
 com precisão e foi conferido rodando o programa. Os motivos de cada decisão foram
@@ -10,21 +16,52 @@ deduzidos do código e do enunciado da Missão 02: o grupo deve revisar a seçã
 
 | ADR | Decisão | Status |
 | --- | --- | --- |
-| [001](001-aplicacao-console-java-maven.md) | Aplicação de terminal em Java com Maven, sem dependências | Aceita |
-| [002](002-cadastro-centralizado-em-uma-classe.md) | Concentrar tela, dados e geração de código na classe `Cadastro` | Aceita |
-| [003](003-armazenamento-em-arraylist.md) | Guardar os resíduos numa `ArrayList` em memória | Aceita |
-| [004](004-codigo-gerado-a-partir-do-tipo.md) | Gerar o código de forma que `código mod 5` caia na categoria do tipo | Aceita |
-| [005](005-codigo-como-string-de-6-digitos.md) | Representar o código como `String` de 6 dígitos com zeros à esquerda | Aceita |
-| [006](006-tipo-como-texto-livre.md) | Receber o tipo do resíduo como texto livre, reconhecido por sinônimos | Aceita |
-| [007](007-classificador-estatico.md) | Classificar com uma classe utilitária estática | Aceita |
-| [008](008-registros-iniciais-no-construtor.md) | Carregar 12 registros de exemplo no construtor do `Cadastro` | Aceita |
+| [001](ADR-001.md) | Aplicação de terminal em Java com Maven, sem dependências | Aceita |
+| [002](ADR-002.md) | Concentrar tela, dados e geração de código na classe `Cadastro` | Substituída por [ADR-010](ADR-010.md) |
+| [003](ADR-003.md) | Guardar os resíduos numa `ArrayList` em memória | Substituída por [ADR-011](ADR-011.md) |
+| [004](ADR-004.md) | Gerar o código de forma que `código mod 5` caia na categoria do tipo | Aceita |
+| [005](ADR-005.md) | Representar o código como `String` de 6 dígitos com zeros à esquerda | Substituída por [ADR-013](ADR-013.md) |
+| [006](ADR-006.md) | Receber o tipo do resíduo como texto livre, reconhecido por sinônimos | Substituída por [ADR-012](ADR-012.md) |
+| [007](ADR-007.md) | Classificar com uma classe utilitária estática | Substituída por [ADR-015](ADR-015.md) |
+| [008](ADR-008.md) | Carregar 12 registros de exemplo no construtor do `Cadastro` | Substituída por [ADR-018](ADR-018.md) |
 
-## Estrutura da versão 1.0
+### Estrutura da versão 1.0
 
 ```text
 src/main/java/
-├── Main.java                      menu do terminal
-├── Tela/Tela.java         telas, lista de resíduos, geração de código, seed
+├── Main.java                         menu do terminal
+├── Cadastro/Cadastro.java            telas, lista de resíduos, geração de código, seed
 ├── Classificador/Classificador.java  tipo -> resto, código -> resto -> categoria
-└── Resíduo/Residuos.java          entidade (código, tipo, quantidade)
+└── Resíduo/Residuos.java             entidade (código, tipo, quantidade)
+```
+
+## Versão refatorada
+
+Decisões tomadas a partir da refatoração em camadas (tela, service, repository).
+
+| ADR | Decisão | Status |
+| --- | --- | --- |
+| [009](ADR-009.md) | Adicionar uma descrição opcional aos resíduos | Aceita |
+| [010](ADR-010.md) | Separar o módulo em camadas (tela, service, repository e domínio) | Aceita |
+| [011](ADR-011.md) | Guardar os resíduos num `TreeMap` com o código como chave | Aceita |
+| [012](ADR-012.md) | Representar o tipo do resíduo com o enum `TipoResiduo` | Aceita |
+| [013](ADR-013.md) | Gerar o código com 4 dígitos numa classe própria e normalizar o código digitado | Aceita |
+| [014](ADR-014.md) | Validar no objeto e no service, sinalizando erros com exceções | Aceita |
+| [015](ADR-015.md) | Calcular a classe pelo código no service, no lugar do `Classificador` | Aceita |
+| [016](ADR-016.md) | Editar e excluir por código, com confirmação e sem alterar tipo nem código | Aceita |
+| [017](ADR-017.md) | Filtrar a listagem por categoria no service | Aceita |
+| [018](ADR-018.md) | Cadastrar os registros iniciais pelo service | Aceita |
+| [019](ADR-019.md) | Implementar a Cifra de César sobre a correspondência A = 0 ... Z = 25 | Aceita |
+| [020](ADR-020.md) | Ler a chave da cifra de um arquivo `.env` com `dotenv-java` | Aceita |
+
+### Estrutura da versão refatorada
+
+```text
+src/main/java/
+├── Main.java                                   menu do terminal
+├── Tela/TelaCadastroResiduoTerminal.java       leitura do teclado e exibição
+├── Service/GerenciarResiduosService.java       regras e casos de uso
+├── Repository/GerenciarResiduosRepository.java armazenamento em TreeMap
+├── Domain/                                     Residuo, TipoResiduo e as interfaces
+└── Util/                                       GerarCodigoResiduo, CifraCesar, Configuracao
 ```

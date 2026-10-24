@@ -8,19 +8,25 @@ public class CifraCesar {
     private final Configuracao configuracao = new Configuracao();
 
     private static final String ALFABETO = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    private static final String ALFABETO_MINUSCULO = ALFABETO.toLowerCase();
+    // private static final String NUMEROS = "0123456789";
+
     private final int chave = configuracao.getChaveCifra();
 
     // letra -> valor (A = 0 ... Z = 25); devolve -1 se não for letra do alfabeto
-    public int letraEmValor(char letra) {
-        return ALFABETO.indexOf(Character.toUpperCase(letra));
+    private String alfabetoDe(char letra) {
+        return Character.isLowerCase(letra) ? ALFABETO_MINUSCULO : ALFABETO;
     }
 
-    // valor -> letra (0 = A ... 25 = Z)
-    public char valorEmLetra(int valor) {
-        if (valor < 0 || valor > 25)
+    public int letraEmValor(char letra) {
+        return alfabetoDe(letra).indexOf(letra);
+    }
+
+    public char valorEmLetra(int valor, String alfabeto) {
+        if (valor < 0 || valor >= alfabeto.length())
             throw new IllegalArgumentException("Valor fora do alfabeto: " + valor);
 
-        return ALFABETO.charAt(valor);
+        return alfabeto.charAt(valor);
     }
 
     public String cifraCesar(String mensagem) {
@@ -39,10 +45,12 @@ public class CifraCesar {
                 continue;
             }
 
-            // anda "chave" casas no alfabeto; o floorMod dá a volta depois do Z
-            int novoValor = Math.floorMod(valor + chave, ALFABETO.length());
+            String alfabeto = alfabetoDe(caractere);
+            int deslocamento = Character.isLowerCase(caractere) ? -chave : chave;
+            int novoValor = Math.floorMod(valor + deslocamento, alfabeto.length());
 
-            resultadoCriptografado.append(valorEmLetra(novoValor));
+            resultadoCriptografado.append(valorEmLetra(novoValor, alfabeto));
+
         }
 
         return resultadoCriptografado.toString();
@@ -64,10 +72,12 @@ public class CifraCesar {
                 continue;
             }
 
-            // anda "chave" casas para trás; o floorMod dá a volta antes do A
-            int valorOriginal = Math.floorMod(valor - chave, ALFABETO.length());
+            String alfabeto = alfabetoDe(caractere);
+            // inverte os valores para fazer o caminho oposto
+            int deslocamento = Character.isLowerCase(caractere) ? chave : -chave;
+            int novoValor = Math.floorMod(valor + deslocamento, alfabeto.length());
 
-            resultadoDescriptografado.append(valorEmLetra(valorOriginal));
+            resultadoDescriptografado.append(valorEmLetra(novoValor, alfabeto));
         }
         return resultadoDescriptografado.toString();
     }
@@ -93,10 +103,12 @@ public class CifraCesar {
                     continue;
                 }
 
-                // anda "i" casas para trás; o floorMod dá a volta antes do A
-                int valorOriginal = Math.floorMod(valor - i, ALFABETO.length());
+                String alfabeto = alfabetoDe(caractere);
+                // inverte os valores para fazer o caminho oposto e utilizando o i
+                int deslocamento = Character.isLowerCase(caractere) ? i : -i;
+                int novoValor = Math.floorMod(valor + deslocamento, alfabeto.length());
 
-                resultadoDescriptografado.append(valorEmLetra(valorOriginal));
+                resultadoDescriptografado.append(valorEmLetra(novoValor, alfabeto));
             }
 
             resultadoTodasChaves.add(resultadoDescriptografado.toString());
