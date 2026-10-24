@@ -51,9 +51,9 @@ Decisões tomadas a partir da refatoração em camadas (tela, service, repositor
 | [016](ADR-016.md) | Editar e excluir por código, com confirmação e sem alterar tipo nem código | Aceita |
 | [017](ADR-017.md) | Filtrar a listagem por categoria no service | Aceita |
 | [018](ADR-018.md) | Cadastrar os registros iniciais pelo service | Aceita |
-| [019](ADR-019.md) | Implementar a Cifra de César sobre a correspondência A = 0 ... Z = 25 | Aceita, alterada por [ADR-021](ADR-021.md) |
+| [019](ADR-019.md) | Implementar a Cifra de César sobre a correspondência A = 0 ... Z = 25 | Aceita, alterada por [ADR-021](ADR-021.md) e [ADR-031](ADR-031.md) |
 | [020](ADR-020.md) | Ler a chave da cifra de um arquivo `.env` com `dotenv-java` | Aceita |
-| [021](ADR-021.md) | Preservar maiúsculas e minúsculas na cifra, deslocando cada caixa num sentido | Aceita |
+| [021](ADR-021.md) | Preservar maiúsculas e minúsculas na cifra, deslocando cada caixa num sentido | Aceita, alterada por [ADR-031](ADR-031.md) |
 | [022](ADR-022.md) | Criar o módulo de usuários com CPF como chave e cadastro restrito a gerentes | Aceita |
 | [023](ADR-023.md) | Guardar a senha do usuário cifrada com a Cifra de César | Aceita |
 | [024](ADR-024.md) | Salvar os resíduos em arquivo JSON, com o `Map` em memória como fonte principal | Aceita |
@@ -63,6 +63,7 @@ Decisões tomadas a partir da refatoração em camadas (tela, service, repositor
 | [028](ADR-028.md) | Reunir as validações do usuário na classe `ValidacoesUsuario` | Aceita |
 | [029](ADR-029.md) | Data de nascimento em AAAA-MM-DD no arquivo e em DD/MM/AAAA para o usuário | Aceita |
 | [030](ADR-030.md) | Reunir as validações do resíduo na classe `ValidacoesResiduos` | Aceita |
+| [031](ADR-031.md) | Cifrar também os dígitos e concentrar a conta da cifra num único método | Aceita |
 
 ### Estrutura da versão refatorada
 
