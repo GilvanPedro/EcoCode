@@ -6,10 +6,7 @@ import Persistency.Files.PersistenciaArquivo;
 import Persistency.Persistencia;
 import Util.Constantes;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 public class GerenciarResiduosRepository implements RepositoryResiduosInterface {
 
@@ -17,7 +14,7 @@ public class GerenciarResiduosRepository implements RepositoryResiduosInterface 
     private final Persistencia<Residuo> persistencia =
             new PersistenciaArquivo<>(Constantes.RESIDUOS_PATH, Residuo.class);
 
-    private final Map<String, Residuo> residuos = new TreeMap<>();
+    private final Map<String, Residuo> residuos = new LinkedHashMap<>();
 
     public GerenciarResiduosRepository() {
         for (Residuo residuo : persistencia.carregar()) {

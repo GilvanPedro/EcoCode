@@ -1,9 +1,16 @@
+import java.util.List;
 import java.util.Scanner;
+
+import Domain.Residuo;
+import Service.GerenciarResiduosService;
+import Service.GerenciarUsuariosService;
 import Tela.TelaCadastroResiduoTerminal;
 
 public class Main {
 
     public static void main(String[] args) {
+
+        GerenciarResiduosService service = new GerenciarResiduosService();
 
         Scanner sc = new Scanner(System.in);
 
@@ -42,8 +49,8 @@ public class Main {
 
                 case 3:
                     System.out.println("\n--- QUANTIDADE ---");
-                    System.out.println("Quantidade de cadastros: " + cadastro.quantidadeTotalResiduos());
-                    System.out.println("Quantidade total de resíduos: " + cadastro.quantidadeTotalResiduos());
+                    System.out.println("Quantidade de cadastros: " + service.quantidadeResiduosCadastrados());
+                    System.out.println("Quantidade total de resíduos: " + service.quantidadeTotalResiduos());
                     break;
 
                 case 4:

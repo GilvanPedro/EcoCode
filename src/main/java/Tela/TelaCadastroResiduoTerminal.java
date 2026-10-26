@@ -112,8 +112,12 @@ public class TelaCadastroResiduoTerminal {
     public void listar_residuos() {
 
         System.out.println("\n--- LISTA DE RESÍDUOS ---");
+        System.out.println("1 - Ordem de cadastro");
+        System.out.println("2 - Ordem de código");
+        System.out.print("Escolha: ");
+        String ordem = sc.nextLine();
 
-        List<Residuo> lista = service.listar();
+        List<Residuo> lista = ordem.equals("2") ? service.listarPorCodigo() : service.listar();
 
         if (lista.isEmpty()) {
             System.out.println("Nenhum resíduo cadastrado.");
@@ -187,10 +191,6 @@ public class TelaCadastroResiduoTerminal {
 
         System.out.println("-------------------------");
         System.out.println(lista.size() + " cadastro(s), " + total + " unidade(s) no total.");
-    }
-
-    public int quantidadeTotalResiduos() {
-        return service.listar().size();
     }
 
     public void excluirResiduo() {

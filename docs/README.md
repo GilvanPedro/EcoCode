@@ -43,7 +43,7 @@ Decisões tomadas a partir da refatoração em camadas (tela, service, repositor
 | --- | --- | --- |
 | [009](ADR-009.md) | Adicionar uma descrição opcional aos resíduos | Aceita |
 | [010](ADR-010.md) | Separar o módulo em camadas (tela, service, repository e domínio) | Aceita |
-| [011](ADR-011.md) | Guardar os resíduos num `TreeMap` com o código como chave | Aceita, alterada por [ADR-024](ADR-024.md) |
+| [011](ADR-011.md) | Guardar os resíduos num `TreeMap` com o código como chave | Aceita, alterada por [ADR-024](ADR-024.md) e [ADR-036](ADR-036.md) |
 | [012](ADR-012.md) | Representar o tipo do resíduo com o enum `TipoResiduo` | Aceita |
 | [013](ADR-013.md) | Gerar o código com 4 dígitos numa classe própria e normalizar o código digitado | Aceita, alterada por [ADR-025](ADR-025.md) e [ADR-032](ADR-032.md) |
 | [014](ADR-014.md) | Validar no objeto e no service, sinalizando erros com exceções | Aceita, alterada por [ADR-030](ADR-030.md) |
@@ -68,6 +68,8 @@ Decisões tomadas a partir da refatoração em camadas (tela, service, repositor
 | [033](ADR-033.md) | Implementar a Cifra Afim com as chaves a e b no `.env` | Aceita, alterada por [ADR-035](ADR-035.md) |
 | [034](ADR-034.md) | Reunir MDC, MMC e inverso modular na classe `Aritmetica` | Aceita |
 | [035](ADR-035.md) | Calcular o inverso da Cifra Afim pelo Euclides Estendido | Aceita |
+| [036](ADR-036.md) | Listar os resíduos por ordem de cadastro ou por ordem de código | Aceita |
+| [037](ADR-037.md) | Calcular as quantidades de resíduos no service | Aceita |
 
 ### Estrutura da versão refatorada
 

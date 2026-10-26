@@ -8,6 +8,7 @@ import Util.CalcularRestoResiduo;
 import Util.GerarCodigoResiduo;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class GerenciarResiduosService implements ServiceResiduosInterface {
@@ -104,6 +105,14 @@ public class GerenciarResiduosService implements ServiceResiduosInterface {
         return filtrados;
     }
 
+    // lista por ordem crescente de código
+    @Override
+    public List<Residuo> listarPorCodigo() {
+        List<Residuo> lista = gerarResiduosRepository.listar();
+        lista.sort(Comparator.comparingInt(residuo -> Integer.parseInt(residuo.getCodigo())));
+        return lista;
+    }
+
     // Etapa 2: h(k) = k mod 5, calculado a partir do código do resíduo
     public int calcularClasse(Residuo residuo) {
         return calcularResto.calcularResto(residuo.getCodigo());
@@ -112,6 +121,22 @@ public class GerenciarResiduosService implements ServiceResiduosInterface {
     // confere se a classe calculada pelo código bate com a categoria do tipo
     public boolean classeConfere(Residuo residuo) {
         return calcularClasse(residuo) == residuo.getResiduo().getResto();
+    }
+
+    // pegar a quantidade de residuos cadastrados
+    public int quantidadeResiduosCadastrados() {
+        return gerarResiduosRepository.listar().size();
+    }
+
+    // pegar a quantidade total de residuos (quantidade)
+    public int quantidadeTotalResiduos() {
+        int total = 0;
+
+        for (Residuo residuo : listar()) {
+            total += residuo.getQuantidade();
+        }
+
+        return total;
     }
 
 }
