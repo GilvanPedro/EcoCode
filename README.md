@@ -35,6 +35,7 @@ O código tem 4 dígitos e é gerado de forma que **`código mod 5`** seja igual
 | 3 | Pilhas e Baterias | 0003, 0008, 0013 |
 | 4 | Outros Eletrônicos | 0004, 0009, 0014 |
 
+<<<<<<< HEAD
 Só o último código gerado (de qualquer tipo) fica salvo, em `arquivos/codigo.json`. O próximo código é o menor número depois dele cujo resto da divisão por 5 é o resto do tipo:
 
 ```text
@@ -44,6 +45,9 @@ próximo   = candidato + distância
 ```
 
 Exemplo, começando sem arquivo: Celular → 0001, Computador → 0005, Computador → 0010, Bateria → 0013, Outros → 0014, Cabos → 0017. Assim o código também indica a ordem de cadastro, e a sequência continua entre execuções. Detalhes no [ADR-032](docs/ADR-032.md).
+=======
+O próximo código de um tipo é sempre o último gerado + 5. O último código de cada tipo fica salvo em `arquivos/codigo.json`, então a sequência continua entre execuções.
+>>>>>>> 1039930fee32b33634c288d4d25011ad5fce7f1a
 
 ## Cifra de César
 
@@ -100,7 +104,11 @@ java -cp "target/classes:target/dependency/*" Main
 
 No Windows, troque `:` por `;` no classpath: `"target/classes;target/dependency/*"`.
 
+<<<<<<< HEAD
 Rode sempre a partir da raiz do projeto: os arquivos de dados são lidos pelo caminho relativo `arquivos/`. A pasta não vai para o Git e é criada na primeira execução, se não existir.
+=======
+Rode sempre a partir da raiz do projeto: os arquivos de dados são lidos pelo caminho relativo `arquivos`.
+>>>>>>> 1039930fee32b33634c288d4d25011ad5fce7f1a
 
 ## Estrutura do projeto
 
@@ -143,4 +151,8 @@ Tela  →  Service  →  Repository  →  Persistência (JSON)
 
 ## Documentação
 
+<<<<<<< HEAD
 As decisões de arquitetura estão em [`docs/`](docs/README.md), no formato ADR. Lá está o histórico desde a versão 1.0 (tudo numa classe, lista em memória) até a versão atual em camadas com persistência em JSON. Para registrar uma nova decisão, use o [modelo de ADR](docs/ADR-template.md).
+=======
+As decisões de arquitetura estão em [`docs`](docs/README.md), no formato ADR. Lá está o histórico desde a versão 1.0 (tudo numa classe, lista em memória) até a versão atual em camadas com persistência em JSON. Para registrar uma nova decisão, use o [modelo de ADR](docs/ADR-template.md).
+>>>>>>> 1039930fee32b33634c288d4d25011ad5fce7f1a
