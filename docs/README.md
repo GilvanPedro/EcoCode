@@ -65,7 +65,9 @@ Decisões tomadas a partir da refatoração em camadas (tela, service, repositor
 | [030](ADR-030.md) | Reunir as validações do resíduo na classe `ValidacoesResiduos` | Aceita |
 | [031](ADR-031.md) | Cifrar também os dígitos e concentrar a conta da cifra num único método | Aceita |
 | [032](ADR-032.md) | Calcular o próximo código a partir do último gerado, de qualquer tipo | Aceita |
-| [033](ADR-033.md) | Implementar a Cifra Afim com as chaves a e b no `.env` | Aceita |
+| [033](ADR-033.md) | Implementar a Cifra Afim com as chaves a e b no `.env` | Aceita, alterada por [ADR-035](ADR-035.md) |
+| [034](ADR-034.md) | Reunir MDC, MMC e inverso modular na classe `Aritmetica` | Aceita |
+| [035](ADR-035.md) | Calcular o inverso da Cifra Afim pelo Euclides Estendido | Aceita |
 
 ### Estrutura da versão refatorada
 
@@ -78,7 +80,7 @@ src/main/java/
 ├── Domain/                                     Residuo, TipoResiduo, Usuario, CargoUsuario e as interfaces
 ├── Persistency/                                Persistencia e Files/PersistenciaArquivo
 ├── Exceptions/                                 AcessoNegadoException
-└── Util/                                       GerarCodigoResiduo, CifraCesar, CifraAfim, Configuracao, Constantes, ValidadorCpf, ValidarEmail, ValidacoesUsuario, ValidacoesResiduos
+└── Util/                                       GerarCodigoResiduo, CifraCesar, CifraAfim, Aritmetica, Configuracao, Constantes, ValidadorCpf, ValidarEmail, ValidacoesUsuario, ValidacoesResiduos
 ```
 
 Dados salvos em `arquivos/` na raiz do projeto: `residuos.json`, `usuarios.json` e o arquivo do último código gerado (`CODIGO_PATH`).

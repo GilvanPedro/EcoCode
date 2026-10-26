@@ -2,6 +2,7 @@ package Util;
 
 public class CifraAfim {
     private Configuracao configuracao = new  Configuracao();
+    private Aritmetica aritmetica = new Aritmetica();
 
     private static final String ALFABETO = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     private static final String ALFABETO_MINUSCULO = ALFABETO.toLowerCase();
@@ -53,8 +54,8 @@ public class CifraAfim {
         return resultado.toString();
     }
 
-    private String descriptografarMensagemAfim(String mensagem){
-        int valor_condicao = inversoModular(chave_a, 26);
+    public String descriptografarMensagemAfim(String mensagem){
+        int valor_condicao = Aritmetica.inversoModular(chave_a, 26);
 
         if (mensagem == null)
             throw new IllegalArgumentException("A mensagem é obrigatória");
@@ -73,19 +74,11 @@ public class CifraAfim {
             int valorDescriptografado = Math.floorMod(valor_condicao * (valor - chave_b),26);
 
             resultado.append(valorEmLetra(valorDescriptografado, alfabetoDe(caractere)));
+
+
         }
 
         return resultado.toString();
-    }
-
-    // Valor equivalente a a⁻¹ da formula de descriptografia - a⁻¹(x - b) mod 26
-    private int inversoModular(int a, int n) {
-        for (int i = 1; i < n; i++) {
-            if (Math.floorMod(a * i, n) == 1) {
-                return i;
-            }
-        }
-        throw new IllegalArgumentException(a + " não tem inverso módulo " + n);
     }
 
 }
