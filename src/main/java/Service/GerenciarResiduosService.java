@@ -77,7 +77,7 @@ public class GerenciarResiduosService implements ServiceResiduosInterface {
         if (codigoResiduo == null || !codigoResiduo.trim().matches("\\d{1,9}"))
             throw new IllegalArgumentException("O código deve conter apenas números");
 
-        String codigo = String.format("%04d", Integer.parseInt(codigoResiduo.trim()));
+        String codigo = String.format("%06d", Integer.parseInt(codigoResiduo.trim()));
 
         Residuo residuo = gerarResiduosRepository.buscar(codigo);
 
@@ -113,6 +113,5 @@ public class GerenciarResiduosService implements ServiceResiduosInterface {
     public boolean classeConfere(Residuo residuo) {
         return calcularClasse(residuo) == residuo.getResiduo().getResto();
     }
-
 
 }

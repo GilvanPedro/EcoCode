@@ -45,7 +45,7 @@ Decisões tomadas a partir da refatoração em camadas (tela, service, repositor
 | [010](ADR-010.md) | Separar o módulo em camadas (tela, service, repository e domínio) | Aceita |
 | [011](ADR-011.md) | Guardar os resíduos num `TreeMap` com o código como chave | Aceita, alterada por [ADR-024](ADR-024.md) |
 | [012](ADR-012.md) | Representar o tipo do resíduo com o enum `TipoResiduo` | Aceita |
-| [013](ADR-013.md) | Gerar o código com 4 dígitos numa classe própria e normalizar o código digitado | Aceita, alterada por [ADR-025](ADR-025.md) |
+| [013](ADR-013.md) | Gerar o código com 4 dígitos numa classe própria e normalizar o código digitado | Aceita, alterada por [ADR-025](ADR-025.md) e [ADR-032](ADR-032.md) |
 | [014](ADR-014.md) | Validar no objeto e no service, sinalizando erros com exceções | Aceita, alterada por [ADR-030](ADR-030.md) |
 | [015](ADR-015.md) | Calcular a classe pelo código no service, no lugar do `Classificador` | Aceita |
 | [016](ADR-016.md) | Editar e excluir por código, com confirmação e sem alterar tipo nem código | Aceita |
@@ -57,13 +57,14 @@ Decisões tomadas a partir da refatoração em camadas (tela, service, repositor
 | [022](ADR-022.md) | Criar o módulo de usuários com CPF como chave e cadastro restrito a gerentes | Aceita |
 | [023](ADR-023.md) | Guardar a senha do usuário cifrada com a Cifra de César | Aceita |
 | [024](ADR-024.md) | Salvar os resíduos em arquivo JSON, com o `Map` em memória como fonte principal | Aceita |
-| [025](ADR-025.md) | Gerar o código por sequência de cada tipo (último + 5), salvando o último em arquivo | Aceita |
+| [025](ADR-025.md) | Gerar o código por sequência de cada tipo (último + 5), salvando o último em arquivo | Substituída por [ADR-032](ADR-032.md) |
 | [026](ADR-026.md) | Salvar os usuários em arquivo JSON, reaproveitando a persistência dos resíduos | Aceita |
 | [027](ADR-027.md) | Guardar e buscar o CPF só com dígitos | Aceita |
 | [028](ADR-028.md) | Reunir as validações do usuário na classe `ValidacoesUsuario` | Aceita |
 | [029](ADR-029.md) | Data de nascimento em AAAA-MM-DD no arquivo e em DD/MM/AAAA para o usuário | Aceita |
 | [030](ADR-030.md) | Reunir as validações do resíduo na classe `ValidacoesResiduos` | Aceita |
 | [031](ADR-031.md) | Cifrar também os dígitos e concentrar a conta da cifra num único método | Aceita |
+| [032](ADR-032.md) | Calcular o próximo código a partir do último gerado, de qualquer tipo | Aceita |
 
 ### Estrutura da versão refatorada
 
@@ -79,4 +80,4 @@ src/main/java/
 └── Util/                                       GerarCodigoResiduo, CifraCesar, Configuracao, Constantes, ValidadorCpf, ValidarEmail, ValidacoesUsuario, ValidacoesResiduos
 ```
 
-Dados salvos em `arquivos/` na raiz do projeto: `residuos.json`, `contadores.json` e `usuarios.json`.
+Dados salvos em `arquivos/` na raiz do projeto: `residuos.json`, `usuarios.json` e o arquivo do último código gerado (`CODIGO_PATH`).

@@ -7,6 +7,7 @@ import Exceptions.AcessoNegadoException;
 import Repository.GerenciarUsuariosRepository;
 import Util.CifraCesar;
 import Util.ValidadorCpf;
+import Util.ValidarEmail;
 
 import java.util.List;
 
@@ -38,7 +39,11 @@ public class GerenciarUsuariosService implements ServiceUsuarioInterface {
     @Override
     public Usuario editar(String cpf, String nomeEditado, String emailEditado, String senhaEditada) {
 
-        Usuario usuarioEditado = buscar(cpf);
+        Usuario usuarioEditado = buscar(ValidadorCpf.limpar(cpf));
+
+        if(!ValidarEmail.ehValido(emailEditado)){
+            throw new IllegalArgumentException("E-mail inválido");
+        }
 
         usuarioEditado.setNomeCompleto(nomeEditado);
         usuarioEditado.setEmail(emailEditado);

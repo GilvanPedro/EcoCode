@@ -11,7 +11,7 @@ public class CifraCesar {
     private static final String ALFABETO_MINUSCULO = ALFABETO.toLowerCase();
     private static final String NUMEROS = "0123456789";
 
-    private final int chave = configuracao.getChaveCifra();
+    private final int chave = configuracao.getChaveCifraCesar();
 
     // escolhe em qual "alfabeto" o caractere está: dígitos, minúsculas ou maiúsculas
     private String alfabetoDe(char caractere) {
