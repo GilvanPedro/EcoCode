@@ -52,7 +52,7 @@ Decisões tomadas a partir da refatoração em camadas (tela, service, repositor
 | [017](ADR-017.md) | Filtrar a listagem por categoria no service | Aceita |
 | [018](ADR-018.md) | Cadastrar os registros iniciais pelo service | Aceita |
 | [019](ADR-019.md) | Implementar a Cifra de César sobre a correspondência A = 0 ... Z = 25 | Aceita, alterada por [ADR-021](ADR-021.md) e [ADR-031](ADR-031.md) |
-| [020](ADR-020.md) | Ler a chave da cifra de um arquivo `.env` com `dotenv-java` | Aceita |
+| [020](ADR-020.md) | Ler a chave da cifra de um arquivo `.env` com `dotenv-java` | Aceita, alterada por [ADR-033](ADR-033.md) |
 | [021](ADR-021.md) | Preservar maiúsculas e minúsculas na cifra, deslocando cada caixa num sentido | Aceita, alterada por [ADR-031](ADR-031.md) |
 | [022](ADR-022.md) | Criar o módulo de usuários com CPF como chave e cadastro restrito a gerentes | Aceita |
 | [023](ADR-023.md) | Guardar a senha do usuário cifrada com a Cifra de César | Aceita |
@@ -65,6 +65,7 @@ Decisões tomadas a partir da refatoração em camadas (tela, service, repositor
 | [030](ADR-030.md) | Reunir as validações do resíduo na classe `ValidacoesResiduos` | Aceita |
 | [031](ADR-031.md) | Cifrar também os dígitos e concentrar a conta da cifra num único método | Aceita |
 | [032](ADR-032.md) | Calcular o próximo código a partir do último gerado, de qualquer tipo | Aceita |
+| [033](ADR-033.md) | Implementar a Cifra Afim com as chaves a e b no `.env` | Aceita |
 
 ### Estrutura da versão refatorada
 
@@ -77,7 +78,7 @@ src/main/java/
 ├── Domain/                                     Residuo, TipoResiduo, Usuario, CargoUsuario e as interfaces
 ├── Persistency/                                Persistencia e Files/PersistenciaArquivo
 ├── Exceptions/                                 AcessoNegadoException
-└── Util/                                       GerarCodigoResiduo, CifraCesar, Configuracao, Constantes, ValidadorCpf, ValidarEmail, ValidacoesUsuario, ValidacoesResiduos
+└── Util/                                       GerarCodigoResiduo, CifraCesar, CifraAfim, Configuracao, Constantes, ValidadorCpf, ValidarEmail, ValidacoesUsuario, ValidacoesResiduos
 ```
 
 Dados salvos em `arquivos/` na raiz do projeto: `residuos.json`, `usuarios.json` e o arquivo do último código gerado (`CODIGO_PATH`).
