@@ -99,7 +99,7 @@ Pelo terminal, a partir da raiz do projeto:
 ```bash
 mvn compile
 mvn dependency:copy-dependencies
-java -cp "target/classes:target/dependency/*" Main
+java -cp "target/classes:target/dependency/*" backend_ecocode.Main
 ```
 
 No Windows, troque `:` por `;` no classpath: `"target/classes;target/dependency/*"`.
@@ -120,15 +120,15 @@ Rode sempre a partir da raiz do projeto: os arquivos de dados são lidos pelo ca
 │   └── codigo.json              último código gerado (de qualquer tipo)
 ├── docs/                        registro de decisões de arquitetura (ADRs)
 ├── src/main/java/
-│   ├── Main.java                menu do terminal
-│   ├── Teste.java               testes manuais durante o desenvolvimento
-│   ├── Tela/                    leitura do teclado e exibição
-│   ├── Service/                 regras de negócio de resíduos e usuários
-│   ├── Repository/              acesso aos dados (Map em memória + arquivo)
-│   ├── Domain/                  Residuo, TipoResiduo, Usuario, CargoUsuario e interfaces
-│   ├── Persistency/             gravação e leitura dos arquivos JSON
-│   ├── Exceptions/              AcessoNegadoException
-│   └── Util/                    cifra, geração de código, cálculo do resto, configuração e validações
+│   ├── backend_ecocode.Main.java                menu do terminal
+│   ├── backend_ecocode.Teste.java               testes manuais durante o desenvolvimento
+│   ├── backend_ecocode.Tela/                    leitura do teclado e exibição
+│   ├── backend_ecocode.Service/                 regras de negócio de resíduos e usuários
+│   ├── backend_ecocode.Repository/              acesso aos dados (Map em memória + arquivo)
+│   ├── backend_ecocode.Domain/                  Residuo, TipoResiduo, Usuario, CargoUsuario e interfaces
+│   ├── backend_ecocode.Persistency/             gravação e leitura dos arquivos JSON
+│   ├── backend_ecocode.Exceptions/              AcessoNegadoException
+│   └── backend_ecocode.Util/                    cifra, geração de código, cálculo do resto, configuração e validações
 ├── .env.example                 modelo da configuração
 └── pom.xml
 ```
@@ -138,15 +138,15 @@ Rode sempre a partir da raiz do projeto: os arquivos de dados são lidos pelo ca
 O projeto é dividido em camadas:
 
 ```text
-Tela  →  Service  →  Repository  →  Persistência (JSON)
+backend_ecocode.Tela  →  backend_ecocode.Service  →  backend_ecocode.Repository  →  Persistência (JSON)
               ↘          ↘
-                 Domain (entidades, enums e interfaces)
+                 backend_ecocode.Domain (entidades, enums e interfaces)
 ```
 
-- **Tela** só conversa com o usuário: lê o teclado e mostra resultados.
-- **Service** aplica as regras (gerar código, validar quantidade, checar permissão de gerente, cifrar senha).
-- **Repository** guarda os dados num `Map` em memória e grava no arquivo a cada alteração.
-- **Domain** define as entidades e as interfaces que Service e Repository implementam.
+- **backend_ecocode.Tela** só conversa com o usuário: lê o teclado e mostra resultados.
+- **backend_ecocode.Service** aplica as regras (gerar código, validar quantidade, checar permissão de gerente, cifrar senha).
+- **backend_ecocode.Repository** guarda os dados num `Map` em memória e grava no arquivo a cada alteração.
+- **backend_ecocode.Domain** define as entidades e as interfaces que backend_ecocode.Service e backend_ecocode.Repository implementam.
 - Erros de validação são sinalizados com exceções (`IllegalArgumentException`, `AcessoNegadoException`) e tratados na tela.
 
 ## Documentação

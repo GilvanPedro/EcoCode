@@ -29,7 +29,7 @@ deduzidos do código e do enunciado da Missão 02: o grupo deve revisar a seçã
 
 ```text
 src/main/java/
-├── Main.java                         menu do terminal
+├── backend_ecocode.Main.java                         menu do terminal
 ├── Cadastro/Cadastro.java            telas, lista de resíduos, geração de código, seed
 ├── Classificador/Classificador.java  tipo -> resto, código -> resto -> categoria
 └── Resíduo/Residuos.java             entidade (código, tipo, quantidade)
@@ -75,14 +75,14 @@ Decisões tomadas a partir da refatoração em camadas (tela, service, repositor
 
 ```text
 src/main/java/
-├── Main.java                                   menu do terminal
-├── Tela/TelaCadastroResiduoTerminal.java       leitura do teclado e exibição
-├── Service/                                    GerenciarResiduosService, GerenciarUsuariosService
-├── Repository/                                 GerenciarResiduosRepository, GerenciarUsuariosRepository
-├── Domain/                                     Residuo, TipoResiduo, Usuario, CargoUsuario e as interfaces
-├── Persistency/                                Persistencia e Files/PersistenciaArquivo
-├── Exceptions/                                 AcessoNegadoException
-└── Util/                                       GerarCodigoResiduo, CifraCesar, CifraAfim, Aritmetica, Configuracao, Constantes, ValidadorCpf, ValidarEmail, ValidacoesUsuario, ValidacoesResiduos
+├── backend_ecocode.Main.java                                   menu do terminal
+├── backend_ecocode.Tela/TelaCadastroResiduoTerminal.java       leitura do teclado e exibição
+├── backend_ecocode.Service/                                    GerenciarResiduosService, GerenciarUsuariosService
+├── backend_ecocode.Repository/                                 GerenciarResiduosRepository, GerenciarUsuariosRepository
+├── backend_ecocode.Domain/                                     Residuo, TipoResiduo, Usuario, CargoUsuario e as interfaces
+├── backend_ecocode.Persistency/                                Persistencia e Files/PersistenciaArquivo
+├── backend_ecocode.Exceptions/                                 AcessoNegadoException
+└── backend_ecocode.Util/                                       GerarCodigoResiduo, CifraCesar, CifraAfim, Aritmetica, Configuracao, Constantes, ValidadorCpf, ValidarEmail, ValidacoesUsuario, ValidacoesResiduos
 ```
 
 Dados salvos em `arquivos/` na raiz do projeto: `residuos.json`, `usuarios.json` e o arquivo do último código gerado (`CODIGO_PATH`).
