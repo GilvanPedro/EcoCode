@@ -2,6 +2,8 @@ package backend_ecocode.Util;
 
 import io.github.cdimascio.dotenv.Dotenv;
 
+import java.net.URI;
+
 public class Configuracao {
 
     private final Dotenv dotenv = Dotenv.load();
@@ -25,10 +27,6 @@ public class Configuracao {
         return lerChave("CIFRA_AFIM_B");
     }
 
-    public int getValorCondicaoDescriptografia() {
-        return lerChave("VALOR_CONDICAO");
-    }
-
 
     // lê a variável, confere se é um inteiro e devolve entre 0 e 25
     private int lerChave(String nome) {
@@ -48,5 +46,23 @@ public class Configuracao {
             throw new IllegalStateException("Variável " + nome + " não definida no .env");
 
         return valor.trim();
+    }
+
+    // dentro da classe Configuracao
+    public record DadosBanco(String url, String usuario, String senha) {}
+
+    public DadosBanco getDadosBanco() {
+        URI uri = URI.create(obrigatoria("DATABASE_URL"));
+
+        String info = uri.getUserInfo();
+        if (info == null || !info.contains(":"))
+            throw new IllegalStateException("DATABASE_URL sem usuário e senha");
+
+        String[] credenciais = info.split(":", 2);
+        String porta = uri.getPort() == -1 ? "" : ":" + uri.getPort();
+        String query = uri.getQuery() == null ? "" : "?" + uri.getQuery();
+
+        String jdbcUrl = "jdbc:postgresql://" + uri.getHost() + porta + uri.getPath() + query;
+        return new DadosBanco(jdbcUrl, credenciais[0], credenciais[1]);
     }
 }
