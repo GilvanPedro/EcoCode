@@ -76,7 +76,7 @@ Decisões tomadas a partir da refatoração em camadas (tela, service, repositor
 ```text
 src/main/java/
 ├── backend_ecocode.Main.java                                   menu do terminal
-├── backend_ecocode.Tela/TelaCadastroResiduoTerminal.java       leitura do teclado e exibição
+├── backend_ecocode.TelaTerminal/TelaCadastroResiduoTerminal.java       leitura do teclado e exibição
 ├── backend_ecocode.Service/                                    GerenciarResiduosService, GerenciarUsuariosService
 ├── backend_ecocode.Repository/                                 GerenciarResiduosRepository, GerenciarUsuariosRepository
 ├── backend_ecocode.Domain/                                     Residuo, TipoResiduo, Usuario, CargoUsuario e as interfaces

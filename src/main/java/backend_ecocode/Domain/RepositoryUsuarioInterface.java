@@ -8,4 +8,5 @@ public interface RepositoryUsuarioInterface {
     public Usuario buscar(String cpf);
     public List<Usuario> listar();
     public void remover(String cpf);
+    public Usuario buscarEmail(String email);
 }

@@ -122,7 +122,7 @@ Rode sempre a partir da raiz do projeto: os arquivos de dados são lidos pelo ca
 ├── src/main/java/
 │   ├── backend_ecocode.Main.java                menu do terminal
 │   ├── backend_ecocode.Teste.java               testes manuais durante o desenvolvimento
-│   ├── backend_ecocode.Tela/                    leitura do teclado e exibição
+│   ├── backend_ecocode.TelaTerminal/                    leitura do teclado e exibição
 │   ├── backend_ecocode.Service/                 regras de negócio de resíduos e usuários
 │   ├── backend_ecocode.Repository/              acesso aos dados (Map em memória + arquivo)
 │   ├── backend_ecocode.Domain/                  Residuo, TipoResiduo, Usuario, CargoUsuario e interfaces
@@ -138,12 +138,12 @@ Rode sempre a partir da raiz do projeto: os arquivos de dados são lidos pelo ca
 O projeto é dividido em camadas:
 
 ```text
-backend_ecocode.Tela  →  backend_ecocode.Service  →  backend_ecocode.Repository  →  Persistência (JSON)
+backend_ecocode.TelaTerminal  →  backend_ecocode.Service  →  backend_ecocode.Repository  →  Persistência (JSON)
               ↘          ↘
                  backend_ecocode.Domain (entidades, enums e interfaces)
 ```
 
-- **backend_ecocode.Tela** só conversa com o usuário: lê o teclado e mostra resultados.
+- **backend_ecocode.TelaTerminal** só conversa com o usuário: lê o teclado e mostra resultados.
 - **backend_ecocode.Service** aplica as regras (gerar código, validar quantidade, checar permissão de gerente, cifrar senha).
 - **backend_ecocode.Repository** guarda os dados num `Map` em memória e grava no arquivo a cada alteração.
 - **backend_ecocode.Domain** define as entidades e as interfaces que backend_ecocode.Service e backend_ecocode.Repository implementam.

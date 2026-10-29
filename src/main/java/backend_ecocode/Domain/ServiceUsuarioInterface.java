@@ -8,4 +8,5 @@ public interface ServiceUsuarioInterface {
     public Usuario buscar(String cpf);
     public List<Usuario> listar();
     public void remover(CargoUsuario cargoUsuario, String cpf);
+    public Usuario buscarEmail(String email);
 }
