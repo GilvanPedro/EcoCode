@@ -44,7 +44,7 @@ distância = (resto do tipo − candidato) mod 5
 próximo   = candidato + distância
 ```
 
-Exemplo, começando sem arquivo: Celular → 0001, Computador → 0005, Computador → 0010, Bateria → 0013, Outros → 0014, Cabos → 0017. Assim o código também indica a ordem de cadastro, e a sequência continua entre execuções. Detalhes no [ADR-032](docs/ADR-032.md).
+Exemplo, começando sem arquivo: Celular → 0001, Computador → 0005, Computador → 0010, Bateria → 0013, Outros → 0014, Cabos → 0017. Assim o código também indica a ordem de cadastro, e a sequência continua entre execuções. Detalhes no [ADR-032](docs/ADRs/ADR-032.md).
 =======
 O próximo código de um tipo é sempre o último gerado + 5. O último código de cada tipo fica salvo em `arquivos/codigo.json`, então a sequência continua entre execuções.
 >>>>>>> 1039930fee32b33634c288d4d25011ad5fce7f1a
@@ -152,7 +152,7 @@ backend_ecocode.TelaTerminal  →  backend_ecocode.Service  →  backend_ecocode
 ## Documentação
 
 <<<<<<< HEAD
-As decisões de arquitetura estão em [`docs/`](docs/README.md), no formato ADR. Lá está o histórico desde a versão 1.0 (tudo numa classe, lista em memória) até a versão atual em camadas com persistência em JSON. Para registrar uma nova decisão, use o [modelo de ADR](docs/ADR-template.md).
+As decisões de arquitetura estão em [`docs/`](docs/README.md), no formato ADR. Lá está o histórico desde a versão 1.0 (tudo numa classe, lista em memória) até a versão atual em camadas com persistência em JSON. Para registrar uma nova decisão, use o [modelo de ADR](docs/ADRs/ADR-template.md).
 =======
-As decisões de arquitetura estão em [`docs`](docs/README.md), no formato ADR. Lá está o histórico desde a versão 1.0 (tudo numa classe, lista em memória) até a versão atual em camadas com persistência em JSON. Para registrar uma nova decisão, use o [modelo de ADR](docs/ADR-template.md).
+As decisões de arquitetura estão em [`docs`](docs/README.md), no formato ADR. Lá está o histórico desde a versão 1.0 (tudo numa classe, lista em memória) até a versão atual em camadas com persistência em JSON. Para registrar uma nova decisão, use o [modelo de ADR](docs/ADRs/ADR-template.md).
 >>>>>>> 1039930fee32b33634c288d4d25011ad5fce7f1a
