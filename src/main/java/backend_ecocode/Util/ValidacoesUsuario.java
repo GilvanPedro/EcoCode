@@ -1,8 +1,11 @@
 package backend_ecocode.Util;
 
 import backend_ecocode.Domain.CargoUsuario;
+import backend_ecocode.Service.GerenciarUsuariosService;
 
 public class ValidacoesUsuario {
+    private GerenciarUsuariosService service = new GerenciarUsuariosService();
+
     public void validarUsuario(String nomeCompleto, String email, String cpf, CargoUsuario cargoUsuario){
 
         validarEmailUsuario(email);
@@ -29,6 +32,10 @@ public class ValidacoesUsuario {
     private void validarCpfUsuario(String cpf) {
         if (!ValidadorCpf.ehValido(cpf)) {
             throw new IllegalArgumentException("O CPF informado é inválido");
+        }
+
+        if(service.buscar(cpf) != null){
+            throw new IllegalArgumentException("CPF já está cadastrado para outro usuário");
         }
     }
 
