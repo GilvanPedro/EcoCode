@@ -1,12 +1,9 @@
 package backend_ecocode.Util;
 
 import backend_ecocode.Domain.CargoUsuario;
-import backend_ecocode.Repository.GerenciarUsuariosRepository;
-import backend_ecocode.Service.GerenciarUsuariosService;
 
+// valida só o formato dos dados; se CPF e e-mail já existem quem confere é o GerenciarUsuariosService
 public class ValidacoesUsuario {
-    private GerenciarUsuariosService service = new GerenciarUsuariosService();
-    private GerenciarUsuariosRepository repository = new GerenciarUsuariosRepository();
 
     public void validarUsuario(String nomeCompleto, String email, String cpf, CargoUsuario cargoUsuario){
 
