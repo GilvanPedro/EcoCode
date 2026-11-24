@@ -2,6 +2,8 @@ package backend_ecocode.TelaTerminal;
 
 import backend_ecocode.Domain.Usuario;
 import backend_ecocode.Exceptions.AcessoNegadoException;
+import backend_ecocode.Service.GerenciarResiduosService;
+import backend_ecocode.Service.GerenciarUsuariosService;
 import backend_ecocode.Util.LogarUsuario;
 
 import java.util.Scanner;
@@ -11,7 +13,17 @@ public class TelaUsuarioTerminal {
 
     // único Scanner do programa; é repassado para as outras telas
     private final Scanner sc = new Scanner(System.in);
-    private final LogarUsuario logar = new LogarUsuario();
+    private final LogarUsuario logar;
+    private final GerenciarUsuariosService usuariosService;
+    private final GerenciarResiduosService residuosService;
+
+    public TelaUsuarioTerminal(LogarUsuario logar,
+                               GerenciarUsuariosService usuariosService,
+                               GerenciarResiduosService residuosService) {
+        this.logar = logar;
+        this.usuariosService = usuariosService;
+        this.residuosService = residuosService;
+    }
 
     public void telaPrincipalUsuario() {
         Usuario usuarioLogado = null;
@@ -33,7 +45,9 @@ public class TelaUsuarioTerminal {
 
         System.out.println("\nLogin realizado com sucesso! Bem-vindo(a), " + usuarioLogado.getNomeCompleto());
 
-        TelaCadastroResiduoTerminal telaResiduo = new TelaCadastroResiduoTerminal(sc, usuarioLogado);
+        TelaCadastroResiduoTerminal telaResiduo = new TelaCadastroResiduoTerminal(
+                sc, usuarioLogado, residuosService, usuariosService
+        );
         telaResiduo.telaResiduo();
     }
 }

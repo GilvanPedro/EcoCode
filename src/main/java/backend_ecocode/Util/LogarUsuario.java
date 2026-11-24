@@ -5,8 +5,12 @@ import backend_ecocode.Service.GerenciarUsuariosService;
 
 public class LogarUsuario {
 
-    GerenciarUsuariosService service = new GerenciarUsuariosService();
-    CifraCesar cifraCesar = new CifraCesar();
+    private final GerenciarUsuariosService service;
+    private final CifraCesar cifraCesar = new CifraCesar();
+
+    public LogarUsuario(GerenciarUsuariosService service) {
+        this.service = service;
+    }
 
     public Usuario logarUsuario(String email, String senha) {
         if (email == null || !ValidarEmail.ehValido(email))

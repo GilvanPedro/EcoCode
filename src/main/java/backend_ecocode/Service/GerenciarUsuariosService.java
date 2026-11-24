@@ -14,8 +14,12 @@ import java.util.List;
 
 @Service
 public class GerenciarUsuariosService implements ServiceUsuarioInterface {
-    GerenciarUsuariosRepository gerenciarUsuariosRepository = new GerenciarUsuariosRepository();
-    CifraCesar cifraCesar = new CifraCesar();
+    private final GerenciarUsuariosRepository gerenciarUsuariosRepository;
+    private final CifraCesar cifraCesar = new CifraCesar();
+
+    public GerenciarUsuariosService(GerenciarUsuariosRepository gerenciarUsuariosRepository) {
+        this.gerenciarUsuariosRepository = gerenciarUsuariosRepository;
+    }
 
     @Override
     public Usuario cadastrar(CargoUsuario cargoUsuarioCadastrando, String cpf, String nomeCompleto, String email, String senha, CargoUsuario cargoUsuario, String dataNascimento) {

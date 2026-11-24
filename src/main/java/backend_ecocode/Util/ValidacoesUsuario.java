@@ -25,19 +25,11 @@ public class ValidacoesUsuario {
         if(!ValidarEmail.ehValido(email)){
             throw new IllegalArgumentException("E-mail inválido");
         }
-
-        if(ValidarEmail.emailExiste(email)){
-            throw new IllegalArgumentException("Email já cadastrado para um usuário");
-        }
     }
 
     private void validarCpfUsuario(String cpf) {
         if (!ValidadorCpf.ehValido(cpf)) {
             throw new IllegalArgumentException("O CPF informado é inválido");
-        }
-
-        if(repository.buscar(cpf) != null){
-            throw new IllegalArgumentException("CPF já está cadastrado para outro usuário");
         }
     }
 

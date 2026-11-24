@@ -5,6 +5,7 @@ import backend_ecocode.Domain.Residuo;
 import backend_ecocode.Domain.TipoResiduo;
 import backend_ecocode.Domain.Usuario;
 import backend_ecocode.Service.GerenciarResiduosService;
+import backend_ecocode.Service.GerenciarUsuariosService;
 
 import java.util.List;
 import java.util.Scanner;
@@ -12,15 +13,16 @@ import java.util.Scanner;
 public class TelaCadastroResiduoTerminal {
 
     private final Scanner sc;
-    private final GerenciarResiduosService service = new GerenciarResiduosService();
+    private final GerenciarResiduosService service;
     private final Usuario usuarioLogado;
     private final TelaGerenciarUsuariosTerminal telaUsuarios;
 
     // recebe o Scanner da tela de login e o usuário que entrou
-    public TelaCadastroResiduoTerminal(Scanner sc, Usuario usuarioLogado) {
+    public TelaCadastroResiduoTerminal(Scanner sc, Usuario usuarioLogado, GerenciarResiduosService residuosService,  GerenciarUsuariosService usuariosService) {
         this.sc = sc;
         this.usuarioLogado = usuarioLogado;
-        this.telaUsuarios = new TelaGerenciarUsuariosTerminal(sc, usuarioLogado);
+        this.service = residuosService;
+        this.telaUsuarios = new TelaGerenciarUsuariosTerminal(sc, usuarioLogado, usuariosService);
     }
 
     public void telaResiduo(){

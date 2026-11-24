@@ -13,12 +13,13 @@ public class TelaGerenciarUsuariosTerminal {
 
     private final Scanner sc;
     private final Usuario usuarioLogado;
-    private final GerenciarUsuariosService service = new GerenciarUsuariosService();
+    private final GerenciarUsuariosService service;
 
     // recebe o mesmo Scanner das outras telas, para não abrir outro no System.in
-    public TelaGerenciarUsuariosTerminal(Scanner sc, Usuario usuarioLogado) {
+    public TelaGerenciarUsuariosTerminal(Scanner sc, Usuario usuarioLogado, GerenciarUsuariosService service) {
         this.sc = sc;
         this.usuarioLogado = usuarioLogado;
+        this.service = service;
     }
 
     public void cadastrarUsuario() {

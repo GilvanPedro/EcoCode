@@ -13,9 +13,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        GerenciarUsuariosService service = new GerenciarUsuariosService();
-        TelaUsuarioTerminal telaUsuarioTerminal = new TelaUsuarioTerminal();
-
-        telaUsuarioTerminal.telaPrincipalUsuario();
+        Instanciador instanciador = new Instanciador();
+        instanciador.getTelaUsuario().telaPrincipalUsuario();
     }
 }

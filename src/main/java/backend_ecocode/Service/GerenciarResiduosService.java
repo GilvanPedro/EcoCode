@@ -15,9 +15,14 @@ import java.util.List;
 @Service
 public class GerenciarResiduosService implements ServiceResiduosInterface {
 
-    private GerenciarResiduosRepository gerarResiduosRepository = new GerenciarResiduosRepository();
+    private final GerenciarResiduosRepository gerarResiduosRepository;
     private final GerarCodigoResiduo gerarCodigoResiduo = new GerarCodigoResiduo();
     private final CalcularRestoResiduo calcularResto = new CalcularRestoResiduo();
+
+    public GerenciarResiduosService(GerenciarResiduosRepository gerarResiduosRepository) {
+        this.gerarResiduosRepository = gerarResiduosRepository;
+    }
+
     @Override
     public Residuo salvar(TipoResiduo tipoResiduo, int quantidadeResiduo, String descricao) {
 

@@ -7,7 +7,7 @@ import backend_ecocode.Util.Configuracao;
 
 public class Teste {
 
-    static GerenciarUsuariosService gerenciarUsuariosService = new GerenciarUsuariosService();
+    static GerenciarUsuariosService gerenciarUsuariosService = new Instanciador().getUsuariosService();
     static CifraCesar cifraCesar = new CifraCesar();
 
     static void main() {
