@@ -75,4 +75,8 @@ public class Usuario {
     public void setSenhaCriptografada(String senhaCriptografada) {
         this.senhaCriptografada = senhaCriptografada;
     }
+
+    public void setCargoUsuario(CargoUsuario cargoUsuario) {
+        this.cargoUsuario = cargoUsuario;
+    }
 }

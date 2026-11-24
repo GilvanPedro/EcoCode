@@ -48,7 +48,7 @@ public class TelaGerenciarUsuariosTerminal {
 
         try {
             Usuario novo = service.cadastrar(
-                    usuarioLogado.getCargoUsuario(), cpf, nome, email, senha, cargo, dataNascimento
+                    cpf, nome, email, senha, dataNascimento
             );
             System.out.println("\nUsuário " + novo.getNomeCompleto() + " cadastrado!");
 
