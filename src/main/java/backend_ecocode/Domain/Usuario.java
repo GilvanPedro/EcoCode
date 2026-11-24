@@ -20,8 +20,10 @@ public class Usuario {
     private static final ValidacoesUsuario validar = new ValidacoesUsuario();
 
     public Usuario(String nomeCompleto, String cpf, String email, String senhaCriptografada, CargoUsuario cargoUsuario, String dataNascimento) {
+        final String cpfLimpo = ValidadorCpf.limpar(cpf);
+
         // Validações de Obrigatoriedade (Fail-Fast)
-        validar.validarUsuario(nomeCompleto, email, cpf, cargoUsuario);
+        validar.validarUsuario(nomeCompleto, email, cpfLimpo, cargoUsuario);
 
         // Validação e Atribuição da Data de Nascimento
         try {
@@ -32,7 +34,7 @@ public class Usuario {
 
         // Atribuição dos demais campos
         this.nomeCompleto = nomeCompleto;
-        this.cpf = ValidadorCpf.limpar(cpf);
+        this.cpf = cpfLimpo;
         this.email = email;
         this.senhaCriptografada = senhaCriptografada;
         this.cargoUsuario = cargoUsuario;

@@ -1,11 +1,12 @@
 package backend_ecocode.Util;
 
+import backend_ecocode.Repository.GerenciarUsuariosRepository;
 import backend_ecocode.Service.GerenciarUsuariosService;
 
 import java.util.regex.Pattern;
 
 public class ValidarEmail {
-    private static GerenciarUsuariosService gerenciarUsuariosService = new GerenciarUsuariosService();
+    private static GerenciarUsuariosRepository gerenciarUsuariosRepository =  new GerenciarUsuariosRepository();
 
     private static final Pattern EMAIL = Pattern.compile("^[\\w.+-]+@[\\w-]+\\.[\\w.]+$");
 
@@ -14,7 +15,7 @@ public class ValidarEmail {
     }
 
     public static boolean emailExiste(String email){
-        if(gerenciarUsuariosService.buscarEmail(email) != null) return true;
+        if(gerenciarUsuariosRepository.buscarEmail(email) != null) return true;
 
         return false;
     }

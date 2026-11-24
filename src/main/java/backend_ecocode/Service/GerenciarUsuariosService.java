@@ -75,6 +75,9 @@ public class GerenciarUsuariosService implements ServiceUsuarioInterface {
         if(!ValidarEmail.ehValido(email)) throw new AcessoNegadoException("Insira um e-mail válido");
 
         Usuario usuario = gerenciarUsuariosRepository.buscarEmail(email);
+        if(usuario == null){
+            throw new IllegalArgumentException("Email não encontrado ou registrado");
+        }
 
         return usuario;
     }
