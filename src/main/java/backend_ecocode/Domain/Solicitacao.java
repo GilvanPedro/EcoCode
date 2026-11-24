@@ -71,6 +71,17 @@ public class Solicitacao {
         this.status = StatusSolicitacao.CANCELADA;
     }
 
+    public void cancelarPorGerente(){
+        if(status == StatusSolicitacao.CONCLUIDA){
+            throw new IllegalArgumentException("Não é possível cancelar uma solicitação concluída");
+        }
+        if(status == StatusSolicitacao.CANCELADA){
+            throw new IllegalArgumentException("Não é possível cancelar uma solicitação já cancelada");
+        }
+
+        this.status = StatusSolicitacao.CANCELADA;
+    }
+
     public LocalDate getDataSolicitacao() {
         return dataSolicitacao;
     }

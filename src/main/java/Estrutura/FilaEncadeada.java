@@ -1,5 +1,8 @@
 package Estrutura;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class FilaEncadeada<T> {
     private No<T> inicio;
     private No<T> fim;
@@ -50,5 +53,18 @@ public class FilaEncadeada<T> {
 
     public int tamanho() {
         return tamanho;
+    }
+
+    // devolve os valores na ordem, sem tirar ninguém da fila
+    public List<T> listar() {
+        List<T> valores = new ArrayList<>();
+        No<T> atual = inicio;
+
+        while (atual != null) {
+            valores.add(atual.getValor());
+            atual = atual.getProximoNo();
+        }
+
+        return valores;
     }
 }

@@ -5,6 +5,7 @@ public class Constantes {
     public static final String RESIDUOS_PATH = PATH+"/rediduos.json";
     public static final String USUARIOS_PATH = PATH+"/usuarios.json";
     public static final String CODIGO_PATH = PATH+"/codigo.json";
+    public static final String SOLICITACOES_PATH = PATH+"/solicitacoes.json";
 
     public Constantes(){}
 }

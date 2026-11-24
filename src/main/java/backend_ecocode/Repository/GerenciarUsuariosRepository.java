@@ -15,7 +15,6 @@ import java.util.TreeMap;
 @Repository
 public class GerenciarUsuariosRepository implements RepositoryUsuarioInterface {
 
-    private Constantes constante = new Constantes();
     private final Persistencia<Usuario> persistencia =
             new PersistenciaArquivo<>(Constantes.USUARIOS_PATH, Usuario.class);
 

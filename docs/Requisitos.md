@@ -16,9 +16,8 @@
 - RNF01 Interface intuitiva
 - RNF02 Segurança das informações (senhas com hash, dados locais cifrados, controle de acesso por perfil)
 - RNF03 Persistência dos dados em banco de dados
-- RNF04 Disponibilidade: funcionar sem conexão com o banco e sincronizar depois
-- RNF05 Desempenho: buscas rápidas usando estrutura em memória
-- RNF06 Personalização de tema claro e escuro (opcional)
+- RNF04 Desempenho: buscas rápidas usando estrutura em memória
+- RNF05 Personalização de tema claro e escuro (opcional)
 
 ## Regras de negócio
 

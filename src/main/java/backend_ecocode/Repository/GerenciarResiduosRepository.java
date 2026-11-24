@@ -12,7 +12,6 @@ import java.util.*;
 @Repository
 public class GerenciarResiduosRepository implements RepositoryResiduosInterface {
 
-    private Constantes constante = new Constantes();
     private final Persistencia<Residuo> persistencia =
             new PersistenciaArquivo<>(Constantes.RESIDUOS_PATH, Residuo.class);
 

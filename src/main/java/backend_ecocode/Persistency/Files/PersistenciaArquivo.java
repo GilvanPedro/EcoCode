@@ -45,7 +45,7 @@ public class PersistenciaArquivo<T> implements Persistencia<T> {
                     return LocalDate.parse(entrada.nextString());
                 }
             })
-            .create();;
+            .create();
 
     public PersistenciaArquivo(String caminho, Class<T> tipo) {
         this.caminho = Path.of(caminho);
