@@ -19,7 +19,7 @@ public class Instanciador {
     // 2. services, recebendo os repositories
     private final GerenciarUsuariosService usuariosService = new GerenciarUsuariosService(usuariosRepository);
     private final GerenciarResiduosService residuosService = new GerenciarResiduosService(residuosRepository);
-    private final GerenciarSolicitacoesService solicitacoesService = new GerenciarSolicitacoesService(solicitacoesRepository);
+    private final GerenciarSolicitacoesService solicitacoesService = new GerenciarSolicitacoesService(solicitacoesRepository, residuosService);
 
     // 3. quem usa os services
     private final LogarUsuario logarUsuario = new LogarUsuario(usuariosService);
@@ -36,5 +36,9 @@ public class Instanciador {
 
     public GerenciarSolicitacoesService getSolicitacoesService() {
         return solicitacoesService;
+    }
+
+    public GerenciarResiduosService getResiduosService() {
+        return residuosService;
     }
 }

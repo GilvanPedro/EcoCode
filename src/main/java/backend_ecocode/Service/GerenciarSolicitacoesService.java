@@ -12,9 +12,11 @@ public class GerenciarSolicitacoesService implements ServiceSolicitacoesInterfac
     private final GerenciarSolicitacoesRepository repository;
     private final FilaEncadeada<Solicitacao> filaPendentes = new FilaEncadeada<>();
     private final Map<UUID, Solicitacao> emRota = new HashMap<>();
+    private final GerenciarResiduosService residuoService;
 
-    public GerenciarSolicitacoesService(GerenciarSolicitacoesRepository repository) {
+    public GerenciarSolicitacoesService(GerenciarSolicitacoesRepository repository, GerenciarResiduosService residuoService) {
         this.repository = repository;
+        this.residuoService = residuoService;
 
         // remonta a fila e as em rota a partir do que está salvo
         List<Solicitacao> todas = repository.listar();
@@ -39,8 +41,15 @@ public class GerenciarSolicitacoesService implements ServiceSolicitacoesInterfac
             throw new IllegalArgumentException("Você precisa adicioanar um resíduo para ser retirado");
         }
 
+        Residuo residuo = residuoService.buscarPorId(residuoId);
+
+        if(residuo.getStatus() != StatusResiduo.DISPONIVEL){
+            throw new IllegalArgumentException("Esse resíduo já está em uma solicitação ou já foi descartado");
+        }
+
         Solicitacao solicitacao = new Solicitacao(solicitante.getId(), residuoId);
 
+        residuoService.alterarStatus(residuoId, StatusResiduo.EM_SOLICITACAO);
         repository.salvar(solicitacao);
         filaPendentes.enfileirar(solicitacao);
 
@@ -99,6 +108,7 @@ public class GerenciarSolicitacoesService implements ServiceSolicitacoesInterfac
         solicitacao.finalizarRota();
         emRota.remove(solicitacaoId);
         repository.atualizar(solicitacao);
+        residuoService.alterarStatus(solicitacao.getResiduoId(), StatusResiduo.DESCARTADO);
 
         return solicitacao;
     }
@@ -112,7 +122,7 @@ public class GerenciarSolicitacoesService implements ServiceSolicitacoesInterfac
         Solicitacao solicitacao = repository.buscarPorId(solicitacaoId);
 
         if(solicitacao == null){
-            throw new NullPointerException("Solicitação não existe");
+            throw new IllegalArgumentException("Solicitação não existe");
         }
 
         if (quemCancela.getCargoUsuario() == CargoUsuario.GERENTE) {
@@ -126,6 +136,7 @@ public class GerenciarSolicitacoesService implements ServiceSolicitacoesInterfac
         }
 
         repository.atualizar(solicitacao);
+        residuoService.alterarStatus(solicitacao.getResiduoId(), StatusResiduo.DISPONIVEL);
         return solicitacao;
     }
 

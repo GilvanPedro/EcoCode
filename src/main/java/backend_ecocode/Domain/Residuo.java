@@ -11,6 +11,7 @@ public class Residuo {
     private TipoResiduo tipo_residuo;
     private int quantidade;
     private String descricao;
+    private StatusResiduo status;
 
     private static final ValidacoesResiduos validar = new ValidacoesResiduos();
 
@@ -23,10 +24,11 @@ public class Residuo {
         this.tipo_residuo = tipo_residuo;
         this.quantidade = quantidade;
         this.descricao = (descricao == null) ? "" : descricao.trim();
+        this.status = StatusResiduo.DISPONIVEL;
     }
 
     // construtor de carregamento do banco de dados
-    public Residuo(UUID id, String codigo, TipoResiduo tipo_residuo, int quantidade, String descricao){
+    public Residuo(UUID id, String codigo, TipoResiduo tipo_residuo, int quantidade, String descricao, StatusResiduo status){
 
         validar.validarResiduo(tipo_residuo, quantidade, codigo);
 
@@ -35,10 +37,16 @@ public class Residuo {
         this.tipo_residuo = tipo_residuo;
         this.quantidade = quantidade;
         this.descricao = (descricao == null) ? "" : descricao.trim();
+        this.status = status;
     }
 
     public UUID getId() {
         return id;
+    }
+
+    public StatusResiduo getStatus() {
+        if(status == null) return StatusResiduo.DISPONIVEL;
+        return status;
     }
 
     public String getCodigo(){
@@ -67,5 +75,9 @@ public class Residuo {
 
     public void setDescricao(String descricao) {
         this.descricao = descricao;
+    }
+
+    public void setStatus(StatusResiduo status) {
+        this.status = status;
     }
 }

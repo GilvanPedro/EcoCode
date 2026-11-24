@@ -1,6 +1,7 @@
 package backend_ecocode.Domain;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface ServiceResiduosInterface {
     public Residuo salvar(TipoResiduo tipoResiduo, int quantidadeResiduo, String descricao);
@@ -10,4 +11,6 @@ public interface ServiceResiduosInterface {
     public List<Residuo> listarPorTipo(TipoResiduo tipoResiduo);
     public List<Residuo> listarPorCodigo();
     public Residuo buscar(String codigoResiduo);
+    public Residuo buscarPorId(UUID id);
+    public List<Residuo> listarDisponiveis();
 }

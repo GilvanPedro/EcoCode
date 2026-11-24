@@ -2,6 +2,7 @@ package backend_ecocode.Service;
 
 import backend_ecocode.Domain.ServiceResiduosInterface;
 import backend_ecocode.Domain.Residuo;
+import backend_ecocode.Domain.StatusResiduo;
 import backend_ecocode.Domain.TipoResiduo;
 import backend_ecocode.Repository.GerenciarResiduosRepository;
 import backend_ecocode.Util.CalcularRestoResiduo;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class GerenciarResiduosService implements ServiceResiduosInterface {
@@ -95,6 +97,26 @@ public class GerenciarResiduosService implements ServiceResiduosInterface {
         return residuo;
     }
 
+    public Residuo buscarPorId(UUID id) {
+
+        if (id == null)
+            throw new IllegalArgumentException("O id do resíduo é obrigatório");
+
+        for (Residuo residuo : gerarResiduosRepository.listar()) {
+            if (residuo.getId().equals(id)) {
+                return residuo;
+            }
+        }
+
+        throw new IllegalArgumentException("Resíduo não encontrado!");
+    }
+
+    public void alterarStatus(UUID id, StatusResiduo novoStatus) {
+        Residuo residuo = buscarPorId(id);
+        residuo.setStatus(novoStatus);
+        gerarResiduosRepository.editar(residuo);
+    }
+
     @Override
     public List<Residuo> listarPorTipo(TipoResiduo tipoResiduo) {
 
@@ -144,6 +166,19 @@ public class GerenciarResiduosService implements ServiceResiduosInterface {
         }
 
         return total;
+    }
+
+    @Override
+    public List<Residuo> listarDisponiveis() {
+        List<Residuo> disponiveis = new ArrayList<>();
+
+        for (Residuo residuo : gerarResiduosRepository.listar()) {
+            if (residuo.getStatus() == StatusResiduo.DISPONIVEL) {
+                disponiveis.add(residuo);
+            }
+        }
+
+        return disponiveis;
     }
 
 }
