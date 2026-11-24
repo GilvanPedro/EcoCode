@@ -52,13 +52,28 @@ public class GerenciarUsuariosService implements ServiceUsuarioInterface {
 
         Usuario usuarioEditado = buscar(ValidadorCpf.limpar(cpf));
 
-        if(!ValidarEmail.ehValido(emailEditado)){
-            throw new IllegalArgumentException("E-mail inválido");
+        if(!emailEditado.isBlank()){
+            if(!ValidarEmail.ehValido(emailEditado)){
+                throw new IllegalArgumentException("E-mail inválido");
+            }
+
+            Usuario encontrarEmail = gerenciarUsuariosRepository.buscarEmail(emailEditado);
+
+            if(encontrarEmail == null || emailEditado.equals(usuarioEditado.getEmail())) {
+                usuarioEditado.setEmail(emailEditado);
+            } else{
+                throw new IllegalArgumentException("Email já está em uso");
+
+            }
         }
 
-        usuarioEditado.setNomeCompleto(nomeEditado);
-        usuarioEditado.setEmail(emailEditado);
-        usuarioEditado.setSenhaCriptografada(cifraCesar.cifraCesar(senhaEditada));
+        if(!nomeEditado.isBlank()){
+            usuarioEditado.setNomeCompleto(nomeEditado);
+        }
+
+        if(!senhaEditada.isBlank()) {
+            usuarioEditado.setSenhaCriptografada(cifraCesar.cifraCesar(senhaEditada));
+        }
 
         gerenciarUsuariosRepository.editar(usuarioEditado);
 
