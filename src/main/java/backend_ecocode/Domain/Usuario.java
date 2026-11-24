@@ -6,8 +6,10 @@ import backend_ecocode.Util.ValidadorCpf;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.UUID;
 
 public class Usuario {
+    private final UUID id;
     private String nomeCompleto;
     private String cpf;
     private String email;
@@ -33,11 +35,39 @@ public class Usuario {
         }
 
         // Atribuição dos demais campos
+        this.id = UUID.randomUUID();
         this.nomeCompleto = nomeCompleto;
         this.cpf = cpfLimpo;
         this.email = email;
         this.senhaCriptografada = senhaCriptografada;
         this.cargoUsuario = cargoUsuario;
+    }
+
+    // construtor de carregamento do banco de dados
+    public Usuario(UUID id, String nomeCompleto, String cpf, String email, String senhaCriptografada, CargoUsuario cargoUsuario, String dataNascimento) {
+        final String cpfLimpo = ValidadorCpf.limpar(cpf);
+
+        // Validações de Obrigatoriedade (Fail-Fast)
+        validar.validarUsuario(nomeCompleto, email, cpfLimpo, cargoUsuario);
+
+        // Validação e Atribuição da Data de Nascimento
+        try {
+            this.dataNascimento = LocalDate.parse(dataNascimento, FORMATTER);
+        } catch (DateTimeParseException e) {
+            throw new IllegalArgumentException("Formato de data inválido! Use o padrão DD/MM/AAAA.");
+        }
+
+        // Atribuição dos demais campos
+        this.id = id;
+        this.nomeCompleto = nomeCompleto;
+        this.cpf = cpfLimpo;
+        this.email = email;
+        this.senhaCriptografada = senhaCriptografada;
+        this.cargoUsuario = cargoUsuario;
+    }
+
+    public UUID getId() {
+        return id;
     }
 
     public String getNomeCompleto() {

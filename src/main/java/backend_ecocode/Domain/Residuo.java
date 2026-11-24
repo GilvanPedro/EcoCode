@@ -2,8 +2,11 @@ package backend_ecocode.Domain;
 
 import backend_ecocode.Util.ValidacoesResiduos;
 
+import java.util.UUID;
+
 public class Residuo {
 
+    private final UUID id;
     private String codigo;
     private TipoResiduo tipo_residuo;
     private int quantidade;
@@ -15,10 +18,27 @@ public class Residuo {
 
         validar.validarResiduo(tipo_residuo, quantidade, codigo);
 
+        this.id = UUID.randomUUID();
         this.codigo = codigo;
         this.tipo_residuo = tipo_residuo;
         this.quantidade = quantidade;
         this.descricao = (descricao == null) ? "" : descricao.trim();
+    }
+
+    // construtor de carregamento do banco de dados
+    public Residuo(UUID id, String codigo, TipoResiduo tipo_residuo, int quantidade, String descricao){
+
+        validar.validarResiduo(tipo_residuo, quantidade, codigo);
+
+        this.id = id;
+        this.codigo = codigo;
+        this.tipo_residuo = tipo_residuo;
+        this.quantidade = quantidade;
+        this.descricao = (descricao == null) ? "" : descricao.trim();
+    }
+
+    public UUID getId() {
+        return id;
     }
 
     public String getCodigo(){
