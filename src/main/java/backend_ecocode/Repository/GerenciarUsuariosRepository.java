@@ -5,14 +5,12 @@ import backend_ecocode.Domain.Entities.Usuario;
 import backend_ecocode.Persistency.Files.PersistenciaArquivo;
 import backend_ecocode.Persistency.Persistencia;
 import backend_ecocode.Util.Constantes;
-import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-@Repository
 public class GerenciarUsuariosRepository implements RepositoryUsuarioInterface {
 
     private final Persistencia<Usuario> persistencia =

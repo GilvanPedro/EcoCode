@@ -9,14 +9,12 @@ import backend_ecocode.Exceptions.AcessoNegadoException;
 import backend_ecocode.Repository.GerenciarResiduosRepository;
 import backend_ecocode.Util.CalcularRestoResiduo;
 import backend_ecocode.Util.GerarCodigoResiduo;
-import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 
-@Service
 public class GerenciarResiduosService implements ServiceResiduosInterface {
 
     private final GerenciarResiduosRepository gerarResiduosRepository;

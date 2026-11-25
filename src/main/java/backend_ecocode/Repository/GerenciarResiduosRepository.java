@@ -6,11 +6,9 @@ import backend_ecocode.Domain.Entities.Residuo;
 import backend_ecocode.Persistency.Files.PersistenciaArquivo;
 import backend_ecocode.Persistency.Persistencia;
 import backend_ecocode.Util.Constantes;
-import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
-@Repository
 public class GerenciarResiduosRepository implements RepositoryResiduosInterface {
 
     private final Persistencia<Residuo> persistencia = new PersistenciaArquivo<>(Constantes.RESIDUOS_PATH, Residuo.class);

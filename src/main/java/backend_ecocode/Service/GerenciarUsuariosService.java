@@ -10,11 +10,9 @@ import backend_ecocode.Repository.GerenciarUsuariosRepository;
 import backend_ecocode.Util.CifraAfim;
 import backend_ecocode.Util.ValidadorCpf;
 import backend_ecocode.Util.ValidarEmail;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
 public class GerenciarUsuariosService implements ServiceUsuarioInterface {
     private final GerenciarUsuariosRepository gerenciarUsuariosRepository;
     private final CifraAfim cifraAfim = new CifraAfim();
