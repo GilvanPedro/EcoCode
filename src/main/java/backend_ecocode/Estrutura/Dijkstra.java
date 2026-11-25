@@ -1,4 +1,4 @@
-package Estrutura;
+package backend_ecocode.Estrutura;
 
 import java.util.HashMap;
 import java.util.HashSet;

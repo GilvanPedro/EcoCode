@@ -1,6 +1,6 @@
 package backend_ecocode;
 
-import Estrutura.Grafo;
+import backend_ecocode.Estrutura.Grafo;
 import backend_ecocode.Domain.Enums.Bairro;
 import backend_ecocode.Repository.*;
 import backend_ecocode.Service.*;

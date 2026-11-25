@@ -7,7 +7,7 @@ import backend_ecocode.Domain.Interfaces.ServiceUsuarioInterface;
 import backend_ecocode.Domain.Entities.Usuario;
 import backend_ecocode.Exceptions.AcessoNegadoException;
 import backend_ecocode.Repository.GerenciarUsuariosRepository;
-import backend_ecocode.Util.CifraCesar;
+import backend_ecocode.Util.CifraAfim;
 import backend_ecocode.Util.ValidadorCpf;
 import backend_ecocode.Util.ValidarEmail;
 import org.springframework.stereotype.Service;
@@ -17,7 +17,7 @@ import java.util.List;
 @Service
 public class GerenciarUsuariosService implements ServiceUsuarioInterface {
     private final GerenciarUsuariosRepository gerenciarUsuariosRepository;
-    private final CifraCesar cifraCesar = new CifraCesar();
+    private final CifraAfim cifraAfim = new CifraAfim();
     private final GerenciarLogService log;
 
     public GerenciarUsuariosService(GerenciarUsuariosRepository gerenciarUsuariosRepository, GerenciarLogService log) {
@@ -67,7 +67,7 @@ public class GerenciarUsuariosService implements ServiceUsuarioInterface {
         }
 
         if(senhaEditada != null && !senhaEditada.isBlank()) {
-            usuarioEditado.setSenhaCriptografada(cifraCesar.cifraCesar(senhaEditada));
+            usuarioEditado.setSenhaCriptografada(cifraAfim.cifraAfim(senhaEditada));
         }
 
         if(bairro != null) {
@@ -167,7 +167,7 @@ public class GerenciarUsuariosService implements ServiceUsuarioInterface {
         }
 
         Usuario novoUsuario = new Usuario(
-                nomeCompleto, cpf, email, cifraCesar.cifraCesar(senha), cargoUsuario, dataNascimento, bairro
+                nomeCompleto, cpf, email, cifraAfim.cifraAfim(senha), cargoUsuario, dataNascimento, bairro
         );
 
         gerenciarUsuariosRepository.cadastrar(novoUsuario);

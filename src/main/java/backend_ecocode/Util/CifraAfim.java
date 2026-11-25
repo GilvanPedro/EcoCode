@@ -1,84 +1,78 @@
 package backend_ecocode.Util;
 
 public class CifraAfim {
-    private Configuracao configuracao = new  Configuracao();
-    private Aritmetica aritmetica = new Aritmetica();
+    private final Configuracao configuracao = new Configuracao();
 
-    private static final String ALFABETO = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    private static final String ALFABETO_MINUSCULO = ALFABETO.toLowerCase();
+    // um alfabeto só: maiúsculas (0-25), minúsculas (26-51) e dígitos (52-61)
+    private static final String ALFABETO =
+            "ABCDEFGHIJKLMNOPQRSTUVWXYZ" +
+                    "abcdefghijklmnopqrstuvwxyz" +
+                    "0123456789";
+
+    private static final int M = ALFABETO.length(); // 62
+
     private final int chave_a = configuracao.getChaveCifraAfimA();
     private final int chave_b = configuracao.getChaveCifraAfimB();
 
-    private String alfabetoDe(char caractere) {
-        if (Character.isLowerCase(caractere)) return ALFABETO_MINUSCULO;
-        return ALFABETO;
+    public CifraAfim() {
+        // sem mdc(a, 62) = 1 não existe inverso, e não dá pra descriptografar
+        if (Aritmetica.mdc(chave_a, M) != 1)
+            throw new IllegalStateException("A chave 'a' precisa ser prima com " + M);
     }
 
-    // letra -> valor (A = 0 ... Z = 25); devolve -1 se não for letra
-    private int letraEmValor(char caractere) {
-        return alfabetoDe(caractere).indexOf(caractere);
+    // caractere -> valor (A = 0 ... z = 51, 0 = 52 ... 9 = 61); -1 se não estiver no alfabeto
+    private int caractereEmValor(char caractere) {
+        return ALFABETO.indexOf(caractere);
     }
 
-    // valor -> caractere, no alfabeto informado
-    private char valorEmLetra(int valor, String alfabeto) {
-        if (valor < 0 || valor >= alfabeto.length())
+    // valor -> caractere
+    private char valorEmCaractere(int valor) {
+        if (valor < 0 || valor >= M)
             throw new IllegalArgumentException("Valor fora do alfabeto: " + valor);
-
-        return alfabeto.charAt(valor);
+        return ALFABETO.charAt(valor);
     }
 
-    public String cifraAfim(String mensagem){
-        return calcularMensagemAfim(mensagem);
-    }
-
-    private String calcularMensagemAfim(String mensagem){
+    // E(x) = (a·x + b) mod 62
+    public String cifraAfim(String mensagem) {
         if (mensagem == null)
             throw new IllegalArgumentException("A mensagem é obrigatória");
 
         StringBuilder resultado = new StringBuilder();
 
-        for(char caractere : mensagem.toCharArray()){
-            int valor = letraEmValor(caractere);
+        for (char caractere : mensagem.toCharArray()) {
+            int valor = caractereEmValor(caractere);
 
-            // não é letra (espaço, número, pontuação, acento): passa sem mudar
+            // espaço, pontuação, acento: passa sem mudar
             if (valor == -1) {
                 resultado.append(caractere);
                 continue;
             }
 
-            // calculo do novo valor da letra
-            int valorAfim = Math.floorMod(chave_a * valor + chave_b, 26);
-
-            resultado.append(valorEmLetra(valorAfim, alfabetoDe(caractere)));
+            int valorAfim = Math.floorMod(chave_a * valor + chave_b, M);
+            resultado.append(valorEmCaractere(valorAfim));
         }
         return resultado.toString();
     }
 
-    public String descriptografarMensagemAfim(String mensagem){
-        int valor_condicao = Aritmetica.inversoModular(chave_a, 26);
-
+    // D(y) = a⁻¹·(y − b) mod 62
+    public String descriptografarMensagemAfim(String mensagem) {
         if (mensagem == null)
             throw new IllegalArgumentException("A mensagem é obrigatória");
 
+        int inversoA = Aritmetica.inversoModular(chave_a, M);
         StringBuilder resultado = new StringBuilder();
 
-        for(char caractere : mensagem.toCharArray()){
-            int valor = letraEmValor(caractere);
+        for (char caractere : mensagem.toCharArray()) {
+            int valor = caractereEmValor(caractere);
 
-            // não é letra (espaço, número, pontuação, acento): passa sem mudar
             if (valor == -1) {
                 resultado.append(caractere);
                 continue;
             }
 
-            int valorDescriptografado = Math.floorMod(valor_condicao * (valor - chave_b),26);
-
-            resultado.append(valorEmLetra(valorDescriptografado, alfabetoDe(caractere)));
-
-
+            int valorOriginal = Math.floorMod(inversoA * (valor - chave_b), M);
+            resultado.append(valorEmCaractere(valorOriginal));
         }
-
         return resultado.toString();
     }
-
 }

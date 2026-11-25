@@ -25,7 +25,7 @@ deduzidos do código e do enunciado da Missão 02: o grupo deve revisar a seçã
 | [007](ADRs/ADR-007.md) | Classificar com uma classe utilitária estática | Substituída por [ADR-015](ADRs/ADR-015.md) |
 | [008](ADRs/ADR-008.md) | Carregar 12 registros de exemplo no construtor do `Cadastro` | Substituída por [ADR-018](ADRs/ADR-018.md) |
 
-### Estrutura da versão 1.0
+### backend_ecocode.Estrutura da versão 1.0
 
 ```text
 src/main/java/
@@ -71,7 +71,7 @@ Decisões tomadas a partir da refatoração em camadas (tela, service, repositor
 | [036](ADRs/ADR-036.md) | Listar os resíduos por ordem de cadastro ou por ordem de código | Aceita |
 | [037](ADRs/ADR-037.md) | Calcular as quantidades de resíduos no service | Aceita |
 
-### Estrutura da versão refatorada
+### backend_ecocode.Estrutura da versão refatorada
 
 ```text
 src/main/java/

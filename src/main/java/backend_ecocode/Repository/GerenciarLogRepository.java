@@ -1,6 +1,6 @@
 package backend_ecocode.Repository;
 
-import Estrutura.PilhaEncadeada;
+import backend_ecocode.Estrutura.PilhaEncadeada;
 import backend_ecocode.Domain.Entities.RegistroLog;
 import backend_ecocode.Domain.Interfaces.RepositoryLogInterface;
 import backend_ecocode.Persistency.Files.PersistenciaArquivo;

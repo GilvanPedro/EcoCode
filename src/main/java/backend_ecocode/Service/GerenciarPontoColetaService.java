@@ -1,7 +1,7 @@
 package backend_ecocode.Service;
 
-import Estrutura.Dijkstra;
-import Estrutura.Grafo;
+import backend_ecocode.Estrutura.Dijkstra;
+import backend_ecocode.Estrutura.Grafo;
 import backend_ecocode.Domain.Entities.PontoColeta;
 import backend_ecocode.Domain.Entities.Usuario;
 import backend_ecocode.Domain.Enums.AcaoLog;

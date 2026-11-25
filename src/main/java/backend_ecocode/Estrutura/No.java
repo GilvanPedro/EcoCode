@@ -1,4 +1,4 @@
-package Estrutura;
+package backend_ecocode.Estrutura;
 
 public class No<T> {
     private T valor;

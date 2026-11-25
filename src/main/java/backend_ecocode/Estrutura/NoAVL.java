@@ -1,4 +1,4 @@
-package Estrutura;
+package backend_ecocode.Estrutura;
 
 // um nó da árvore AVL: chave, valor, filhos e a altura dele
 class NoAVL<K, V> {

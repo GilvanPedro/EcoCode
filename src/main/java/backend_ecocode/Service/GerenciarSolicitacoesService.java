@@ -1,6 +1,6 @@
 package backend_ecocode.Service;
 
-import Estrutura.FilaEncadeada;
+import backend_ecocode.Estrutura.FilaEncadeada;
 import backend_ecocode.Domain.Entities.Residuo;
 import backend_ecocode.Domain.Entities.Solicitacao;
 import backend_ecocode.Domain.Entities.Usuario;
@@ -51,6 +51,11 @@ public class GerenciarSolicitacoesService implements ServiceSolicitacoesInterfac
         }
 
         Residuo residuo = residuoService.buscarPorId(residuoId);
+
+        if (!solicitante.getId().equals(residuo.getUsuarioId())){
+            throw new AcessoNegadoException("Você só pode pedir descarte dos seus resíduos");
+
+        }
 
         if(residuo.getStatus() != StatusResiduo.DISPONIVEL){
             throw new IllegalArgumentException("Esse resíduo já está em uma solicitação ou já foi descartado");

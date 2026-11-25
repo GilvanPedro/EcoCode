@@ -1,6 +1,6 @@
 package backend_ecocode.Repository;
 
-import Estrutura.ArvoreAVL;
+import backend_ecocode.Estrutura.ArvoreAVL;
 import backend_ecocode.Domain.Interfaces.RepositoryResiduosInterface;
 import backend_ecocode.Domain.Entities.Residuo;
 import backend_ecocode.Persistency.Files.PersistenciaArquivo;

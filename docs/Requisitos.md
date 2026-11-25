@@ -6,7 +6,7 @@
 |---|---|
 | **Projeto** | EcoCode, Projeto Integrador |
 | **Equipe** | Gilvan Pedro, Sidney Emanuel, Guilherme Scarcela, João Paulo e Dários Suess |
-| **Última atualização** | 24/11/2026 |
+| **Última atualização** | 27/11/2026 |
 
 ## Sumário
 
@@ -39,11 +39,11 @@ O sistema deve permitir o cadastro, a consulta, a atualização e a exclusão do
 
 ### RF02 · Manter resíduos eletrônicos
 
-O sistema deve permitir cadastrar, consultar e atualizar os registros de resíduos eletrônicos. Cada resíduo deve ser associado a uma categoria e receber um código gerado automaticamente pelo sistema.
+O sistema deve permitir cadastrar, consultar, atualizar e excluir os registros de resíduos eletrônicos. Cada resíduo deve ser associado a uma categoria, receber um código gerado automaticamente pelo sistema e ficar vinculado ao usuário que o cadastrou (RN14). O gerente consulta todos os resíduos; os demais usuários consultam só os seus.
 
 ### RF03 · Manter pontos de coleta
 
-O sistema deve permitir que funcionários e gerentes cadastrem, consultem e atualizem os dados dos pontos de coleta. Cada ponto deve estar vinculado a um bairro cadastrado, e essas informações devem servir de base para a consulta do ponto mais próximo pelo usuário.
+O sistema deve permitir que o gerente cadastre, atualize e exclua os pontos de coleta (RN17), e que qualquer usuário logado os consulte. Na atualização, os campos não informados mantêm o valor atual. Cada ponto deve estar vinculado a um bairro cadastrado, e essas informações devem servir de base para a consulta do ponto mais próximo pelo usuário.
 
 ### RF04 · Consultar o ponto de coleta mais próximo
 
@@ -67,7 +67,7 @@ O sistema deve registrar as ações sensíveis relacionadas a usuários, resídu
 
 ### RF09 · Consultar log de atividades
 
-O sistema deve disponibilizar aos funcionários e gerentes uma área de consulta aos registros de atividades. Nessa área, eles podem verificar as ações registradas e identificar os responsáveis por cada operação.
+O sistema deve disponibilizar ao gerente uma área de consulta aos registros de atividades, com o registro mais recente primeiro. Nessa área, ele pode verificar as ações registradas e identificar os responsáveis por cada operação.
 
 ### RF10 · Alterar cargo de usuário pelo CPF
 
@@ -94,6 +94,8 @@ A interface deve apresentar menus, botões e campos com nomes claros para facili
 ### RNF02 · Segurança das informações
 
 As senhas devem ser armazenadas na forma de hash. O sistema deve verificar o perfil do usuário antes de permitir o acesso a funcionalidades restritas.
+
+> **Situação atual:** por escolha didática do grupo, a senha é guardada cifrada com a Cifra Afim sobre um alfabeto de 62 caracteres (ADR-084), e não com hash. A cifra tem volta e não atende totalmente a este requisito; num sistema real seria usado hash (por exemplo, BCrypt).
 
 ### RNF03 · Persistência em banco de dados
 
@@ -128,6 +130,11 @@ _As condições e restrições que valem dentro das funcionalidades._
 | **RN11** | Bairros cadastrados |
 | **RN12** | Cancelamento de solicitação pelo gerente |
 | **RN13** | Uma solicitação ativa por resíduo |
+| **RN14** | Dono do resíduo |
+| **RN15** | Alteração só de resíduo disponível |
+| **RN16** | Bairro obrigatório no cadastro |
+| **RN17** | Pontos de coleta geridos pelo gerente |
+| **RN18** | Gerente não remove a própria conta |
 
 ### RN01 · Validação e unicidade do CPF
 
@@ -147,7 +154,7 @@ O usuário só pode cancelar uma solicitação de descarte própria e enquanto e
 
 ### RN05 · Acesso restrito a funcionários e gerentes
 
-A fila de solicitações, o cadastro de pontos de coleta e a consulta ao log são áreas restritas a funcionários e gerentes. O sistema deve verificar o perfil do usuário antes de liberar o acesso a essas áreas.
+A fila de solicitações (pegar a próxima e concluir) é restrita a funcionários e gerentes. O cadastro, a edição e a exclusão de pontos de coleta e a consulta ao log são restritos ao gerente. O sistema deve verificar o perfil do usuário antes de liberar o acesso a essas áreas.
 
 ### RN06 · Expiração da sessão
 
@@ -180,3 +187,23 @@ O gerente pode cancelar solicitações com status Pendente ou Em rota. Solicita�
 ### RN13 · Uma solicitação ativa por resíduo
 
 Um resíduo com solicitação de descarte Pendente ou Em rota não pode receber outra solicitação e não aparece na lista de resíduos disponíveis para descarte. Se a solicitação for Cancelada, o resíduo volta para a lista; se for Concluída, ele já foi descartado e não volta.
+
+### RN14 · Dono do resíduo
+
+Todo resíduo fica vinculado ao usuário que o cadastrou, e esse vínculo não muda. Só o dono pode editar, excluir ou pedir o descarte do resíduo; o pedido de outra pessoa deve ser recusado.
+
+### RN15 · Alteração só de resíduo disponível
+
+Um resíduo só pode ser editado ou excluído enquanto estiver Disponível. Com uma solicitação Pendente ou Em rota, ou depois de descartado, ele não pode mais ser alterado.
+
+### RN16 · Bairro obrigatório no cadastro
+
+Todo usuário deve informar o seu bairro no cadastro, escolhido entre os bairros cadastrados (RN11). Sem o bairro, o cadastro deve ser impedido, porque ele é a origem do cálculo do ponto de coleta mais próximo.
+
+### RN17 · Pontos de coleta geridos pelo gerente
+
+Apenas o gerente pode cadastrar, editar e excluir pontos de coleta. Cada uma dessas ações deve gerar um registro no log.
+
+### RN18 · Gerente não remove a própria conta
+
+O gerente pode remover a conta de outros usuários, mas não a própria. A remoção deve gerar um registro no log.

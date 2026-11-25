@@ -1,4 +1,4 @@
-package Estrutura;
+package backend_ecocode.Estrutura;
 
 import java.util.ArrayList;
 import java.util.List;

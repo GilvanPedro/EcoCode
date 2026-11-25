@@ -161,7 +161,7 @@ bateu. Vale repetir essa conferência agora que as 40 estão medidas.
 | Classe | Pacote | Papel |
 | --- | --- | --- |
 | `Bairro` | `Domain` | Enum com os 19 bairros; cada valor tem uma `descricao` para exibição ("Setor Leste Universitário") |
-| `Grafo<T>` | `Estrutura` | Grafo genérico não direcionado, guardado como lista de adjacência num `Map<T, Map<T, Double>>` |
+| `Grafo<T>` | `backend_ecocode.Estrutura` | Grafo genérico não direcionado, guardado como lista de adjacência num `Map<T, Map<T, Double>>` |
 | `GrafoBairros` | `Util` | Monta o `Grafo<Bairro>` com as 40 arestas desta página |
 
 ```text
