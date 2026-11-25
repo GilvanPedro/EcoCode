@@ -6,10 +6,7 @@ import backend_ecocode.Persistency.Files.PersistenciaArquivo;
 import backend_ecocode.Persistency.Persistencia;
 import backend_ecocode.Util.Constantes;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 public class GerenciarUsuariosRepository implements RepositoryUsuarioInterface {
 
@@ -56,6 +53,14 @@ public class GerenciarUsuariosRepository implements RepositoryUsuarioInterface {
     public Usuario buscarEmail(String email) {
         return usuarios.values().stream()
                 .filter(usuario -> usuario.getEmail().equalsIgnoreCase(email))
+                .findFirst()
+                .orElse(null);
+    }
+
+    @Override
+    public Usuario buscarPorId(UUID id){
+        return usuarios.values().stream()
+                .filter(usuario -> usuario.getId().equals(id))
                 .findFirst()
                 .orElse(null);
     }

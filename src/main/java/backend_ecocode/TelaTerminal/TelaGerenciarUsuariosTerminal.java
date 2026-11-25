@@ -41,17 +41,11 @@ public class TelaGerenciarUsuariosTerminal {
         System.out.print("Data de nascimento (DD/MM/AAAA): ");
         String dataNascimento = sc.nextLine();
 
-        Bairro[] bairros = Bairro.values();
-        for (int i = 0; i < bairros.length; i++) {
-            System.out.println((i + 1) + " - " + bairros[i].getDescricao());
+        Bairro bairro = lerBairro();
+        if (bairro == null) {
+            System.out.println("\nBairro inválido. Cadastro cancelado.");
+            return;
         }
-        System.out.print("Escolha o seu bairro: ");
-        int opcao = Integer.parseInt(sc.nextLine().trim());
-
-        if (opcao < 1 || opcao > bairros.length)
-            throw new IllegalArgumentException("Bairro inválido");
-
-        Bairro bairro = bairros[opcao - 1];
 
         CargoUsuario cargo = lerCargo();
         if (cargo == null) {
@@ -60,8 +54,9 @@ public class TelaGerenciarUsuariosTerminal {
         }
 
         try {
-            Usuario novo = service.cadastrar(
-                    cpf, nome, email, senha, dataNascimento, bairro
+            // cadastroGerente usa o cargo escolhido e confere se quem cadastra é gerente
+            Usuario novo = service.cadastroGerente(
+                    usuarioLogado, cpf, nome, email, senha, cargo, dataNascimento, bairro
             );
             System.out.println("\nUsuário " + novo.getNomeCompleto() + " cadastrado!");
 
@@ -105,5 +100,22 @@ public class TelaGerenciarUsuariosTerminal {
         if (opcao.equals("1")) return CargoUsuario.GERENTE;
         if (opcao.equals("2")) return CargoUsuario.FUNCIONARIO;
         return null;
+    }
+
+    // Mostra os bairros numerados e devolve o escolhido, ou null se a opção não existir
+    private Bairro lerBairro() {
+        Bairro[] bairros = Bairro.values();
+        for (int i = 0; i < bairros.length; i++) {
+            System.out.println((i + 1) + " - " + bairros[i].getDescricao());
+        }
+        System.out.print("Escolha o bairro: ");
+
+        try {
+            int opcao = Integer.parseInt(sc.nextLine().trim());
+            if (opcao < 1 || opcao > bairros.length) return null;
+            return bairros[opcao - 1];
+        } catch (NumberFormatException e) {
+            return null;
+        }
     }
 }

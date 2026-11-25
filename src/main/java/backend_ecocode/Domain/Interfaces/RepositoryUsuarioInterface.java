@@ -3,6 +3,7 @@ package backend_ecocode.Domain.Interfaces;
 import backend_ecocode.Domain.Entities.Usuario;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface RepositoryUsuarioInterface {
     public void cadastrar(Usuario usuarioCadastrado);
@@ -11,4 +12,5 @@ public interface RepositoryUsuarioInterface {
     public List<Usuario> listar();
     public void remover(String cpf);
     public Usuario buscarEmail(String email);
+    public Usuario buscarPorId(UUID id);
 }

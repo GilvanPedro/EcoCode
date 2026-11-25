@@ -12,6 +12,7 @@ import backend_ecocode.Util.ValidadorCpf;
 import backend_ecocode.Util.ValidarEmail;
 
 import java.util.List;
+import java.util.UUID;
 
 public class GerenciarUsuariosService implements ServiceUsuarioInterface {
     private final GerenciarUsuariosRepository gerenciarUsuariosRepository;
@@ -100,6 +101,11 @@ public class GerenciarUsuariosService implements ServiceUsuarioInterface {
         }
 
         return usuario;
+    }
+
+    @Override
+    public Usuario buscarPorId(UUID id) {
+        return gerenciarUsuariosRepository.buscarPorId(id);
     }
 
     @Override
