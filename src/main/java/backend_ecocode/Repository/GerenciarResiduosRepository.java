@@ -12,8 +12,7 @@ import java.util.*;
 @Repository
 public class GerenciarResiduosRepository implements RepositoryResiduosInterface {
 
-    private final Persistencia<Residuo> persistencia =
-            new PersistenciaArquivo<>(Constantes.RESIDUOS_PATH, Residuo.class);
+    private final Persistencia<Residuo> persistencia = new PersistenciaArquivo<>(Constantes.RESIDUOS_PATH, Residuo.class);
 
     private final Map<String, Residuo> residuos = new LinkedHashMap<>();
 

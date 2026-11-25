@@ -51,7 +51,20 @@ public class GrafoBairros {
         grafo.adicionarAresta(Bairro.JARDIM_GUANABARA,          Bairro.SETOR_CAMPINAS,            12.2);
         grafo.adicionarAresta(Bairro.JARDIM_GUANABARA,          Bairro.JARDIM_CURITIBA,           16.8);
 
+        // bairros dos ecopontos (ADR-072)
+        grafo.adicionarAresta(Bairro.SETOR_FAICALVILLE,           Bairro.PARQUE_AMAZONIA,             5.6);
+        grafo.adicionarAresta(Bairro.SETOR_FAICALVILLE,           Bairro.JARDIM_AMERICA,              7.0);
+        grafo.adicionarAresta(Bairro.SETOR_FAICALVILLE,           Bairro.RESIDENCIAL_CAMPOS_DOURADOS, 9.4);
 
+        grafo.adicionarAresta(Bairro.RESIDENCIAL_CAMPOS_DOURADOS, Bairro.PARQUE_AMAZONIA,             15.3);
+        grafo.adicionarAresta(Bairro.RESIDENCIAL_CAMPOS_DOURADOS, Bairro.CIDADE_JARDIM,               17.4);
+
+        grafo.adicionarAresta(Bairro.JARDIM_SAO_JOSE,             Bairro.PARQUE_ELDORADO_OESTE,       2.6);
+        grafo.adicionarAresta(Bairro.JARDIM_SAO_JOSE,             Bairro.CIDADE_JARDIM,               13.9);
+        grafo.adicionarAresta(Bairro.JARDIM_SAO_JOSE,             Bairro.JARDIM_CURITIBA,             21.2);
+
+        grafo.adicionarAresta(Bairro.PARQUE_ELDORADO_OESTE,       Bairro.CIDADE_JARDIM,               12.3);
+        grafo.adicionarAresta(Bairro.PARQUE_ELDORADO_OESTE,       Bairro.RESIDENCIAL_CAMPOS_DOURADOS, 19.8);
         return grafo;
     }
 }

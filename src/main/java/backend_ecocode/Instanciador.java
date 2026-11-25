@@ -1,8 +1,10 @@
 package backend_ecocode;
 
+import backend_ecocode.Repository.GerenciarPontoColetaRepository;   // novo
 import backend_ecocode.Repository.GerenciarResiduosRepository;
 import backend_ecocode.Repository.GerenciarSolicitacoesRepository;
 import backend_ecocode.Repository.GerenciarUsuariosRepository;
+import backend_ecocode.Service.GerenciarPontoColetaService;         // novo
 import backend_ecocode.Service.GerenciarResiduosService;
 import backend_ecocode.Service.GerenciarSolicitacoesService;
 import backend_ecocode.Service.GerenciarUsuariosService;
@@ -15,11 +17,13 @@ public class Instanciador {
     private final GerenciarUsuariosRepository usuariosRepository = new GerenciarUsuariosRepository();
     private final GerenciarResiduosRepository residuosRepository = new GerenciarResiduosRepository();
     private final GerenciarSolicitacoesRepository solicitacoesRepository = new GerenciarSolicitacoesRepository();
+    private final GerenciarPontoColetaRepository pontoColetaRepository = new GerenciarPontoColetaRepository(); // novo
 
     // 2. services, recebendo os repositories
     private final GerenciarUsuariosService usuariosService = new GerenciarUsuariosService(usuariosRepository);
     private final GerenciarResiduosService residuosService = new GerenciarResiduosService(residuosRepository);
     private final GerenciarSolicitacoesService solicitacoesService = new GerenciarSolicitacoesService(solicitacoesRepository, residuosService);
+    private final GerenciarPontoColetaService pontoColetaService = new GerenciarPontoColetaService(pontoColetaRepository); // novo
 
     // 3. quem usa os services
     private final LogarUsuario logarUsuario = new LogarUsuario(usuariosService);
@@ -40,5 +44,9 @@ public class Instanciador {
 
     public GerenciarResiduosService getResiduosService() {
         return residuosService;
+    }
+
+    public GerenciarPontoColetaService getPontoColetaService() { // novo
+        return pontoColetaService;
     }
 }

@@ -15,7 +15,11 @@ public enum Bairro {
     JARDIM_GUANABARA("Jardim Guanabara"),
     JARDIM_NOVO_MUNDO("Jardim Novo Mundo"),
     CIDADE_JARDIM("Cidade Jardim"),
-    JARDIM_CURITIBA("Jardim Curitiba");
+    JARDIM_CURITIBA("Jardim Curitiba"),
+    SETOR_FAICALVILLE("Setor Faiçalville"),
+    RESIDENCIAL_CAMPOS_DOURADOS("Residencial Campos Dourados"),
+    JARDIM_SAO_JOSE("Jardim São José"),
+    PARQUE_ELDORADO_OESTE("Parque Eldorado Oeste");
 
     private final String descricao;
 
