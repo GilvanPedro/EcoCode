@@ -1,4 +1,6 @@
-package backend_ecocode.Domain;
+package backend_ecocode.Domain.Interfaces;
+
+import backend_ecocode.Domain.Entities.Solicitacao;
 
 import java.util.List;
 import java.util.UUID;

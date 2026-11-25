@@ -1,7 +1,7 @@
 package backend_ecocode.Util;
 
 import Estrutura.Grafo;
-import backend_ecocode.Domain.Bairro;
+import backend_ecocode.Domain.Enums.Bairro;
 
 // distâncias em km, de carro no Google Maps ("Bairro, Goiânia", primeira rota)
 public class GrafoBairros {

@@ -1,7 +1,8 @@
 package backend_ecocode.Repository;
 
-import backend_ecocode.Domain.RepositoryResiduosInterface;
-import backend_ecocode.Domain.Residuo;
+import Estrutura.ArvoreAVL;
+import backend_ecocode.Domain.Interfaces.RepositoryResiduosInterface;
+import backend_ecocode.Domain.Entities.Residuo;
 import backend_ecocode.Persistency.Files.PersistenciaArquivo;
 import backend_ecocode.Persistency.Persistencia;
 import backend_ecocode.Util.Constantes;
@@ -14,40 +15,41 @@ public class GerenciarResiduosRepository implements RepositoryResiduosInterface 
 
     private final Persistencia<Residuo> persistencia = new PersistenciaArquivo<>(Constantes.RESIDUOS_PATH, Residuo.class);
 
-    private final Map<String, Residuo> residuos = new LinkedHashMap<>();
+    // antes: private final Map<String, Residuo> residuos = new LinkedHashMap<>();
+    private final ArvoreAVL<String, Residuo> residuos = new ArvoreAVL<>();
 
     public GerenciarResiduosRepository() {
         for (Residuo residuo : persistencia.carregar()) {
-            residuos.put(residuo.getCodigo(), residuo);
+            residuos.inserir(residuo.getCodigo(), residuo);
         }
     }
 
     @Override
     public synchronized void salvar(Residuo residuo) {
-        residuos.put(residuo.getCodigo(), residuo);
+        residuos.inserir(residuo.getCodigo(), residuo);
         gravar();
     }
 
     @Override
     public synchronized void editar(Residuo residuoEditado) {
-        residuos.put(residuoEditado.getCodigo(), residuoEditado);
+        residuos.inserir(residuoEditado.getCodigo(), residuoEditado); // chave repetida só atualiza
         gravar();
     }
 
     @Override
     public synchronized void excluir(String codigoResiduo) {
-        residuos.remove(codigoResiduo);
+        residuos.remover(codigoResiduo);
         gravar();
     }
 
     @Override
     public synchronized List<Residuo> listar() {
-        return new ArrayList<>(residuos.values());
+        return residuos.emOrdem();
     }
 
     @Override
     public Residuo buscar(String codigoResiduo) {
-        return residuos.get(codigoResiduo);
+        return residuos.buscar(codigoResiduo);
     }
 
     // toda mudança no Map é copiada para o arquivo

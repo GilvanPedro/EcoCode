@@ -1,15 +1,9 @@
 package backend_ecocode;
 
 import Estrutura.Grafo;
-import backend_ecocode.Domain.Bairro;
-import backend_ecocode.Repository.GerenciarPontoColetaRepository;   // novo
-import backend_ecocode.Repository.GerenciarResiduosRepository;
-import backend_ecocode.Repository.GerenciarSolicitacoesRepository;
-import backend_ecocode.Repository.GerenciarUsuariosRepository;
-import backend_ecocode.Service.GerenciarPontoColetaService;         // novo
-import backend_ecocode.Service.GerenciarResiduosService;
-import backend_ecocode.Service.GerenciarSolicitacoesService;
-import backend_ecocode.Service.GerenciarUsuariosService;
+import backend_ecocode.Domain.Enums.Bairro;
+import backend_ecocode.Repository.*;
+import backend_ecocode.Service.*;
 import backend_ecocode.TelaTerminal.TelaUsuarioTerminal;
 import backend_ecocode.Util.GrafoBairros;
 import backend_ecocode.Util.LogarUsuario;
@@ -21,14 +15,15 @@ public class Instanciador {
     private final GerenciarResiduosRepository residuosRepository = new GerenciarResiduosRepository();
     private final GerenciarSolicitacoesRepository solicitacoesRepository = new GerenciarSolicitacoesRepository();
     private final GerenciarPontoColetaRepository pontoColetaRepository = new GerenciarPontoColetaRepository(); // novo
+    private final GerenciarLogRepository logRepository = new GerenciarLogRepository();
 
     // 2. services, recebendo os repositories
-    private final GerenciarUsuariosService usuariosService = new GerenciarUsuariosService(usuariosRepository);
+    private final GerenciarLogService logService = new GerenciarLogService(logRepository);
+    private final GerenciarUsuariosService usuariosService = new GerenciarUsuariosService(usuariosRepository, logService);
     private final GerenciarResiduosService residuosService = new GerenciarResiduosService(residuosRepository);
-    private final GerenciarSolicitacoesService solicitacoesService = new GerenciarSolicitacoesService(solicitacoesRepository, residuosService);
+    private final GerenciarSolicitacoesService solicitacoesService = new GerenciarSolicitacoesService(solicitacoesRepository, residuosService, logService);
     private final Grafo<Bairro> grafoBairros = GrafoBairros.criar();
-    private final GerenciarPontoColetaService pontoColetaService =
-            new GerenciarPontoColetaService(pontoColetaRepository, grafoBairros);
+    private final GerenciarPontoColetaService pontoColetaService = new GerenciarPontoColetaService(pontoColetaRepository, grafoBairros, logService);
 
     // 3. quem usa os services
     private final LogarUsuario logarUsuario = new LogarUsuario(usuariosService);
@@ -53,5 +48,9 @@ public class Instanciador {
 
     public GerenciarPontoColetaService getPontoColetaService() { // novo
         return pontoColetaService;
+    }
+
+    public GerenciarLogService getLogService() {
+        return logService;
     }
 }

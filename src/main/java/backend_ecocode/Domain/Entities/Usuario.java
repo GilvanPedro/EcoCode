@@ -1,5 +1,7 @@
-package backend_ecocode.Domain;
+package backend_ecocode.Domain.Entities;
 
+import backend_ecocode.Domain.Enums.Bairro;
+import backend_ecocode.Domain.Enums.CargoUsuario;
 import backend_ecocode.Util.ValidacoesUsuario;
 import backend_ecocode.Util.ValidadorCpf;
 

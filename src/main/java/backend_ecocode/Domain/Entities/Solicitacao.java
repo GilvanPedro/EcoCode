@@ -1,4 +1,6 @@
-package backend_ecocode.Domain;
+package backend_ecocode.Domain.Entities;
+
+import backend_ecocode.Domain.Enums.StatusSolicitacao;
 
 import java.time.LocalDate;
 import java.util.UUID;

@@ -1,4 +1,6 @@
-    package backend_ecocode.Domain;
+    package backend_ecocode.Domain.Entities;
+
+    import backend_ecocode.Domain.Enums.Bairro;
 
     import java.util.UUID;
 

@@ -2,7 +2,12 @@ package backend_ecocode.Service;
 
 import Estrutura.Dijkstra;
 import Estrutura.Grafo;
-import backend_ecocode.Domain.*;
+import backend_ecocode.Domain.Entities.PontoColeta;
+import backend_ecocode.Domain.Entities.Usuario;
+import backend_ecocode.Domain.Enums.AcaoLog;
+import backend_ecocode.Domain.Enums.Bairro;
+import backend_ecocode.Domain.Enums.CargoUsuario;
+import backend_ecocode.Domain.Interfaces.ServicePontoColetaInterface;
 import backend_ecocode.Exceptions.AcessoNegadoException;
 import backend_ecocode.Repository.GerenciarPontoColetaRepository;
 
@@ -14,10 +19,12 @@ public class GerenciarPontoColetaService implements ServicePontoColetaInterface 
 
     private final GerenciarPontoColetaRepository repository;
     private final Grafo<Bairro> grafo;
+    private final GerenciarLogService log;
 
-    public GerenciarPontoColetaService(GerenciarPontoColetaRepository repository, Grafo<Bairro> grafo) {
+    public GerenciarPontoColetaService(GerenciarPontoColetaRepository repository, Grafo<Bairro> grafo, GerenciarLogService log) {
         this.repository = repository;
         this.grafo = grafo;
+        this.log = log;
     }
 
     private void exigirGerente(Usuario quem) {
@@ -32,6 +39,7 @@ public class GerenciarPontoColetaService implements ServicePontoColetaInterface 
         exigirGerente(quem);
         PontoColeta ponto = new PontoColeta(nome, endereco, bairro);
         repository.salvar(ponto);
+        log.registrar(quem, AcaoLog.CADASTROU_PONTO, ponto.getNome());
         return ponto;
     }
 
@@ -50,13 +58,16 @@ public class GerenciarPontoColetaService implements ServicePontoColetaInterface 
         ponto.setBairro(novoBairro);
 
         repository.atualizar(ponto);
+        log.registrar(quem, AcaoLog.EDITOU_PONTO, ponto.getNome());
         return ponto;
     }
 
     @Override
     public void excluir(Usuario quem, UUID id) {
         exigirGerente(quem);
+        PontoColeta ponto = repository.buscarPorId(id); // pega o nome antes de apagar
         repository.remover(id);
+        log.registrar(quem, AcaoLog.EXCLUIU_PONTO, ponto.getNome());
     }
 
     @Override

@@ -1,5 +1,7 @@
-package backend_ecocode.Domain;
+package backend_ecocode.Domain.Entities;
 
+import backend_ecocode.Domain.Enums.StatusResiduo;
+import backend_ecocode.Domain.Enums.TipoResiduo;
 import backend_ecocode.Util.ValidacoesResiduos;
 
 import java.util.UUID;
@@ -7,6 +9,7 @@ import java.util.UUID;
 public class Residuo {
 
     private final UUID id;
+    private final UUID usuarioId;
     private String codigo;
     private TipoResiduo tipo_residuo;
     private int quantidade;
@@ -15,10 +18,11 @@ public class Residuo {
 
     private static final ValidacoesResiduos validar = new ValidacoesResiduos();
 
-    public Residuo(String codigo, TipoResiduo tipo_residuo, int quantidade, String descricao){
+    public Residuo(UUID usuarioId, String codigo, TipoResiduo tipo_residuo, int quantidade, String descricao){
 
         validar.validarResiduo(tipo_residuo, quantidade, codigo);
 
+        this.usuarioId = usuarioId;
         this.id = UUID.randomUUID();
         this.codigo = codigo;
         this.tipo_residuo = tipo_residuo;
@@ -28,11 +32,12 @@ public class Residuo {
     }
 
     // construtor de carregamento do banco de dados
-    public Residuo(UUID id, String codigo, TipoResiduo tipo_residuo, int quantidade, String descricao, StatusResiduo status){
+    public Residuo(UUID id, UUID usuarioId, String codigo, TipoResiduo tipo_residuo, int quantidade, String descricao, StatusResiduo status){
 
         validar.validarResiduo(tipo_residuo, quantidade, codigo);
 
         this.id = id;
+        this.usuarioId = usuarioId;
         this.codigo = codigo;
         this.tipo_residuo = tipo_residuo;
         this.quantidade = quantidade;
@@ -79,5 +84,9 @@ public class Residuo {
 
     public void setStatus(StatusResiduo status) {
         this.status = status;
+    }
+
+    public UUID getUsuarioId() {
+        return usuarioId;
     }
 }

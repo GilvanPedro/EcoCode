@@ -1,9 +1,10 @@
 package backend_ecocode.TelaTerminal;
 
-import backend_ecocode.Domain.CargoUsuario;
-import backend_ecocode.Domain.Residuo;
-import backend_ecocode.Domain.TipoResiduo;
-import backend_ecocode.Domain.Usuario;
+import backend_ecocode.Domain.Enums.CargoUsuario;
+import backend_ecocode.Domain.Entities.Residuo;
+import backend_ecocode.Domain.Enums.TipoResiduo;
+import backend_ecocode.Domain.Entities.Usuario;
+import backend_ecocode.Exceptions.AcessoNegadoException;
 import backend_ecocode.Service.GerenciarResiduosService;
 import backend_ecocode.Service.GerenciarUsuariosService;
 
@@ -134,7 +135,7 @@ public class TelaCadastroResiduoTerminal {
         String descricao = sc.nextLine();
 
         try {
-            Residuo residuo = service.salvar(tipoSelecionado, quantidade, descricao);
+            Residuo residuo = service.salvar(usuarioLogado, tipoSelecionado, quantidade, descricao);
 
             System.out.println("\nResíduo cadastrado!");
             System.out.println("Código: " + residuo.getCodigo());
@@ -191,7 +192,7 @@ public class TelaCadastroResiduoTerminal {
                 descricao = descricaoDigitada;
             }
 
-            Residuo editado = service.editar(codigo, quantidade, descricao);
+            Residuo editado = service.editar(usuarioLogado, codigo, quantidade, descricao);
 
             System.out.println("\nResíduo editado!");
             System.out.println("Código: " + editado.getCodigo());
@@ -203,7 +204,7 @@ public class TelaCadastroResiduoTerminal {
 
         } catch (NumberFormatException e) {
             System.out.println("\nNão foi possível editar o resíduo: a quantidade deve ser um número.");
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException | AcessoNegadoException e) {
             System.out.println("\nNão foi possível editar o resíduo: " + e.getMessage());
         }
     }
@@ -216,7 +217,16 @@ public class TelaCadastroResiduoTerminal {
         System.out.print("Escolha: ");
         String ordem = sc.nextLine().trim();
 
-        List<Residuo> lista = ordem.equals("2") ? service.listarPorCodigo() : service.listar();
+        // o gerente vê todos; os outros só veem os próprios resíduos
+        List<Residuo> lista;
+        if (usuarioLogado.getCargoUsuario() == CargoUsuario.GERENTE) {
+            lista = ordem.equals("2") ? service.listarPorCodigo() : service.listar();
+        } else {
+            lista = service.listarDoUsuario(usuarioLogado.getId());
+            if (ordem.equals("2")) {
+                lista.sort(java.util.Comparator.comparingInt(r -> Integer.parseInt(r.getCodigo())));
+            }
+        }
 
         if (lista.isEmpty()) {
             System.out.println("Nenhum resíduo cadastrado.");
@@ -312,10 +322,10 @@ public class TelaCadastroResiduoTerminal {
                 return;
             }
 
-            service.excluir(codigo);
+            service.excluir(usuarioLogado, codigo);
             System.out.println("Resíduo excluído!");
 
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException | AcessoNegadoException e) {
             System.out.println("\nNão foi possível excluir: " + e.getMessage());
         }
     }

@@ -1,7 +1,7 @@
 package backend_ecocode.Repository;
 
-import backend_ecocode.Domain.PontoColeta;
-import backend_ecocode.Domain.RepositoryPontoColetaInterface;
+import backend_ecocode.Domain.Entities.PontoColeta;
+import backend_ecocode.Domain.Interfaces.RepositoryPontoColetaInterface;
 import backend_ecocode.Persistency.Files.PersistenciaArquivo;
 import backend_ecocode.Persistency.Persistencia;
 import backend_ecocode.Util.Constantes;

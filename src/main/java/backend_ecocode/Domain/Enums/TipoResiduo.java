@@ -1,4 +1,4 @@
-package backend_ecocode.Domain;
+package backend_ecocode.Domain.Enums;
 
 public enum TipoResiduo {
     COMPUTADORES((byte) 0, "Computadores e Notebooks"),

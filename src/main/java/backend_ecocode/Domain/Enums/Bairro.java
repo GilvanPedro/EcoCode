@@ -1,4 +1,4 @@
-package backend_ecocode.Domain;
+package backend_ecocode.Domain.Enums;
 
 public enum Bairro {
     SETOR_CENTRAL("Setor Central"),

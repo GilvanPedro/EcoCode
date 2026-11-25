@@ -1,7 +1,14 @@
 package backend_ecocode.Service;
 
 import Estrutura.FilaEncadeada;
-import backend_ecocode.Domain.*;
+import backend_ecocode.Domain.Entities.Residuo;
+import backend_ecocode.Domain.Entities.Solicitacao;
+import backend_ecocode.Domain.Entities.Usuario;
+import backend_ecocode.Domain.Enums.AcaoLog;
+import backend_ecocode.Domain.Enums.CargoUsuario;
+import backend_ecocode.Domain.Enums.StatusResiduo;
+import backend_ecocode.Domain.Enums.StatusSolicitacao;
+import backend_ecocode.Domain.Interfaces.ServiceSolicitacoesInterface;
 import backend_ecocode.Exceptions.AcessoNegadoException;
 import backend_ecocode.Repository.GerenciarSolicitacoesRepository;
 
@@ -13,10 +20,12 @@ public class GerenciarSolicitacoesService implements ServiceSolicitacoesInterfac
     private final FilaEncadeada<Solicitacao> filaPendentes = new FilaEncadeada<>();
     private final Map<UUID, Solicitacao> emRota = new HashMap<>();
     private final GerenciarResiduosService residuoService;
+    private final GerenciarLogService log;
 
-    public GerenciarSolicitacoesService(GerenciarSolicitacoesRepository repository, GerenciarResiduosService residuoService) {
+    public GerenciarSolicitacoesService(GerenciarSolicitacoesRepository repository, GerenciarResiduosService residuoService, GerenciarLogService log) {
         this.repository = repository;
         this.residuoService = residuoService;
+        this.log = log;
 
         // remonta a fila e as em rota a partir do que está salvo
         List<Solicitacao> todas = repository.listar();
@@ -85,6 +94,7 @@ public class GerenciarSolicitacoesService implements ServiceSolicitacoesInterfac
         proxima.iniciarRota();
         emRota.put(proxima.getId(), proxima);
         repository.atualizar(proxima);
+        log.registrar(coletor, AcaoLog.PEGOU_SOLICITACAO, proxima.getId().toString());
 
         return proxima;
     }
@@ -109,6 +119,7 @@ public class GerenciarSolicitacoesService implements ServiceSolicitacoesInterfac
         emRota.remove(solicitacaoId);
         repository.atualizar(solicitacao);
         residuoService.alterarStatus(solicitacao.getResiduoId(), StatusResiduo.DESCARTADO);
+        log.registrar(coletor, AcaoLog.CONCLUIU_SOLICITACAO, solicitacao.getId().toString());
 
         return solicitacao;
     }
@@ -137,6 +148,11 @@ public class GerenciarSolicitacoesService implements ServiceSolicitacoesInterfac
 
         repository.atualizar(solicitacao);
         residuoService.alterarStatus(solicitacao.getResiduoId(), StatusResiduo.DISPONIVEL);
+
+        if(quemCancela.getCargoUsuario() == CargoUsuario.GERENTE) {
+            log.registrar(quemCancela, AcaoLog.CANCELOU_SOLICITACAO, solicitacao.getId().toString());
+        }
+
         return solicitacao;
     }
 

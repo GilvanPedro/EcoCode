@@ -1,6 +1,6 @@
 package backend_ecocode.Util;
 
-import backend_ecocode.Domain.TipoResiduo;
+import backend_ecocode.Domain.Enums.TipoResiduo;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;

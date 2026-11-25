@@ -1,7 +1,7 @@
 package backend_ecocode.Util;
 
-import backend_ecocode.Domain.Bairro;
-import backend_ecocode.Domain.CargoUsuario;
+import backend_ecocode.Domain.Enums.Bairro;
+import backend_ecocode.Domain.Enums.CargoUsuario;
 
 // valida só o formato dos dados; se CPF e e-mail já existem quem confere é o GerenciarUsuariosService
 public class ValidacoesUsuario {

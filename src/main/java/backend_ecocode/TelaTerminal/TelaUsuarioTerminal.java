@@ -1,6 +1,6 @@
 package backend_ecocode.TelaTerminal;
 
-import backend_ecocode.Domain.Usuario;
+import backend_ecocode.Domain.Entities.Usuario;
 import backend_ecocode.Exceptions.AcessoNegadoException;
 import backend_ecocode.Service.GerenciarResiduosService;
 import backend_ecocode.Service.GerenciarUsuariosService;

@@ -18,6 +18,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.function.Function;
 
@@ -26,7 +27,7 @@ public class PersistenciaArquivo<T> implements Persistencia<T> {
     private final Path caminho;
     private final Type tipoLista;
 
-    // Gson adaptado para conseguir salvar o localdate do usuário
+    // Gson adaptado para salvar as datas: LocalDate (nascimento do usuário) e LocalDateTime (log)
     private final Gson gson = new GsonBuilder()
             .setPrettyPrinting()
             .registerTypeAdapter(LocalDate.class, new TypeAdapter<LocalDate>() {
@@ -43,6 +44,22 @@ public class PersistenciaArquivo<T> implements Persistencia<T> {
                         return null;
                     }
                     return LocalDate.parse(entrada.nextString());
+                }
+            })
+            .registerTypeAdapter(LocalDateTime.class, new TypeAdapter<LocalDateTime>() {
+                @Override
+                public void write(JsonWriter saida, LocalDateTime dataHora) throws IOException {
+                    if (dataHora == null) saida.nullValue();
+                    else saida.value(dataHora.toString());      // "2026-11-25T08:59:47"
+                }
+
+                @Override
+                public LocalDateTime read(JsonReader entrada) throws IOException {
+                    if (entrada.peek() == JsonToken.NULL) {
+                        entrada.nextNull();
+                        return null;
+                    }
+                    return LocalDateTime.parse(entrada.nextString());
                 }
             })
             .create();

@@ -1,8 +1,10 @@
 package backend_ecocode;
 
+import Estrutura.ArvoreAVL;
 import Estrutura.Dijkstra;
 import Estrutura.Grafo;
-import backend_ecocode.Domain.*;
+import backend_ecocode.Domain.Entities.*;
+import backend_ecocode.Domain.Enums.*;
 import backend_ecocode.Exceptions.AcessoNegadoException;
 import backend_ecocode.Service.*;
 import backend_ecocode.Util.GrafoBairros;
@@ -221,6 +223,91 @@ public class Teste {
         conferir("Ana (Pq Amazônia) -> Faiçalville",
                 pontos.pontoMaisProximo(gerente).getBairro() == Bairro.SETOR_FAICALVILLE);
         esperaErro("usuário null dá erro", () -> pontos.pontoMaisProximo(null));
+
+        // ================================================================
+        System.out.println("=== ÁRVORE AVL ===");
+        ArvoreAVL<String, Integer> avl = new ArvoreAVL<>();
+        conferir("árvore nova está vazia", avl.estaVazia() && avl.tamanho() == 0);
+
+        // inserir em ordem crescente é o pior caso de uma árvore comum
+        for (int i = 1; i <= 1000; i++) {
+            avl.inserir(String.format("%06d", i), i);
+        }
+        conferir("tamanho 1000 depois de inserir", avl.tamanho() == 1000);
+        conferir("altura balanceada (<= 12, árvore comum daria 1000)", avl.altura() <= 12);
+        System.out.println("        altura com 1000 itens: " + avl.altura());
+
+        conferir("buscar acha o 000500", avl.buscar("000500") == 500);
+        conferir("buscar o que não existe dá null", avl.buscar("999999") == null);
+
+        avl.inserir("000500", -1);
+        conferir("chave repetida só atualiza o valor", avl.buscar("000500") == -1 && avl.tamanho() == 1000);
+        avl.inserir("000500", 500);
+
+        // remove todos os pares
+        for (int i = 2; i <= 1000; i += 2) {
+            avl.remover(String.format("%06d", i));
+        }
+        conferir("tamanho 500 depois de remover os pares", avl.tamanho() == 500);
+        conferir("par removido não é achado", avl.buscar("000002") == null);
+        conferir("ímpar continua lá", avl.buscar("000003") == 3);
+        conferir("continua balanceada depois de remover", avl.altura() <= 12);
+
+        avl.remover("999999");
+        conferir("remover o que não existe não muda nada", avl.tamanho() == 500);
+
+        List<Integer> ordem = avl.emOrdem();
+        boolean ordenado = true;
+        for (int i = 1; i < ordem.size(); i++) {
+            if (ordem.get(i - 1) >= ordem.get(i)) ordenado = false;
+        }
+        conferir("emOrdem volta ordenado", ordenado);
+        conferir("emOrdem começa no 1 e termina no 999",
+                ordem.get(0) == 1 && ordem.get(ordem.size() - 1) == 999);
+
+        esperaErro("chave null dá erro", () -> avl.inserir(null, 1));
+
+        // ================================================================
+        System.out.println("=== LOG DE AUDITORIA ===");
+        GerenciarLogService log = inst.getLogService();
+
+        esperaAcessoNegado("usuário não vê o log", () -> log.listar(maria));
+        esperaAcessoNegado("funcionário não vê o log", () -> log.listar(coletor));
+
+        PontoColeta pLog = pontos.cadastrar(gerente, "Ponto do Teste de Log", "Rua Log, 1", Bairro.SETOR_CENTRAL);
+        pontos.editar(gerente, pLog.getId(), "Ponto do Teste de Log 2", null, null);
+        pontos.excluir(gerente, pLog.getId());
+
+        List<RegistroLog> registros = log.listar(gerente);
+        conferir("gerente vê o log", !registros.isEmpty());
+
+        // pilha: o último que aconteceu vem primeiro
+        conferir("topo é o EXCLUIU_PONTO", registros.get(0).getAcaoLog() == AcaoLog.EXCLUIU_PONTO);
+        conferir("segundo é o EDITOU_PONTO", registros.get(1).getAcaoLog() == AcaoLog.EDITOU_PONTO);
+        conferir("terceiro é o CADASTROU_PONTO", registros.get(2).getAcaoLog() == AcaoLog.CADASTROU_PONTO);
+
+        RegistroLog topo = registros.get(0);
+        conferir("quem fez foi a Ana", topo.getNomeUsuario().equals("Ana Gerente"));
+        conferir("guardou o id de quem fez", topo.getUsuarioId().equals(gerente.getId()));
+        conferir("alvo é o nome do ponto", topo.getAlvo().equals("Ponto do Teste de Log 2"));
+        conferir("data foi preenchida sozinha", topo.getDataRegistro() != null);
+
+        int antes = log.listar(gerente).size();
+        esperaAcessoNegado("ação negada não loga",
+                () -> pontos.cadastrar(maria, "X", "Y", Bairro.SETOR_CENTRAL));
+        conferir("log não cresceu com ação negada", log.listar(gerente).size() == antes);
+
+        esperaErro("registrar sem quem dá erro",
+                () -> log.registrar(null, AcaoLog.EDITOU_PONTO, "x"));
+        esperaErro("registrar sem ação dá erro",
+                () -> log.registrar(gerente, null, "x"));
+
+        System.out.println("        últimos 5 registros:");
+        for (int i = 0; i < Math.min(5, registros.size()); i++) {
+            RegistroLog r = registros.get(i);
+            System.out.println("        " + r.getDataRegistro() + " | " + r.getNomeUsuario()
+                    + " | " + r.getAcaoLog().getDescricao() + " | " + r.getAlvo());
+        }
 
         System.out.println();
         System.out.println("Passaram: " + ok + " | Falharam: " + falhou);

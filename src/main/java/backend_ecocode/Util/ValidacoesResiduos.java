@@ -1,6 +1,6 @@
 package backend_ecocode.Util;
 
-import backend_ecocode.Domain.TipoResiduo;
+import backend_ecocode.Domain.Enums.TipoResiduo;
 
 public class ValidacoesResiduos {
     public void validarResiduo(TipoResiduo tipo_residuo, int quantidade, String codigo){

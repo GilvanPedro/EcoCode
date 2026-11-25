@@ -1,6 +1,6 @@
 package backend_ecocode.Util;
 
-import backend_ecocode.Domain.Usuario;
+import backend_ecocode.Domain.Entities.Usuario;
 import backend_ecocode.Service.GerenciarUsuariosService;
 
 public class LogarUsuario {

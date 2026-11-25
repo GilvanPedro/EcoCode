@@ -1,4 +1,6 @@
-package backend_ecocode.Domain;
+package backend_ecocode.Domain.Interfaces;
+
+import backend_ecocode.Domain.Entities.Usuario;
 
 import java.util.List;
 

@@ -1,9 +1,10 @@
 package backend_ecocode.Service;
 
-import backend_ecocode.Domain.Bairro;
-import backend_ecocode.Domain.CargoUsuario;
-import backend_ecocode.Domain.ServiceUsuarioInterface;
-import backend_ecocode.Domain.Usuario;
+import backend_ecocode.Domain.Enums.AcaoLog;
+import backend_ecocode.Domain.Enums.Bairro;
+import backend_ecocode.Domain.Enums.CargoUsuario;
+import backend_ecocode.Domain.Interfaces.ServiceUsuarioInterface;
+import backend_ecocode.Domain.Entities.Usuario;
 import backend_ecocode.Exceptions.AcessoNegadoException;
 import backend_ecocode.Repository.GerenciarUsuariosRepository;
 import backend_ecocode.Util.CifraCesar;
@@ -17,9 +18,11 @@ import java.util.List;
 public class GerenciarUsuariosService implements ServiceUsuarioInterface {
     private final GerenciarUsuariosRepository gerenciarUsuariosRepository;
     private final CifraCesar cifraCesar = new CifraCesar();
+    private final GerenciarLogService log;
 
-    public GerenciarUsuariosService(GerenciarUsuariosRepository gerenciarUsuariosRepository) {
+    public GerenciarUsuariosService(GerenciarUsuariosRepository gerenciarUsuariosRepository, GerenciarLogService log) {
         this.gerenciarUsuariosRepository = gerenciarUsuariosRepository;
+        this.log = log;
     }
 
     @Override
@@ -28,12 +31,15 @@ public class GerenciarUsuariosService implements ServiceUsuarioInterface {
     }
 
     @Override
-    public Usuario cadastroGerente(CargoUsuario cargoUsuarioCadastrando, String cpf, String nomeCompleto, String email, String senha, CargoUsuario cargoUsuario, String dataNascimento, Bairro bairro){
-        if(cargoUsuarioCadastrando != CargoUsuario.GERENTE){
+    public Usuario cadastroGerente(Usuario quem, String cpf, String nomeCompleto, String email, String senha, CargoUsuario cargoUsuario, String dataNascimento, Bairro bairro){
+        if(quem.getCargoUsuario() != CargoUsuario.GERENTE){
             throw new AcessoNegadoException("Apenas gerente pode cadastrar um usuário com cargo diferente");
         }
 
-        return salvarNovoUsuario(cpf, nomeCompleto, email, senha, cargoUsuario, dataNascimento, bairro);
+        Usuario novo = salvarNovoUsuario(cpf, nomeCompleto, email, senha, cargoUsuario, dataNascimento, bairro);
+        log.registrar(quem, AcaoLog.CADASTROU_USUARIO, novo.getCpf() + " (" + cargoUsuario + ")");
+
+        return novo;
     }
 
     @Override
@@ -115,6 +121,8 @@ public class GerenciarUsuariosService implements ServiceUsuarioInterface {
         usuarioPromovido.setCargoUsuario(novoCargo);
         gerenciarUsuariosRepository.editar(usuarioPromovido);
 
+        log.registrar(gerenteLogado, AcaoLog.PROMOVEU_USUARIO, usuarioPromovido.getCpf() + " -> " + novoCargo);
+
         return  usuarioPromovido;
     }
 
@@ -124,8 +132,8 @@ public class GerenciarUsuariosService implements ServiceUsuarioInterface {
     }
 
     @Override
-    public void remover(CargoUsuario cargoUsuario, String cpf) {
-        if(cargoUsuario != CargoUsuario.GERENTE){
+    public void remover(Usuario quem, String cpf) {
+        if(quem.getCargoUsuario() != CargoUsuario.GERENTE){
             throw new AcessoNegadoException(
                     "Apenas Gerentes Podem Realizar a remoção de um Usuario"
             );
@@ -133,7 +141,15 @@ public class GerenciarUsuariosService implements ServiceUsuarioInterface {
 
         // a busca tem validação de encontrar ou não a pessoa
         Usuario usuario = buscar(cpf);
+
+        if (quem.getCpf().equals(usuario.getCpf())){
+            throw new IllegalArgumentException("O gerente não pode se excluir");
+        }
+
+        log.registrar(quem, AcaoLog.REMOVEU_USUARIO, usuario.getCpf() + " (" + usuario.getNomeCompleto() + ")");
+
         gerenciarUsuariosRepository.remover(usuario.getCpf());
+
     }
 
     private Usuario salvarNovoUsuario(String cpf, String nomeCompleto, String email, String senha, CargoUsuario cargoUsuario, String dataNascimento, Bairro bairro){

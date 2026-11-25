@@ -1,9 +1,11 @@
 package backend_ecocode.Service;
 
-import backend_ecocode.Domain.ServiceResiduosInterface;
-import backend_ecocode.Domain.Residuo;
-import backend_ecocode.Domain.StatusResiduo;
-import backend_ecocode.Domain.TipoResiduo;
+import backend_ecocode.Domain.Entities.Usuario;
+import backend_ecocode.Domain.Interfaces.ServiceResiduosInterface;
+import backend_ecocode.Domain.Entities.Residuo;
+import backend_ecocode.Domain.Enums.StatusResiduo;
+import backend_ecocode.Domain.Enums.TipoResiduo;
+import backend_ecocode.Exceptions.AcessoNegadoException;
 import backend_ecocode.Repository.GerenciarResiduosRepository;
 import backend_ecocode.Util.CalcularRestoResiduo;
 import backend_ecocode.Util.GerarCodigoResiduo;
@@ -26,7 +28,11 @@ public class GerenciarResiduosService implements ServiceResiduosInterface {
     }
 
     @Override
-    public Residuo salvar(TipoResiduo tipoResiduo, int quantidadeResiduo, String descricao) {
+    public Residuo salvar(Usuario dono, TipoResiduo tipoResiduo, int quantidadeResiduo, String descricao) {
+
+        if (dono == null) {
+            throw new IllegalArgumentException("É preciso informar o dono do resíduo");
+        }
 
         // verifica se foi informado um tipo de residuo
         if (tipoResiduo == null)
@@ -47,21 +53,19 @@ public class GerenciarResiduosService implements ServiceResiduosInterface {
             codigoResiduo = gerarCodigoResiduo.gerarCodigo(tipoResiduo);
         }
 
-        Residuo residuoNovo = new Residuo(codigoResiduo, tipoResiduo, quantidadeResiduo, descricao);
+        Residuo residuoNovo = new Residuo(dono.getId(), codigoResiduo, tipoResiduo, quantidadeResiduo, descricao);
 
         gerarResiduosRepository.salvar(residuoNovo);
         return residuoNovo;
     }
 
     @Override
-    public Residuo editar(String codigoResiduo, int quantidadeResiduo, String descricao) {
+    public Residuo editar(Usuario quem, String codigoResiduo, int quantidadeResiduo, String descricao) {
         Residuo editarResiduo = buscar(codigoResiduo);
+        exigirDonoEDisponivel(quem, editarResiduo);
 
-        if(quantidadeResiduo <= 0){
-            throw new IllegalArgumentException(
-                    "A quantidade deve ser maior que zero"
-            );
-        }
+        if (quantidadeResiduo <= 0)
+            throw new IllegalArgumentException("A quantidade deve ser maior que zero");
 
         editarResiduo.setQuantidade(quantidadeResiduo);
         editarResiduo.setDescricao(descricao);
@@ -71,8 +75,9 @@ public class GerenciarResiduosService implements ServiceResiduosInterface {
     }
 
     @Override
-    public void excluir(String codigoResiduo) {
+    public void excluir(Usuario quem, String codigoResiduo) {
         Residuo residuo = buscar(codigoResiduo);
+        exigirDonoEDisponivel(quem, residuo);
         gerarResiduosRepository.excluir(residuo.getCodigo());
     }
 
@@ -181,4 +186,32 @@ public class GerenciarResiduosService implements ServiceResiduosInterface {
         return disponiveis;
     }
 
+    public List<Residuo> listarDoUsuario(UUID usuarioId) {
+        if (usuarioId == null)
+            throw new IllegalArgumentException("O usuário é obrigatório");
+
+        List<Residuo> doUsuario = new ArrayList<>();
+        for (Residuo r : gerarResiduosRepository.listar()) {
+            if (usuarioId.equals(r.getUsuarioId())) doUsuario.add(r);
+        }
+        return doUsuario;
+    }
+
+    // pra tela de solicitar: só os do usuário que ainda podem ir pra descarte
+    public List<Residuo> listarDisponiveisDoUsuario(UUID usuarioId) {
+        List<Residuo> disponiveis = new ArrayList<>();
+        for (Residuo r : listarDoUsuario(usuarioId)) {
+            if (r.getStatus() == StatusResiduo.DISPONIVEL) disponiveis.add(r);
+        }
+        return disponiveis;
+    }
+
+    private void exigirDonoEDisponivel(Usuario quem, Residuo residuo) {
+        if (quem == null)
+            throw new IllegalArgumentException("É preciso informar quem está alterando");
+        if (!quem.getId().equals(residuo.getUsuarioId()))
+            throw new AcessoNegadoException("Você só pode alterar os seus resíduos");
+        if (residuo.getStatus() != StatusResiduo.DISPONIVEL)
+            throw new IllegalArgumentException("Resíduo em solicitação ou descartado não pode ser alterado");
+    }
 }

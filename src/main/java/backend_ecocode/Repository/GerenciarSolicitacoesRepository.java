@@ -1,7 +1,7 @@
 package backend_ecocode.Repository;
 
-import backend_ecocode.Domain.RepositorySolicitacoesInterface;
-import backend_ecocode.Domain.Solicitacao;
+import backend_ecocode.Domain.Interfaces.RepositorySolicitacoesInterface;
+import backend_ecocode.Domain.Entities.Solicitacao;
 import backend_ecocode.Persistency.Files.PersistenciaArquivo;
 import backend_ecocode.Persistency.Persistencia;
 import backend_ecocode.Util.Constantes;
