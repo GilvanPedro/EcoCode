@@ -42,7 +42,7 @@ public class TelaUsuarioTerminal {
         System.out.println("\nBem-vindo(a), " + usuarioLogado.getNomeCompleto());
 
         TelaCadastroResiduoTerminal telaResiduo = new TelaCadastroResiduoTerminal(
-                sc, usuarioLogado, residuosService, usuariosService
+                sc, usuarioLogado, residuosService, usuariosService, sessaoService
         );
         telaResiduo.telaResiduo();
     }

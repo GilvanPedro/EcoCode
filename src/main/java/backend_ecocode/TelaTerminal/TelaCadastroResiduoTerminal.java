@@ -7,6 +7,7 @@ import backend_ecocode.Domain.Entities.Usuario;
 import backend_ecocode.Exceptions.AcessoNegadoException;
 import backend_ecocode.Service.GerenciarResiduosService;
 import backend_ecocode.Service.GerenciarUsuariosService;
+import backend_ecocode.Service.SessaoService;
 
 import java.util.List;
 import java.util.Scanner;
@@ -17,13 +18,16 @@ public class TelaCadastroResiduoTerminal {
     private final GerenciarResiduosService service;
     private final Usuario usuarioLogado;
     private final TelaGerenciarUsuariosTerminal telaUsuarios;
+    private final SessaoService sessaoService;
 
     // recebe o Scanner da tela de login e o usuário que entrou
-    public TelaCadastroResiduoTerminal(Scanner sc, Usuario usuarioLogado, GerenciarResiduosService residuosService,  GerenciarUsuariosService usuariosService) {
+    public TelaCadastroResiduoTerminal(Scanner sc, Usuario usuarioLogado, GerenciarResiduosService residuosService,
+                                       GerenciarUsuariosService usuariosService, SessaoService sessaoService) {
         this.sc = sc;
         this.usuarioLogado = usuarioLogado;
         this.service = residuosService;
         this.telaUsuarios = new TelaGerenciarUsuariosTerminal(sc, usuarioLogado, usuariosService);
+        this.sessaoService = sessaoService;
     }
 
     public void telaResiduo(){
@@ -54,7 +58,8 @@ public class TelaCadastroResiduoTerminal {
                 System.out.println("9 - Listar usuários");
             }
 
-            System.out.println("7 - Sair");
+            System.out.println("7 - Sair (continua conectado)");
+            System.out.println("10 - Sair da conta");
 
             System.out.print("\nEscolha uma opção: ");
             opcao = lerInteiro();
@@ -101,10 +106,20 @@ public class TelaCadastroResiduoTerminal {
                     else System.out.println("\nOpção inválida!");
                     break;
 
+                case 10:
+                    sairDaConta();
+                    break;
+
                 default:
                     System.out.println("\nOpção inválida!");
             }
-        } while (opcao != 7);
+        } while (opcao != 7 && opcao != 10);
+    }
+
+    // apaga a sessão salva: na próxima vez o programa pede login de novo
+    private void sairDaConta() {
+        sessaoService.encerrar();
+        System.out.println("\nVocê saiu da conta. Até a próxima!");
     }
 
     // lê uma linha e converte para número; devolve -1 se não for número
