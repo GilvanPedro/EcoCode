@@ -9,4 +9,5 @@ public interface ServicePontoColetaInterface {
     public void excluir(Usuario quem, UUID id);
     public PontoColeta buscarPorId(UUID id);
     public List<PontoColeta> listar();
+    public PontoColeta pontoMaisProximo(Usuario usuario);
 }

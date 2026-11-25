@@ -1,5 +1,6 @@
 package backend_ecocode;
 
+import Estrutura.Dijkstra;
 import Estrutura.Grafo;
 import backend_ecocode.Domain.*;
 import backend_ecocode.Exceptions.AcessoNegadoException;
@@ -8,6 +9,7 @@ import backend_ecocode.Util.GrafoBairros;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class Teste {
 
@@ -21,13 +23,17 @@ public class Teste {
 
         // usuários de teste (não vão pro JSON de usuários)
         Usuario maria = new Usuario("Maria Souza", "529.982.247-25",
-                "maria@teste.com", "senha123", CargoUsuario.USUARIO, "10/05/2000");
+                "maria@teste.com", "senha123", CargoUsuario.USUARIO, "10/05/2000",
+                Bairro.SETOR_BUENO);
         Usuario joao = new Usuario("João Lima", "123.456.789-09",
-                "joao@teste.com", "senha123", CargoUsuario.USUARIO, "02/02/1998");
+                "joao@teste.com", "senha123", CargoUsuario.USUARIO, "02/02/1998",
+                Bairro.JARDIM_CURITIBA);
         Usuario coletor = new Usuario("Carlos Coletor", "111.444.777-35",
-                "carlos@teste.com", "senha123", CargoUsuario.FUNCIONARIO, "15/08/1995");
+                "carlos@teste.com", "senha123", CargoUsuario.FUNCIONARIO, "15/08/1995",
+                Bairro.SETOR_CENTRAL);
         Usuario gerente = new Usuario("Ana Gerente", "390.533.447-05",
-                "ana@teste.com", "senha123", CargoUsuario.GERENTE, "20/03/1990");
+                "ana@teste.com", "senha123", CargoUsuario.GERENTE, "20/03/1990",
+                Bairro.PARQUE_AMAZONIA);
 
         // ================================================================
         System.out.println("=== RESÍDUOS ===");
@@ -128,16 +134,17 @@ public class Teste {
 
         // ================================================================
         System.out.println("=== PONTOS DE COLETA (ecopontos da Comurg) ===");
+        // os 5 ficam salvos no JSON; se já existirem, reaproveita em vez de duplicar
         List<PontoColeta> ecopontos = new ArrayList<>();
-        ecopontos.add(pontos.cadastrar(gerente, "Ecoponto Jardim Guanabara II",
+        ecopontos.add(garantirPonto(pontos, gerente, "Ecoponto Jardim Guanabara II",
                 "Rua GB-5 com Rua GB-6", Bairro.JARDIM_GUANABARA));
-        ecopontos.add(pontos.cadastrar(gerente, "Ecoponto Setor Faiçalville",
+        ecopontos.add(garantirPonto(pontos, gerente, "Ecoponto Setor Faiçalville",
                 "Av. Nadra Bufaiçal com Av. Madri", Bairro.SETOR_FAICALVILLE));
-        ecopontos.add(pontos.cadastrar(gerente, "Ecoponto Jardim São José",
+        ecopontos.add(garantirPonto(pontos, gerente, "Ecoponto Jardim São José",
                 "Rua Frei Nazareno Confaloni com Rua Irmã Maria Bernarda", Bairro.JARDIM_SAO_JOSE));
-        ecopontos.add(pontos.cadastrar(gerente, "Ecoponto Residencial Campos Dourados",
+        ecopontos.add(garantirPonto(pontos, gerente, "Ecoponto Residencial Campos Dourados",
                 "Rua São João Del Rei, APM 07", Bairro.RESIDENCIAL_CAMPOS_DOURADOS));
-        ecopontos.add(pontos.cadastrar(gerente, "Ecoponto Parque Eldorado Oeste",
+        ecopontos.add(garantirPonto(pontos, gerente, "Ecoponto Parque Eldorado Oeste",
                 "Rua Elo, 43", Bairro.PARQUE_ELDORADO_OESTE));
 
         for (PontoColeta p : ecopontos) {
@@ -170,24 +177,50 @@ public class Teste {
         conferir("nome novo vem sem espaços nas pontas", editado.getNome().equals("Ecoponto Guanabara"));
         conferir("endereço em branco mantém o antigo", editado.getEndereco().equals("Rua GB-5, esquina com GB-6"));
 
+        // volta o Guanabara pro nome e endereço reais
+        pontos.editar(gerente, guanabara.getId(), "Ecoponto Jardim Guanabara II", "Rua GB-5 com Rua GB-6", null);
+        conferir("Guanabara voltou ao nome real",
+                pontos.buscarPorId(guanabara.getId()).getNome().equals("Ecoponto Jardim Guanabara II"));
+
         esperaAcessoNegado("usuário não edita",
                 () -> pontos.editar(maria, guanabara.getId(), "Hack", null, null));
         esperaAcessoNegado("funcionário não exclui", () -> pontos.excluir(coletor, guanabara.getId()));
         esperaErro("buscar ponto com id null dá erro", () -> pontos.buscarPorId(null));
 
-        // apaga os 5 no fim pra poder rodar o teste de novo sem duplicar
-        for (PontoColeta p : ecopontos) {
-            pontos.excluir(gerente, p.getId());
-        }
-        esperaErro("depois de excluir não acha mais", () -> pontos.buscarPorId(guanabara.getId()));
-        esperaErro("excluir de novo dá erro", () -> pontos.excluir(gerente, guanabara.getId()));
+        // testa o excluir num ponto temporário, sem mexer nos 5 reais
+        PontoColeta temporario = pontos.cadastrar(gerente, "Ponto Temporário de Teste", "Rua Teste, 1", Bairro.SETOR_CENTRAL);
+        pontos.excluir(gerente, temporario.getId());
+        esperaErro("depois de excluir não acha mais", () -> pontos.buscarPorId(temporario.getId()));
+        esperaErro("excluir de novo dá erro", () -> pontos.excluir(gerente, temporario.getId()));
+
+        esperaErro("usuário sem bairro dá erro", () -> new Usuario("Sem Bairro", "529.982.247-25",
+                "sem@teste.com", "senha123", CargoUsuario.USUARIO, "10/05/2000", null));
 
         // ================================================================
         System.out.println("=== GRAFO ===");
         Grafo<Bairro> grafo = GrafoBairros.criar();
         conferir("grafo foi criado", grafo != null);
-        // quando o Dijkstra estiver pronto:
-        // Parque Amazônia -> Campos Dourados tem que dar 15.0 (passando pelo Faiçalville), não 15.3
+
+        Dijkstra<Bairro> dijkstra = new Dijkstra<>(grafo);
+        Map<Bairro, Double> d = dijkstra.calcular(Bairro.PARQUE_AMAZONIA);
+        conferir("Pq Amazônia -> Campos Dourados = 15.0 (não 15.3)",
+                Math.abs(d.get(Bairro.RESIDENCIAL_CAMPOS_DOURADOS) - 15.0) < 0.01);
+
+        Map<Bairro, Double> c = dijkstra.calcular(Bairro.SETOR_CENTRAL);
+        conferir("Central -> Pedro Ludovico = 7.1 (pelo Marista)",
+                Math.abs(c.get(Bairro.SETOR_PEDRO_LUDOVICO) - 7.1) < 0.01);
+        conferir("Central -> Central = 0", c.get(Bairro.SETOR_CENTRAL) == 0.0);
+
+        System.out.println("=== PONTO MAIS PRÓXIMO ===");
+        conferir("Maria (Bueno) -> Faiçalville",
+                pontos.pontoMaisProximo(maria).getBairro() == Bairro.SETOR_FAICALVILLE);
+        conferir("João (Jd Curitiba) -> Jardim Guanabara",
+                pontos.pontoMaisProximo(joao).getBairro() == Bairro.JARDIM_GUANABARA);
+        conferir("Carlos (Central) -> Jardim Guanabara",
+                pontos.pontoMaisProximo(coletor).getBairro() == Bairro.JARDIM_GUANABARA);
+        conferir("Ana (Pq Amazônia) -> Faiçalville",
+                pontos.pontoMaisProximo(gerente).getBairro() == Bairro.SETOR_FAICALVILLE);
+        esperaErro("usuário null dá erro", () -> pontos.pontoMaisProximo(null));
 
         System.out.println();
         System.out.println("Passaram: " + ok + " | Falharam: " + falhou);
@@ -202,6 +235,14 @@ public class Teste {
                 return;
             }
         }
+    }
+
+    // cadastra o ponto só se ainda não existir um com esse nome
+    static PontoColeta garantirPonto(GerenciarPontoColetaService pontos, Usuario gerente,
+                                     String nome, String endereco, Bairro bairro) {
+        for (PontoColeta p : pontos.listar())
+            if (p.getNome().equals(nome)) return p;
+        return pontos.cadastrar(gerente, nome, endereco, bairro);
     }
 
     static boolean naoContem(GerenciarResiduosService residuos, Residuo r) {

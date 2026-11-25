@@ -1,5 +1,6 @@
 package backend_ecocode.Service;
 
+import backend_ecocode.Domain.Bairro;
 import backend_ecocode.Domain.CargoUsuario;
 import backend_ecocode.Domain.ServiceUsuarioInterface;
 import backend_ecocode.Domain.Usuario;
@@ -22,25 +23,25 @@ public class GerenciarUsuariosService implements ServiceUsuarioInterface {
     }
 
     @Override
-    public Usuario cadastrar(String cpf, String nomeCompleto, String email, String senha, String dataNascimento) {
-        return salvarNovoUsuario(cpf, nomeCompleto, email, senha, CargoUsuario.USUARIO, dataNascimento);
+    public Usuario cadastrar(String cpf, String nomeCompleto, String email, String senha, String dataNascimento, Bairro bairro) {
+        return salvarNovoUsuario(cpf, nomeCompleto, email, senha, CargoUsuario.USUARIO, dataNascimento, bairro);
     }
 
     @Override
-    public Usuario cadastroGerente(CargoUsuario cargoUsuarioCadastrando, String cpf, String nomeCompleto, String email, String senha, CargoUsuario cargoUsuario, String dataNascimento){
+    public Usuario cadastroGerente(CargoUsuario cargoUsuarioCadastrando, String cpf, String nomeCompleto, String email, String senha, CargoUsuario cargoUsuario, String dataNascimento, Bairro bairro){
         if(cargoUsuarioCadastrando != CargoUsuario.GERENTE){
             throw new AcessoNegadoException("Apenas gerente pode cadastrar um usuário com cargo diferente");
         }
 
-        return salvarNovoUsuario(cpf, nomeCompleto, email, senha, cargoUsuario, dataNascimento);
+        return salvarNovoUsuario(cpf, nomeCompleto, email, senha, cargoUsuario, dataNascimento, bairro);
     }
 
     @Override
-    public Usuario editar(String cpf, String nomeEditado, String emailEditado, String senhaEditada) {
+    public Usuario editar(String cpf, String nomeEditado, String emailEditado, String senhaEditada, Bairro bairro) {
 
         Usuario usuarioEditado = buscar(ValidadorCpf.limpar(cpf));
 
-        if(!emailEditado.isBlank()){
+        if(emailEditado != null && !emailEditado.isBlank()){
             if(!ValidarEmail.ehValido(emailEditado)){
                 throw new IllegalArgumentException("E-mail inválido");
             }
@@ -55,12 +56,16 @@ public class GerenciarUsuariosService implements ServiceUsuarioInterface {
             }
         }
 
-        if(!nomeEditado.isBlank()){
+        if(nomeEditado != null && !nomeEditado.isBlank()){
             usuarioEditado.setNomeCompleto(nomeEditado);
         }
 
-        if(!senhaEditada.isBlank()) {
+        if(senhaEditada != null && !senhaEditada.isBlank()) {
             usuarioEditado.setSenhaCriptografada(cifraCesar.cifraCesar(senhaEditada));
+        }
+
+        if(bairro != null) {
+            usuarioEditado.setBairro(bairro);
         }
 
         gerenciarUsuariosRepository.editar(usuarioEditado);
@@ -131,7 +136,7 @@ public class GerenciarUsuariosService implements ServiceUsuarioInterface {
         gerenciarUsuariosRepository.remover(usuario.getCpf());
     }
 
-    private Usuario salvarNovoUsuario(String cpf, String nomeCompleto, String email, String senha, CargoUsuario cargoUsuario, String dataNascimento){
+    private Usuario salvarNovoUsuario(String cpf, String nomeCompleto, String email, String senha, CargoUsuario cargoUsuario, String dataNascimento, Bairro bairro){
 
         if (gerenciarUsuariosRepository.buscarEmail(email) != null) {
             throw new IllegalArgumentException("Já existe um usuário com esse e-mail.");
@@ -141,8 +146,12 @@ public class GerenciarUsuariosService implements ServiceUsuarioInterface {
             throw new IllegalArgumentException("Já existe um usuário com esse CPF.");
         }
 
+        if(bairro == null){
+            throw new IllegalArgumentException("Selecione um bairro com um endereço próximo a sua localidade");
+        }
+
         Usuario novoUsuario = new Usuario(
-                nomeCompleto, cpf, email, cifraCesar.cifraCesar(senha), cargoUsuario, dataNascimento
+                nomeCompleto, cpf, email, cifraCesar.cifraCesar(senha), cargoUsuario, dataNascimento, bairro
         );
 
         gerenciarUsuariosRepository.cadastrar(novoUsuario);

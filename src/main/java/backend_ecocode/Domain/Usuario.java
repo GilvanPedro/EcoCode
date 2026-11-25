@@ -16,16 +16,17 @@ public class Usuario {
     private String senhaCriptografada;
     private CargoUsuario cargoUsuario;
     private LocalDate dataNascimento;
+    private Bairro bairro;
 
     // Formatador estático para o padrão brasileiro DD/MM/AAAA
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private static final ValidacoesUsuario validar = new ValidacoesUsuario();
 
-    public Usuario(String nomeCompleto, String cpf, String email, String senhaCriptografada, CargoUsuario cargoUsuario, String dataNascimento) {
+    public Usuario(String nomeCompleto, String cpf, String email, String senhaCriptografada, CargoUsuario cargoUsuario, String dataNascimento, Bairro bairro) {
         final String cpfLimpo = ValidadorCpf.limpar(cpf);
 
         // Validações de Obrigatoriedade (Fail-Fast)
-        validar.validarUsuario(nomeCompleto, email, cpfLimpo, cargoUsuario);
+        validar.validarUsuario(nomeCompleto, email, cpfLimpo, cargoUsuario, bairro);
 
         // Validação e Atribuição da Data de Nascimento
         try {
@@ -41,14 +42,15 @@ public class Usuario {
         this.email = email;
         this.senhaCriptografada = senhaCriptografada;
         this.cargoUsuario = cargoUsuario;
+        this.bairro = bairro;
     }
 
     // construtor de carregamento do banco de dados
-    public Usuario(UUID id, String nomeCompleto, String cpf, String email, String senhaCriptografada, CargoUsuario cargoUsuario, String dataNascimento) {
+    public Usuario(UUID id, String nomeCompleto, String cpf, String email, String senhaCriptografada, CargoUsuario cargoUsuario, String dataNascimento, Bairro bairro) {
         final String cpfLimpo = ValidadorCpf.limpar(cpf);
 
         // Validações de Obrigatoriedade (Fail-Fast)
-        validar.validarUsuario(nomeCompleto, email, cpfLimpo, cargoUsuario);
+        validar.validarUsuario(nomeCompleto, email, cpfLimpo, cargoUsuario, bairro);
 
         // Validação e Atribuição da Data de Nascimento
         try {
@@ -64,6 +66,7 @@ public class Usuario {
         this.email = email;
         this.senhaCriptografada = senhaCriptografada;
         this.cargoUsuario = cargoUsuario;
+        this.bairro = bairro;
     }
 
     public UUID getId() {
@@ -108,5 +111,16 @@ public class Usuario {
 
     public void setCargoUsuario(CargoUsuario cargoUsuario) {
         this.cargoUsuario = cargoUsuario;
+    }
+
+    public Bairro getBairro() {
+        return bairro;
+    }
+
+    public void setBairro(Bairro bairro) {
+        if(bairro == null) {
+            throw new IllegalArgumentException("Selecione algum bairro");
+        }
+        this.bairro = bairro;
     }
 }

@@ -1,18 +1,23 @@
 package backend_ecocode.Service;
 
+import Estrutura.Dijkstra;
+import Estrutura.Grafo;
 import backend_ecocode.Domain.*;
 import backend_ecocode.Exceptions.AcessoNegadoException;
 import backend_ecocode.Repository.GerenciarPontoColetaRepository;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 public class GerenciarPontoColetaService implements ServicePontoColetaInterface {
 
     private final GerenciarPontoColetaRepository repository;
+    private final Grafo<Bairro> grafo;
 
-    public GerenciarPontoColetaService(GerenciarPontoColetaRepository repository) {
+    public GerenciarPontoColetaService(GerenciarPontoColetaRepository repository, Grafo<Bairro> grafo) {
         this.repository = repository;
+        this.grafo = grafo;
     }
 
     private void exigirGerente(Usuario quem) {
@@ -64,5 +69,28 @@ public class GerenciarPontoColetaService implements ServicePontoColetaInterface 
     @Override
     public List<PontoColeta> listar() {
         return repository.listar();
+    }
+
+    @Override
+    public PontoColeta pontoMaisProximo(Usuario usuario) {
+        if (usuario == null)
+            throw new IllegalArgumentException("Usuário não informado");
+        if (usuario.getBairro() == null)
+            throw new IllegalArgumentException("Cadastre o seu bairro para ver o ponto mais próximo");
+
+        List<PontoColeta> pontos = repository.listar();
+        if (pontos.isEmpty())
+            throw new IllegalStateException("Não há pontos de coleta cadastrados");
+
+        Map<Bairro, Double> distancias = new Dijkstra<>(grafo).calcular(usuario.getBairro());
+
+        PontoColeta maisProximo = null;
+        for (PontoColeta ponto : pontos) {
+            if (maisProximo == null
+                    || distancias.get(ponto.getBairro()) < distancias.get(maisProximo.getBairro())) {
+                maisProximo = ponto;
+            }
+        }
+        return maisProximo;
     }
 }

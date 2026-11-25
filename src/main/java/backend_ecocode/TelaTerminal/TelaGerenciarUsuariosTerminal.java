@@ -1,5 +1,6 @@
 package backend_ecocode.TelaTerminal;
 
+import backend_ecocode.Domain.Bairro;
 import backend_ecocode.Domain.CargoUsuario;
 import backend_ecocode.Domain.Usuario;
 import backend_ecocode.Exceptions.AcessoNegadoException;
@@ -40,6 +41,18 @@ public class TelaGerenciarUsuariosTerminal {
         System.out.print("Data de nascimento (DD/MM/AAAA): ");
         String dataNascimento = sc.nextLine();
 
+        Bairro[] bairros = Bairro.values();
+        for (int i = 0; i < bairros.length; i++) {
+            System.out.println((i + 1) + " - " + bairros[i].getDescricao());
+        }
+        System.out.print("Escolha o seu bairro: ");
+        int opcao = Integer.parseInt(sc.nextLine().trim());
+
+        if (opcao < 1 || opcao > bairros.length)
+            throw new IllegalArgumentException("Bairro inválido");
+
+        Bairro bairro = bairros[opcao - 1];
+
         CargoUsuario cargo = lerCargo();
         if (cargo == null) {
             System.out.println("\nCargo inválido. Cadastro cancelado.");
@@ -48,7 +61,7 @@ public class TelaGerenciarUsuariosTerminal {
 
         try {
             Usuario novo = service.cadastrar(
-                    cpf, nome, email, senha, dataNascimento
+                    cpf, nome, email, senha, dataNascimento, bairro
             );
             System.out.println("\nUsuário " + novo.getNomeCompleto() + " cadastrado!");
 
