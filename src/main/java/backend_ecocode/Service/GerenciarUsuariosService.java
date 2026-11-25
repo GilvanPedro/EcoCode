@@ -43,9 +43,13 @@ public class GerenciarUsuariosService implements ServiceUsuarioInterface {
     }
 
     @Override
-    public Usuario editar(String cpf, String nomeEditado, String emailEditado, String senhaEditada, Bairro bairro) {
+    public Usuario editar(Usuario usuarioLogado, String nomeEditado, String emailEditado, String senhaEditada, Bairro bairro) {
 
-        Usuario usuarioEditado = buscar(ValidadorCpf.limpar(cpf));
+        if (usuarioLogado == null){
+            throw new IllegalArgumentException("É preciso estar logado para editar o perfil");
+        }
+
+        Usuario usuarioEditado = buscar(usuarioLogado.getCpf());
 
         if(emailEditado != null && !emailEditado.isBlank()){
             if(!ValidarEmail.ehValido(emailEditado)){
@@ -117,11 +121,13 @@ public class GerenciarUsuariosService implements ServiceUsuarioInterface {
         }
 
         Usuario usuarioPromovido = buscar(cpfLimpo);
+        CargoUsuario cargoAnterior = usuarioPromovido.getCargoUsuario(); // antes do set
 
         usuarioPromovido.setCargoUsuario(novoCargo);
         gerenciarUsuariosRepository.editar(usuarioPromovido);
 
-        log.registrar(gerenteLogado, AcaoLog.PROMOVEU_USUARIO, usuarioPromovido.getCpf() + " -> " + novoCargo);
+        log.registrar(gerenteLogado, AcaoLog.PROMOVEU_USUARIO,
+                usuarioPromovido.getCpf() + ": " + cargoAnterior + " -> " + novoCargo);
 
         return  usuarioPromovido;
     }

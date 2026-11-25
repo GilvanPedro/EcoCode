@@ -3,6 +3,7 @@ package backend_ecocode.Domain.Entities;
 import backend_ecocode.Domain.Enums.StatusSolicitacao;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 public class Solicitacao {
@@ -10,18 +11,18 @@ public class Solicitacao {
     private UUID usuarioId;
     private UUID residuoId;
     private StatusSolicitacao status;
-    private LocalDate dataSolicitacao;
+    private LocalDateTime dataSolicitacao;
 
     public Solicitacao(UUID usuarioId, UUID residuoId) {
         this.id = UUID.randomUUID();
         this.usuarioId = usuarioId;
         this.residuoId = residuoId;
         this.status = StatusSolicitacao.PENDENTE;
-        this.dataSolicitacao = LocalDate.now();
+        this.dataSolicitacao = LocalDateTime.now();
     }
 
     // construtor de carregamento do banco de dados
-    public Solicitacao(UUID id, UUID usuarioId, UUID residuoId, StatusSolicitacao status, LocalDate dataSolicitacao) {
+    public Solicitacao(UUID id, UUID usuarioId, UUID residuoId, StatusSolicitacao status, LocalDateTime dataSolicitacao) {
         this.id = id;
         this.usuarioId = usuarioId;
         this.residuoId = residuoId;
@@ -84,7 +85,7 @@ public class Solicitacao {
         this.status = StatusSolicitacao.CANCELADA;
     }
 
-    public LocalDate getDataSolicitacao() {
+    public LocalDateTime getDataSolicitacao() {
         return dataSolicitacao;
     }
 }

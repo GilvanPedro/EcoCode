@@ -314,12 +314,12 @@ public class Teste {
         esperaErro("login com senha vazia dá erro", () -> login.logarUsuario("pedro@teste.com", " "));
 
         System.out.println("--- editar ---");
-        usuarios.editar(pedro.getCpf(), "Pedro Teste Editado", null, null, null);
+        usuarios.editar(pedro, "Pedro Teste Editado", null, null, null);
         Usuario pedroEditado = usuarios.buscar(pedro.getCpf());
         conferir("editar só o nome muda o nome", pedroEditado.getNomeCompleto().equals("Pedro Teste Editado"));
         conferir("editar só o nome mantém o e-mail", pedroEditado.getEmail().equals("pedro@teste.com"));
         conferir("editar só o nome mantém o bairro", pedroEditado.getBairro() == Bairro.SETOR_BUENO);
-        usuarios.editar(pedro.getCpf(), null, null, "NovaSenha1", Bairro.SETOR_CENTRAL);
+        usuarios.editar(pedro, null, null, "NovaSenha1", Bairro.SETOR_CENTRAL);
         conferir("depois de trocar a senha, a nova funciona no login",
                 login.logarUsuario("pedro@teste.com", "NovaSenha1") != null);
         esperaErro("depois de trocar a senha, a antiga não funciona",
