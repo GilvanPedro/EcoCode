@@ -1,0 +1,197 @@
+
+
+:root {
+    --chip-fundo: #e2efe7;
+    --chip-texto: #14402a;
+}
+
+[data-tema="escuro"] {
+    --chip-fundo: rgba(61, 220, 132, 0.12);
+    --chip-texto: #bfe9d0;
+}
+
+.conteudo {
+    max-width: none;
+    padding: 40px 40px 48px;
+}
+
+.topo-pagina {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 26px;
+}
+
+.titulo-pagina h1 {
+    font-size: 2rem;
+    letter-spacing: -0.02em;
+}
+
+.titulo-pagina .sub {
+    margin-top: 6px;
+    font-size: 0.95rem;
+    color: var(--texto-suave);
+}
+
+.partida {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.partida label {
+    font-size: 0.78rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.partida select {
+    min-width: 200px;
+    padding: 11px 14px;
+    font: inherit;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--texto);
+    background: var(--branco);
+    border: 1px solid var(--borda);
+    border-radius: 10px;
+    outline: none;
+}
+
+.partida select:focus {
+    border-color: var(--verde);
+    box-shadow: 0 0 0 3px rgba(31, 122, 74, 0.18);
+}
+
+.cartao {
+    border-radius: 14px;
+}
+
+.rota {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.chip {
+    padding: 5px 12px;
+    font-size: 0.74rem;
+    font-weight: 700;
+    color: var(--chip-texto);
+    background: var(--chip-fundo);
+    border-radius: 999px;
+}
+
+.seta {
+    font-size: 0.8rem;
+    color: var(--texto-suave);
+}
+
+.destaque {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 28px;
+    padding: 28px;
+    margin-bottom: 24px;
+    border: 2px solid var(--verde);
+}
+
+.selo {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--verde);
+}
+
+.destaque h2 {
+    margin: 10px 0 8px;
+    font-size: 1.6rem;
+    letter-spacing: -0.01em;
+}
+
+.endereco {
+    font-size: 0.88rem;
+    color: var(--texto-suave);
+}
+
+.destaque .rota {
+    margin-top: 16px;
+}
+
+.km-grande {
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+}
+
+.km-legenda {
+    margin: 4px 0 16px;
+    font-size: 0.8rem;
+    color: var(--texto-suave);
+}
+
+.destaque .btn {
+    display: inline-block;
+    width: auto;
+    padding: 12px 20px;
+    font-size: 0.9rem;
+}
+
+.outros h2 {
+    padding: 20px 24px;
+    font-size: 1rem;
+    border-bottom: 1px solid var(--borda);
+}
+
+.outros ul {
+    list-style: none;
+}
+
+.outros li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--borda);
+}
+
+.outros li:last-child {
+    border-bottom: 0;
+}
+
+.ponto-nome {
+    font-size: 0.95rem;
+    font-weight: 700;
+}
+
+.outros .rota {
+    margin-top: 8px;
+}
+
+.ponto-km {
+    font-size: 1.05rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+/* ---------- telas menores ---------- */
+@media (max-width: 900px) {
+    .conteudo {
+        padding: 24px 20px 40px;
+    }
+
+    .topo-pagina {
+        flex-direction: column;
+    }
+
+    .destaque {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}

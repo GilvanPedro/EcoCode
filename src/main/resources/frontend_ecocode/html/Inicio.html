@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Início · EcoCode</title>
+    <link rel="icon" type="image/png" href="/assets/icons/favicon.png">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/inicio.css">
+</head>
+<body>
+
+    <div id="app">
+
+        <aside class="lateral">
+
+            <header class="marca">
+
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>
+                <span>EcoCode</span>
+
+            </header>
+
+            <nav class="menu">
+
+                <a href="inicio.html"  class="ativo">Início</a>
+                <a href="cadastrar-residuo.html">Cadastrar resíduo</a>
+                <a href="meus-residuos.html">Meus resíduos</a>
+                <a href="pmp.html">Ponto mais próximo</a>
+                <a href="solicitar-descarte.html">Solicitar descarte</a>
+                <a href="solicitacoes.html">Minhas solicitações</a>
+                <a href="perfil.html">Meu perfil</a>
+
+            </nav>
+
+            <div class="lateral-rodape">
+
+                <div class="tema" role="group" aria-label="Tema">
+
+                    <button type="button" data-tema="claro" class="ativo">Claro</button>
+                    <button type="button" data-tema="escuro">Escuro</button>
+
+                </div>
+
+                <p class="usuario-nome" id="usuario-nome">Usuário</p>
+                <p class="usuario-info" id="usuario-info"></p>
+                <a href="login.html" id="sair" class="sair">Sair</a>
+
+            </div>
+
+        </aside>
+
+        <main class="conteudo">
+
+            <header class="cabecalho">
+
+                <div>
+
+                    <p class="data" id="data-hoje"></p>
+                    <h1 id="saudacao">Olá!</h1>
+
+                </div>
+
+                <a href="#" class="btn btn-primario">Nova solicitação de descarte</a>
+
+            </header>
+
+            <section class="indicadores">
+
+                <article class="cartao">
+
+                    <p class="rotulo">Resíduos cadastrados</p>
+                    <p class="numero">5</p>
+
+                </article>
+
+                <article class="cartao">
+
+                    <p class="rotulo">Solicitações abertas</p>
+                    <p class="numero">2</p>
+
+                </article>
+
+                <article class="cartao">
+
+                    <p class="rotulo">Coletas concluídas</p>
+                    <p class="numero">3</p>
+
+                </article>
+
+                <article class="cartao">
+
+                    <p class="rotulo">Ponto mais próximo</p>
+                    <p class="numero">2,0 km</p>
+                    <p class="detalhe">Leste Universitário</p>
+
+                </article>
+
+            </section>
+
+            <div class="grade">
+
+                <section class="cartao recentes">
+
+                    <header>
+
+                        <h2>Minhas solicitações recentes</h2>
+                        <a href="#" class="link">Ver todas</a>
+
+                    </header>
+
+                    <ul>
+
+                        <li>
+
+                            <div>
+
+                                <p class="item-titulo">Notebook Dell e cabo HDMI</p>
+                                <p class="item-sub">Pedido #A3F9 · aberto em 24/11</p>
+
+                            </div>
+
+                            <div class="item-status">
+
+                                <span class="fila">4º na fila</span>
+                                <span class="etiqueta pendente">Pendente</span>
+
+                            </div>
+
+                        </li>
+
+                        <li>
+
+                            <div>
+
+                                <p class="item-titulo">Celular Samsung A10</p>
+                                <p class="item-sub">Pedido #7C21 · aberto em 18/11</p>
+
+                            </div>
+
+                            <div class="item-status">
+
+                                <span class="etiqueta em-rota">Em rota</span>
+
+                            </div>
+
+                        </li>
+
+                        <li>
+
+                            <div>
+
+                                <p class="item-titulo">Pilhas e baterias (12 un.)</p>
+                                <p class="item-sub">Pedido #19BD · concluído em 10/11</p>
+
+                            </div>
+
+                            <div class="item-status">
+
+                                <span class="etiqueta concluida">Concluída</span>
+
+                            </div>
+
+                        </li>
+
+                    </ul>
+
+                </section>
+
+                <section class="atalhos">
+
+                    <h2>Atalhos</h2>
+
+                    <a href="#" class="cartao atalho">
+
+                        <p class="item-titulo">Cadastrar resíduo</p>
+                        <p class="item-sub">Registre um eletrônico para descartar.</p>
+
+                    </a>
+
+                    <a href="#" class="cartao atalho">
+
+                        <p class="item-titulo">Achar ponto de coleta</p>
+                        <p class="item-sub">Veja o mais perto do seu bairro.</p>
+
+                    </a>
+
+                    <a href="#" class="cartao atalho">
+
+                        <p class="item-titulo">Meus resíduos</p>
+                        <p class="item-sub">Tudo o que você já cadastrou.</p>
+
+                    </a>
+
+                </section>
+
+            </div>
+
+        </main>
+
+    </div>
+
+    <script src="/javascript/inicio.js"></script>
+    
+</body>
+</html>

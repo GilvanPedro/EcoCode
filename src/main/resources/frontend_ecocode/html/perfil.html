@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu perfil · EcoCode</title>
+    <link rel="icon" type="image/png" href="/assets/icons/favicon.png">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/inicio.css">
+    <link rel="stylesheet" href="/css/perfil.css">
+</head>
+<body>
+
+    <div id="app">
+
+        <aside class="lateral">
+
+            <header class="marca">
+
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>
+                <span>EcoCode</span>
+
+            </header>
+
+            <nav class="menu">
+
+                <a href="inicio.html">Início</a>
+                <a href="cadastrar-residuo.html">Cadastrar resíduo</a>
+                <a href="meus-residuos.html">Meus resíduos</a>
+                <a href="pmp.html">Ponto mais próximo</a>
+                <a href="solicitar-descarte.html">Solicitar descarte</a>
+                <a href="solicitacoes.html">Minhas solicitações</a>
+                <a href="perfil.html" class="ativo">Meu perfil</a>
+
+            </nav>
+
+            <div class="lateral-rodape">
+
+                <div class="tema" role="group" aria-label="Tema">
+
+                    <button type="button" data-tema="claro" class="ativo">Claro</button>
+                    <button type="button" data-tema="escuro">Escuro</button>
+
+                </div>
+
+                <p class="usuario-nome" id="usuario-nome">Mariana Alves</p>
+                <p class="usuario-info" id="usuario-info">Usuário · Setor Central</p>
+                <a href="login.html" id="sair" class="sair">Sair</a>
+
+            </div>
+
+        </aside>
+
+        <main class="conteudo">
+
+            <header class="titulo-pagina">
+
+                <h1>Meu perfil</h1>
+                <p class="sub">Altere só o que precisar. O que ficar igual continua como está.</p>
+
+            </header>
+
+            <div class="alerta-sucesso" id="aviso-sucesso" role="status">Alterações salvas.</div>
+
+            <div class="grade-perfil">
+
+                <form class="cartao form-perfil" id="form-perfil" novalidate>
+
+                    <div class="campo">
+
+                        <label for="nome">Nome completo</label>
+                        <input type="text" id="nome" value="Mariana Alves" autocomplete="name" required>
+                        <span class="msg-erro">Informe seu nome completo.</span>
+
+                    </div>
+
+                    <div class="linha-dupla">
+
+                        <div class="campo">
+
+                            <label for="cpf">CPF</label>
+                            <input type="text" id="cpf" value="123.456.789-09" readonly tabindex="-1">
+                            <span class="dica">O CPF não pode ser alterado.</span>
+
+                        </div>
+
+                        <div class="campo">
+
+                            <label for="cargo">Cargo</label>
+                            <input type="text" id="cargo" value="Usuário" readonly tabindex="-1">
+                            <span class="dica">Só um gerente muda cargos.</span>
+
+                        </div>
+
+                    </div>
+
+                    <div class="campo">
+
+                        <label for="email">E-mail</label>
+                        <input type="email" id="email" value="mariana.alves@email.com" autocomplete="email" required>
+                        <span class="msg-erro">Informe um e-mail válido.</span>
+
+                    </div>
+
+                    <div class="campo">
+
+                        <label for="bairro">Bairro</label>
+
+                        <select id="bairro" required>
+
+                            <option selected>Setor Central</option>
+                            <option>Setor Bueno</option>
+                            <option>Setor Marista</option>
+                            <option>Setor Oeste</option>
+                            <option>Setor Sul</option>
+                            <option>Jardim Goiás</option>
+                            <option>Setor Universitário</option>
+                            <option>Setor Campinas</option>
+                            <option>Setor Leste Universitário</option>
+                            <option>Setor Pedro Ludovico</option>
+                            <option>Jardim América</option>
+                            <option>Setor Aeroporto</option>
+                            <option>Vila Nova</option>
+                            <option>Setor Norte Ferroviário</option>
+                            <option>Cidade Jardim</option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="linha-dupla">
+
+                        <div class="campo">
+
+                            <label for="senha">Nova senha (opcional)</label>
+                            <input type="password" id="senha" placeholder="Deixe em branco para manter" autocomplete="new-password">
+                            <span class="msg-erro">Use pelo menos 8 caracteres.</span>
+
+                        </div>
+
+                        <div class="campo">
+
+                            <label for="confirmar">Confirmar nova senha</label>
+                            <input type="password" id="confirmar" autocomplete="new-password">
+                            <span class="msg-erro">As senhas não são iguais.</span>
+
+                        </div>
+
+                    </div>
+
+                    <div class="acoes">
+
+                        <button type="reset" class="btn btn-secundario">Descartar mudanças</button>
+                        <button type="submit" class="btn btn-primario">Salvar alterações</button>
+
+                    </div>
+
+                </form>
+
+                <div class="coluna-lateral">
+
+                    <section class="cartao aparencia">
+
+                        <h2>Aparência</h2>
+
+                        <div class="opcoes-tema">
+
+                            <button type="button" data-tema="claro" class="btn-tema ativo">Tema claro</button>
+                            <button type="button" data-tema="escuro" class="btn-tema">Tema escuro</button>
+
+                        </div>
+
+                        <p class="nota-pequena">Opcional (RNF05).</p>
+
+                    </section>
+
+                    <section class="cartao sessao">
+
+                        <h2>Sessão</h2>
+
+                        <p>Conectado desde 20/11. A sessão expira em 20/12, 30 dias depois do login.</p>
+
+                        <a href="login.html" class="link-sublinhado">Sair da conta</a>
+
+                    </section>
+
+                </div>
+
+            </div>
+
+        </main>
+
+    </div>
+
+    <script src="/javascript/inicio.js"></script>
+    <script src="/javascript/perfil.js"></script>
+</body>
+</html>

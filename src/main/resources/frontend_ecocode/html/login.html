@@ -1,35 +1,82 @@
 <!DOCTYPE html>
-<html lang="PT-BR">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <link rel="stylesheet" href="../css/base.css">
-    <link rel="stylesheet" href="../css/login.css">
+    <title>Entrar · EcoCode</title>
+    <link rel="icon" type="image/png" href="/assets/icons/favicon.png">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/login.css">
 </head>
 <body>
-    
-    <section class="container">
 
-        <form>
+    <main id="container">
 
-            <fieldset>
+        <section class="lado-marca">
 
-                <h2>Login</h2>
+            <header class="marca">
 
-                <label>E-mail</label>
-                <input type="email">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>
+                <span>EcoCode</span>
 
-                <label>Senha</label>
-                <input type="password">
+            </header>
 
-                <input class="enviar" type="submit">
+            <div class="chamada">
 
-            </fieldset>
+                <h1>Menos lixo e um mundo melhor.</h1>
 
-        </form>
-        
-    </section>
+                <p>
+                    Cadastre o eletrônico que você quer descartar, descubra o ponto de coleta
+                    mais perto de você em Goiânia e acompanhe o pedido até a coleta.
+                </p>
 
+            </div>
+
+            <footer>Projeto Integrador · Grupo 05</footer>
+
+        </section>
+
+        <section class="lado-form">
+
+            <form class="form-login" id="form-login" novalidate>
+
+                <h2>Entrar</h2>
+                <p class="sub">Use o e-mail e a senha da sua conta.</p>
+
+                <div class="campo">
+
+                    <label for="email">E-mail</label>
+                    <input type="email" id="email" name="email" autocomplete="email" required>
+
+                </div>
+
+                <div class="campo">
+
+                    <label for="senha">Senha</label>
+                    <input type="password" id="senha" name="senha" autocomplete="current-password" required>
+                
+                </div>
+
+                <label class="manter">
+
+                    <input type="checkbox" id="manter" checked>
+                    Manter conectado por 30 dias
+                    
+                </label>
+
+                <button type="submit" class="btn btn-primario" data-perfil="usuario">Entrar como usuário</button>
+                <button type="submit" class="btn btn-secundario" data-perfil="funcionario">Entrar como funcionário ou gerente</button>
+
+                <div class="alerta-erro" id="erro-login" role="alert">E-mail ou senha incorretos.</div>
+
+                <p class="rodape-form">Ainda não tem conta? <a href="cadastro.html">Criar conta</a></p>
+
+            </form>
+
+        </section>
+
+    </main>
+
+    <script src="/javascript/login.js"></script>
 </body>
 </html>

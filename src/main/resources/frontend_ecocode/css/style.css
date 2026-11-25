@@ -1,0 +1,154 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --verde-escuro: #12271c;
+    --verde: #1f7a4a;
+    --verde-hover: #186339;
+    --verde-claro: #3ddc84;
+    --fundo: #f4f5f1;
+    --branco: #ffffff;
+    --texto: #16241c;
+    --texto-suave: #5d6b63;
+    --borda: #dfe3dd;
+    --erro: #b3363f;
+    --erro-fundo: #fbebec;
+    --fonte: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+
+body {
+    font-family: var(--fonte);
+    color: var(--texto);
+    background: var(--fundo);
+    -webkit-font-smoothing: antialiased;
+}
+
+.marca {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.05rem;
+    font-weight: 700;
+}
+
+.marca svg {
+    width: 28px;
+    height: 28px;
+}
+
+.campo {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-bottom: 14px;
+}
+
+.campo label {
+    font-size: 0.66rem;
+    font-weight: 700;
+    color: #2b3a31;
+}
+
+.campo input,
+.campo select {
+    width: 100%;
+    padding: 10px 12px;
+    font: inherit;
+    font-size: 0.8rem;
+    color: var(--texto);
+    background: var(--branco);
+    border: 1px solid var(--borda);
+    border-radius: 8px;
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.campo input:focus,
+.campo select:focus {
+    border-color: var(--verde);
+    box-shadow: 0 0 0 3px rgba(31, 122, 74, 0.18);
+}
+
+.campo.invalido input,
+.campo.invalido select {
+    border-color: #e08b91;
+}
+
+.dica,
+.msg-erro {
+    font-size: 0.66rem;
+    line-height: 1.4;
+}
+
+.dica {
+    color: var(--texto-suave);
+}
+
+.msg-erro {
+    color: var(--erro);
+    display: none;
+}
+
+.campo.invalido .msg-erro {
+    display: block;
+}
+
+.campo.invalido .dica {
+    display: none;
+}
+
+
+.btn {
+    display: block;
+    width: 100%;
+    padding: 11px 16px;
+    font: inherit;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+}
+
+.btn:focus-visible {
+    outline: 3px solid rgba(31, 122, 74, 0.35);
+    outline-offset: 2px;
+}
+
+.btn-primario {
+    color: var(--branco);
+    background: var(--verde);
+    border: 1px solid var(--verde);
+}
+
+.btn-primario:hover {
+    background: var(--verde-hover);
+}
+
+.btn-secundario {
+    color: var(--texto);
+    background: var(--branco);
+    border: 1px solid var(--borda);
+}
+
+.btn-secundario:hover {
+    border-color: var(--verde);
+}
+
+.alerta-erro {
+    display: none;
+    padding: 11px 14px;
+    font-size: 0.74rem;
+    color: var(--erro);
+    background: var(--erro-fundo);
+    border-radius: 8px;
+}
+
+.alerta-erro.visivel {
+    display: block;
+}

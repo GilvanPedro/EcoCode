@@ -1,41 +1,124 @@
 <!DOCTYPE html>
-<html lang="PT-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro</title>
-    <link rel="stylesheet" href="../css/base.css">
-    <link rel="stylesheet" href="../css/cadastro.css">
+    <title>Criar conta · EcoCode</title>
+    <link rel="icon" type="image/png" href="/assets/icons/favicon.png">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/cadastro.css">
 </head>
 <body>
 
-    <section class="container">
+    <main id="container">
 
-        <form>
+        <header class="topo marca">
 
-            <fieldset>
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>
+            <span>EcoCode</span>
 
-                <h2>Cadastro</h2>
+        </header>
 
-                <label>E-mail</label>
-                <input type="email">
+        <form class="cartao" id="form-cadastro" novalidate>
 
-                <label>Data de Nascimento</label>
-                <input type="date">
+            <h1>Criar conta</h1>
+            <p class="sub">Toda conta nova começa com o cargo Usuário.</p>
 
-                <label>Senha</label>
-                <input type="password">
+            <div class="campo">
 
-                <label>Confirme sua senha</label>
-                <input type="password">
+                <label for="nome">Nome completo</label>
+                <input type="text" id="nome" autocomplete="name" required>
+                <span class="msg-erro">Informe seu nome completo.</span>
 
-                <input class="enviar" type="submit">
+            </div>
 
-            </fieldset>
+            <div class="linha">
+
+                <div class="campo">
+
+                    <label for="cpf">CPF</label>
+                    <input type="text" id="cpf" inputmode="numeric" placeholder="000.000.000-00" maxlength="14" required>
+                    <span class="msg-erro">CPF inválido.</span>
+
+                </div>
+
+                <div class="campo">
+                    <label for="telefone">Telefone</label>
+                    <input type="tel" id="telefone" autocomplete="tel" placeholder="(62) 99999-0000" maxlength="15" required>
+                    <span class="msg-erro">Informe um telefone com DDD.</span>
+                </div>
+
+            </div>
+
+            <div class="campo">
+
+                <label for="email">E-mail</label>
+                <input type="email" id="email" autocomplete="email" required>
+                <span class="dica">Cada e-mail só pode estar em uma conta.</span>
+
+                <span class="msg-erro">Informe um e-mail válido.</span>
+
+            </div>
+
+            <div class="campo">
+
+                <label for="bairro">Bairro</label>
+                <select id="bairro" required>
+                    <option value="" selected disabled>Selecione seu bairro</option>
+                    <option>Setor Central</option>
+                    <option>Setor Bueno</option>
+                    <option>Setor Marista</option>
+                    <option>Setor Oeste</option>
+                    <option>Setor Sul</option>
+                    <option>Jardim Goiás</option>
+                    <option>Setor Universitário</option>
+                    <option>Setor Campinas</option>
+                    <option>Setor Leste Universitário</option>
+                    <option>Setor Pedro Ludovico</option>
+                    <option>Jardim América</option>
+                    <option>Setor Aeroporto</option>
+                    <option>Vila Nova</option>
+                    <option>Setor Norte Ferroviário</option>
+                    <option>Parque Amazônia</option>
+                </select>
+                <span class="dica">Escolha o bairro mais perto de você entre os 15 atendidos. Ele é usado para achar o ponto de coleta mais próximo.</span>
+               
+                <span class="msg-erro">Escolha um bairro.</span>
+
+            </div>
+
+            <div class="linha">
+
+                <div class="campo">
+
+                    <label for="senha">Senha</label>
+                    <input type="password" id="senha" autocomplete="new-password" required>
+                    <span class="msg-erro">Use pelo menos 8 caracteres.</span>
+
+                </div>
+
+                <div class="campo">
+
+                    <label for="confirmar">Confirmar senha</label>
+                    <input type="password" id="confirmar" autocomplete="new-password" required>
+                    <span class="msg-erro">As senhas não são iguais.</span>
+
+                </div>
+            </div>
+
+            <div class="alerta-erro" id="sucesso" role="status" style="color:#186339;background:#e6f4ec"></div>
+
+            <div class="acoes">
+
+                <a href="login.html" class="btn btn-secundario">Já tenho conta</a>
+                <button type="submit" class="btn btn-primario">Criar conta</button>
+                
+            </div>
 
         </form>
-        
-    </section>
-    
+
+    </main>
+
+    <script src="/javascript/cadastro.js"></script>
 </body>
 </html>
