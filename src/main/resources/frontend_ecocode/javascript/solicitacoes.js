@@ -80,7 +80,7 @@ confirmar.addEventListener("click", () => {
         meta.textContent = `Cancelado por você em ${data}`;
 
         pedidoParaCancelar.querySelector(".pedido-acoes").innerHTML =
-            '<a href="pedido" class="btn-acao">Ver detalhes</a>';
+            '<a href="pedido.html" class="btn-acao">Ver detalhes</a>';
     }
 
     pedidoParaCancelar = null;

@@ -1,11 +1,11 @@
-/* Esta tela usa a barra lateral e o tema do inicio.css; aqui fica só o que é só dela. */
+
 
 .conteudo {
     max-width: none;
     padding: 40px 40px 48px;
 }
 
-/* ---------- título ---------- */
+
 .voltar {
     display: inline-block;
     margin-bottom: 14px;
@@ -24,7 +24,6 @@
     color: var(--texto-suave);
 }
 
-/* ---------- mensagem de sucesso ---------- */
 .alerta-sucesso {
     display: none;
     margin-top: 26px;

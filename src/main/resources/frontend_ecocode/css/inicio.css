@@ -1,11 +1,11 @@
-/* ---------- cores da barra lateral (claro) ---------- */
+
 :root {
     --lateral-fundo: var(--verde-escuro);
     --lateral-ativo: #24523a;
     --lateral-info: #8fd1ab;
 }
 
-/* ---------- tema escuro ---------- */
+
 [data-tema="escuro"] {
     --fundo: linear-gradient(200deg, #000000 48%, #010e0b 100%);
     --branco: #131318;
@@ -19,6 +19,10 @@
 }
 
 [data-tema="escuro"] .btn-secundario {
+    color: var(--texto);
+}
+
+[data-tema="escuro"] .campo label {
     color: var(--texto);
 }
 

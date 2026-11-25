@@ -1,4 +1,4 @@
-/* Esta tela usa a barra lateral e o tema do inicio.css; aqui fica só o que é só dela. */
+
 
 :root {
     --filtro-fundo: #12271c;
@@ -23,7 +23,6 @@
     padding: 40px 40px 48px;
 }
 
-/* ---------- topo ---------- */
 .topo-pagina {
     display: flex;
     align-items: flex-start;
@@ -54,7 +53,7 @@
     border-radius: 14px;
 }
 
-/* ---------- filtros e ordenação ---------- */
+
 .barra-filtros {
     display: flex;
     flex-wrap: wrap;
