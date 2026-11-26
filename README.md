@@ -7,7 +7,8 @@ cadastra o que quer descartar, descobre qual ponto de coleta fica mais perto e a
 pedido até a coleta. Do outro lado, a equipe atende os pedidos por uma fila, e o gerente
 cuida dos cargos de quem usa o sistema.
 
-O back-end é feito em Java puro. A interface web vem depois, com Spring Boot e Thymeleaf.
+O back-end é feito em Java puro, com os dados num banco MySQL. A interface web vem depois,
+com Spring Boot e Thymeleaf.
 
 | | |
 | --- | --- |
@@ -27,7 +28,7 @@ O back-end é feito em Java puro. A interface web vem depois, com Spring Boot e 
 6. [Cifras](#cifras)
 7. [Tecnologias](#tecnologias)
 8. [Como executar](#como-executar)
-9. [backend_ecocode.Estrutura do projeto](#estrutura-do-projeto)
+9. [Estrutura do projeto](#estrutura-do-projeto)
 10. [Arquitetura](#arquitetura)
 11. [Documentação](#documentação)
 
@@ -68,12 +69,15 @@ próximo.
 | 25/11/2026 (qua) | Arestas do grafo medidas no Google Maps, status do resíduo, ecopontos da Comurg (19 bairros e 40 arestas), pacotes do `Domain`, bairro obrigatório, classe `Dijkstra<T>` | [069](docs/ADRs/ADR-069.md) a [075](docs/ADRs/ADR-075.md) |
 | 26/11/2026 (qui) | Pontos de coleta só do gerente, ponto mais próximo, `ArvoreAVL` nos resíduos, `PilhaEncadeada`, log de auditoria, `LocalDateTime` no JSON | [076](docs/ADRs/ADR-076.md) a [081](docs/ADRs/ADR-081.md) |
 | 27/11/2026 (sex) | Dono do resíduo, usuário logado nos métodos com permissão, Cifra Afim de 62 caracteres na senha | [082](docs/ADRs/ADR-082.md) a [084](docs/ADRs/ADR-084.md) |
+| 28/11/2026 (sáb) | Banco MySQL com JDBC no lugar do JSON, as seis tabelas, código do resíduo calculado pelo banco, sessão de 30 dias com token, grafo fora do banco, pacotes `Estrutura` e `Testes` dentro do `backend_ecocode`, testes por módulo no banco | [085](docs/ADRs/ADR-085.md) a [094](docs/ADRs/ADR-094.md) |
 
 ## Situação atual
 
-O back-end em Java puro está completo e testado pela classe `backend_ecocode.Testes.Teste`
-(199 testes, 198 passando; detalhes em [`docs/Testes.md`](docs/Testes.md)). Falta a interface
-web, o banco de dados e a sessão de 30 dias.
+O back-end em Java puro está completo, com os dados no MySQL e a sessão de 30 dias funcionando.
+Foi testado pela classe `backend_ecocode.Testes.Teste` (199 testes, 198 passando, ainda no
+JSON) e pelas quatro classes de teste do banco, que passaram (detalhes em
+[`docs/Testes.md`](docs/Testes.md)). Falta a interface web: o front já abre pelo Spring em
+`localhost:8080`, mas ainda não conversa com o back-end.
 
 ### Pronto
 
@@ -82,7 +86,8 @@ web, o banco de dados e a sessão de 30 dias.
 - Cadastro aberto: qualquer pessoa cria a própria conta, sempre com o cargo `USUARIO`
 - Cadastro pelo gerente, já com o cargo escolhido
 - Bairro obrigatório no cadastro, escolhido entre os 19 do grafo ([ADR-074](docs/ADRs/ADR-074.md))
-- Login por e-mail e senha; sessão lembrada entre execuções ([ADR-047](docs/ADRs/ADR-047.md))
+- Login por e-mail e senha, com a opção "manter conectado por 30 dias"
+  ([ADR-090](docs/ADRs/ADR-090.md), [ADR-091](docs/ADRs/ADR-091.md))
 - Edição com campos opcionais: o que não for informado continua como está
 - Promoção de cargo pelo CPF: só o gerente promove, e ninguém troca o próprio cargo
 - Remoção pelo gerente, que não pode remover a si mesmo
@@ -118,6 +123,24 @@ web, o banco de dados e a sessão de 30 dias.
 - 10 ações no enum `AcaoLog`, `RegistroLog` imutável, `PilhaEncadeada` com o mais novo no topo
 - Só o gerente consulta
 
+**Banco de dados** ([ADR-085](docs/ADRs/ADR-085.md) a [ADR-088](docs/ADRs/ADR-088.md))
+
+- MySQL acessado com JDBC puro. Cada entidade tem uma classe `PersistenciaBancoX` que
+  implementa a mesma interface `Persistencia<T>` do JSON, então a troca foi uma linha em cada
+  repository
+- Seis tabelas: `usuarios`, `residuos`, `solicitacoes`, `ponto_coleta`, `logs_auditoria` e
+  `sessoes`, com chaves estrangeiras, `CHECK` nos enums e `DATETIME` nas datas
+- Gravação com upsert (`ON DUPLICATE KEY UPDATE`); resíduos e pontos apagam do banco o que foi
+  excluído; o log só recebe `INSERT IGNORE`, nunca é alterado nem apagado
+- A conexão é aberta pela `ConexaoBanco`, que lê `DB_URL`, `DB_USUARIO` e `DB_SENHA` do `.env`
+- O `PersistenciaArquivo` (JSON) continua no projeto como plano B
+
+**Sessão de 30 dias** ([ADR-090](docs/ADRs/ADR-090.md), [ADR-091](docs/ADRs/ADR-091.md))
+
+- A sessão (token aleatório, usuário e expiração) fica na tabela `sessoes`; no computador fica
+  só o token, em `arquivos/token.txt`. No site, esse arquivo vira um cookie
+- "Sair" apaga a sessão do banco e o token
+
 **Estruturas próprias** (pacote `backend_ecocode.Estrutura`)
 
 - `No<T>`, `FilaEncadeada<T>`, `PilhaEncadeada<T>`, `Grafo<T>`, `Dijkstra<T>`, `NoAVL<K, V>` e
@@ -132,15 +155,19 @@ web, o banco de dados e a sessão de 30 dias.
 
 ### Pendências conhecidas
 
-- A fila perde a ordem de chegada quando o sistema reinicia (ver [`docs/Testes.md`](docs/Testes.md))
-- A `Configuracao` ainda lê as chaves da Afim com `mod 26`, e não `mod 62` ([ADR-084](docs/ADRs/ADR-084.md))
-- A edição de usuário não grava `EDITOU_USUARIO` no log, e a promoção não guarda o cargo anterior (RN10)
+- Usuário removido volta depois de reiniciar: o `PersistenciaBancoUsuario` ainda não apaga do
+  banco quem saiu da lista ([ADR-088](docs/ADRs/ADR-088.md))
+- A `Configuracao` e o `.env.example` ainda tratam as chaves da Afim com `mod 26`, e não `mod 62`
+  ([ADR-084](docs/ADRs/ADR-084.md))
+- A edição de usuário não grava `EDITOU_USUARIO` no log
+- O `TestePontosColeta` declara o pacote errado ([ADR-093](docs/ADRs/ADR-093.md))
+- O script SQL do banco ainda não está no repositório ([ADR-087](docs/ADRs/ADR-087.md))
 
 ### Planejado
 
-- Banco de dados no lugar dos arquivos JSON, sem modo offline ([ADR-065](docs/ADRs/ADR-065.md))
-- Sessão com validade de 30 dias ([ADR-054](docs/ADRs/ADR-054.md))
-- Interface web com Spring Boot e Thymeleaf ([ADR-055](docs/ADRs/ADR-055.md))
+- Interface web com Spring Boot e Thymeleaf, ligando as telas que já existem ao back-end
+  ([ADR-055](docs/ADRs/ADR-055.md))
+- Tabelas de bairros e arestas do grafo no banco, se sobrar tempo ([ADR-092](docs/ADRs/ADR-092.md))
 
 ## Categorias e código do resíduo
 
@@ -155,8 +182,10 @@ categoria:
 | 3 | Pilhas e Baterias | 000003, 000008, 000013 |
 | 4 | Outros Eletrônicos | 000004, 000009, 000014 |
 
-Só o último código gerado (de qualquer tipo) fica salvo, em `arquivos/codigo.json`. O próximo
-código é o menor número depois dele cujo resto da divisão por 5 é o resto do tipo:
+Não existe mais arquivo de código. Ao iniciar, o sistema olha os resíduos que vieram do banco
+e guarda o maior código de cada tipo. O próximo código é o menor número depois do último
+**do mesmo tipo** cujo resto da divisão por 5 é o resto do tipo
+([ADR-089](docs/ADRs/ADR-089.md)):
 
 ```text
 candidato = último + 1
@@ -164,9 +193,9 @@ distância = (resto do tipo − candidato) mod 5
 próximo   = candidato + distância
 ```
 
-Exemplo, começando sem arquivo: Celular → 000001, Computador → 000005, Computador → 000010,
-Bateria → 000013, Outros → 000014, Cabos → 000017. Assim o código também indica a ordem de cadastro,
-e a sequência continua entre execuções. Detalhes no [ADR-032](docs/ADRs/ADR-032.md).
+Exemplo, começando com o banco vazio: Celular → 000001, Computador → 000005, Computador →
+000010, Bateria → 000003, Celular → 000006, Cabos → 000002. Cada tipo segue a sua sequência, e
+como o resto da divisão por 5 é diferente, dois tipos nunca dão o mesmo código.
 
 Desde o [ADR-061](docs/ADRs/ADR-061.md), o código é um campo único do resíduo, e não mais a
 chave do resíduo: o identificador é um `UUID`. A busca pelo usuário continua sendo pelo código,
@@ -197,9 +226,11 @@ servem para proteger senhas de verdade. Um sistema real usaria um hash de senha,
 
 - Java 25
 - Maven
-- [Gson](https://github.com/google/gson) 2.12.1: leitura e escrita dos arquivos JSON
-- [dotenv-java](https://github.com/cdimascio/dotenv-java) 3.0.0: leitura das chaves das cifras
-- Spring Boot 4.0.6: já está no `pom.xml`, mas só vai ser usado na etapa da interface web
+- MySQL 8, acessado com JDBC pelo driver `mysql-connector-j`
+- [dotenv-java](https://github.com/cdimascio/dotenv-java) 3.0.0: leitura do `.env` (banco e chaves das cifras)
+- [Gson](https://github.com/google/gson) 2.12.1: arquivos JSON, hoje só no plano B
+- Spring Boot 4.0.6: já serve o front em `localhost:8080`, e vai ligar as telas ao back-end na
+  etapa do Thymeleaf
 
 ## Como executar
 
@@ -207,16 +238,26 @@ servem para proteger senhas de verdade. Um sistema real usaria um hash de senha,
 
 - JDK 25
 - Maven 3.9+ (ou uma IDE como IntelliJ IDEA)
+- MySQL 8 rodando na máquina
 
-### 1. Configurar as chaves das cifras
+### 1. Criar o banco
 
-Copie o arquivo de exemplo e preencha as chaves:
+Rode o script de criação do banco `EcoCode` no MySQL (pelo Workbench ou pelo terminal). Ele
+cria as seis tabelas descritas no [ADR-087](docs/ADRs/ADR-087.md).
+
+### 2. Configurar o `.env`
+
+Copie o arquivo de exemplo e preencha:
 
 ```bash
 cp .env.example .env
 ```
 
 ```env
+DB_URL=jdbc:mysql://localhost:3306/EcoCode
+DB_USUARIO=root
+DB_SENHA=sua_senha_aqui
+
 CIFRA_CESAR_CHAVE=3
 CIFRA_AFIM_A=7
 CIFRA_AFIM_B=3
@@ -224,10 +265,10 @@ CIFRA_AFIM_B=3
 
 O `.env` não vai para o Git. Sem ele, o programa para avisando qual variável está faltando.
 
-> As chaves da Afim precisam ser as mesmas usadas quando as senhas de `arquivos/usuarios.json`
-> foram cifradas; com outras chaves, nenhum login antigo funciona.
+> As chaves da Afim precisam ser as mesmas usadas quando as senhas do banco foram cifradas;
+> com outras chaves, nenhum login antigo funciona.
 
-### 2. Compilar e rodar
+### 3. Compilar e rodar
 
 Pela IDE, rode a classe `backend_ecocode.Main`.
 
@@ -241,53 +282,62 @@ java -cp "target/classes:target/dependency/*" backend_ecocode.Main
 
 No Windows, troque `:` por `;` no classpath: `"target/classes;target/dependency/*"`.
 
-### 3. Rodar os testes
+### 4. Rodar os testes
+
+Os testes do banco rodam nesta ordem, porque cada um usa os dados do anterior:
+
+```bash
+java -cp "target/classes:target/dependency/*" backend_ecocode.Testes.TesteUsuarios
+java -cp "target/classes:target/dependency/*" backend_ecocode.Testes.TesteResiduos
+java -cp "target/classes:target/dependency/*" backend_ecocode.Testes.TesteSolicitacoes
+java -cp "target/classes:target/dependency/*" backend_ecocode.TestePontosColeta
+```
+
+O teste geral, com as estruturas e a cifra:
 
 ```bash
 java -cp "target/classes:target/dependency/*" backend_ecocode.Testes.Teste
 ```
 
-O `Teste` grava nos arquivos de `arquivos/`. Antes de rodar, faça uma cópia da pasta se quiser
-manter os dados como estavam. O resultado esperado e a lista de testes estão em
+Os testes gravam no banco de verdade. O resultado esperado e a lista de testes estão em
 [`docs/Testes.md`](docs/Testes.md).
 
-Rode sempre a partir da raiz do projeto: os arquivos de dados são lidos pelo caminho relativo
-`arquivos/`. A pasta não vai para o Git e é criada na primeira execução, se não existir.
+Rode sempre a partir da raiz do projeto: o token da sessão fica no caminho relativo
+`arquivos/token.txt`. A pasta não vai para o Git e é criada no primeiro login com "manter
+conectado".
 
-## backend_ecocode.Estrutura do projeto
+## Estrutura do projeto
 
 ```text
 .
-├── arquivos/                      dados salvos em JSON (fora do Git)
-│   ├── rediduos.json              resíduos cadastrados
-│   ├── usuarios.json              usuários (senha cifrada)
-│   ├── codigo.json                último código gerado
-│   ├── solicitacoes.json          solicitações de descarte
-│   ├── pontos_coletas.json        pontos de coleta
-│   ├── log.json                   log de auditoria
-│   └── sessao.json                quem ficou logado e até quando
+├── arquivos/                      fora do Git
+│   └── token.txt                  token da sessão deste computador (os .json antigos são do plano B)
 ├── docs/
-│   ├── ADRs/                      decisões de arquitetura (ADR-001 a ADR-084)
+│   ├── README.md                  guia da pasta de documentação
+│   ├── ADR.md                     índice geral das ADRs, por fase e com o status de cada uma
+│   ├── ADRs/                      decisões de arquitetura (ADR-001 a ADR-094)
 │   ├── Requisitos.md              requisitos funcionais, não funcionais e regras de negócio
-│   ├── Testes.md                  testes do fluxo principal, resultados e bugs encontrados
-│   └── GrafoBairros.md            os 19 bairros, as 40 arestas e de onde vêm as distâncias
-├── src/main/java/backend_ecocode.Estrutura/       estruturas próprias (No, FilaEncadeada, PilhaEncadeada, Grafo,
-│                                  Dijkstra, NoAVL, ArvoreAVL)
+│   ├── Testes.md                  testes do fluxo principal e do banco, resultados e bugs
+│   ├── GrafoBairros.md            os 19 bairros, as 40 arestas e de onde vêm as distâncias
+│   └── Referencias/               enunciado do PI e materiais de apoio
 ├── src/main/java/backend_ecocode/
 │   ├── Main.java                  menu do terminal
-│   ├── Teste.java                 testes gerais do back-end
 │   ├── Instanciador.java          cria e liga repositories e services
+│   ├── Estrutura/                 estruturas próprias (No, FilaEncadeada, PilhaEncadeada, Grafo,
+│   │                              Dijkstra, NoAVL, ArvoreAVL)
+│   ├── Testes/                    Teste (geral) e os testes do banco por módulo
 │   ├── ServidorApplication.java   ponto de entrada do Spring (para a etapa web)
 │   ├── TelaTerminal/              leitura do teclado e exibição
 │   ├── Service/                   regras de negócio (usuários, resíduos, solicitações, pontos, log)
-│   ├── Repository/                acesso aos dados (Map, AVL ou pilha em memória + arquivo)
-│   ├── Domain/Entities/           Usuario, Residuo, Solicitacao, PontoColeta, RegistroLog
+│   ├── Repository/                dados em memória (Map, AVL ou pilha) + gravação no banco
+│   ├── Domain/Entities/           Usuario, Residuo, Solicitacao, PontoColeta, RegistroLog, Sessao
 │   ├── Domain/Enums/              CargoUsuario, TipoResiduo, StatusResiduo, StatusSolicitacao, Bairro, AcaoLog
 │   ├── Domain/Interfaces/         interfaces dos repositories e services
-│   ├── Persistency/               gravação e leitura dos arquivos JSON
+│   ├── Persistency/               interface Persistencia<T>, Banco/ (JDBC e ConexaoBanco) e Files/ (JSON, plano B)
 │   ├── Exceptions/                AcessoNegadoException
 │   ├── Controller/                controllers do Spring (etapa web)
-│   └── Util/                      cifras, geração de código, GrafoBairros, sessão, configuração e validações
+│   └── Util/                      cifras, geração de código, GrafoBairros, TokenLocal, configuração e validações
+├── src/main/resources/frontend_ecocode/   telas do front (html, css, javascript), servidas pelo Spring
 ├── .env.example                   modelo da configuração
 └── pom.xml
 ```
@@ -297,7 +347,7 @@ Rode sempre a partir da raiz do projeto: os arquivos de dados são lidos pelo ca
 O projeto é dividido em camadas:
 
 ```text
-TelaTerminal  →  Service  →  Repository  →  Persistência (JSON, depois banco)
+TelaTerminal  →  Service  →  Repository  →  Persistência (MySQL com JDBC; JSON como plano B)
                     ↘            ↘
                      Domain (entidades, enums e interfaces)
                      backend_ecocode.Estrutura (fila, pilha, grafo, Dijkstra e AVL)
@@ -307,7 +357,9 @@ TelaTerminal  →  Service  →  Repository  →  Persistência (JSON, depois ba
 - **Service** aplica as regras: gerar código, checar permissão de cargo, conferir CPF e e-mail
   repetidos, cifrar senha, organizar a fila de solicitações.
 - **Repository** guarda os dados em memória (um `Map`, a `ArvoreAVL` nos resíduos ou a
-  `PilhaEncadeada` no log) e grava no arquivo a cada alteração.
+  `PilhaEncadeada` no log), carrega tudo do banco ao iniciar e grava no banco a cada alteração.
+- **Persistência** é a interface `Persistencia<T>`, com uma classe para o banco e outra para o
+  JSON. O repository não sabe qual das duas está usando.
 - **Domain** define as entidades. Cada uma valida os próprios dados, e a `Solicitacao` também
   valida as próprias mudanças de status.
 - **backend_ecocode.Estrutura** guarda as estruturas de dados feitas pelo grupo, sem usar as coleções prontas
@@ -343,8 +395,11 @@ banco ([ADR-053](docs/ADRs/ADR-053.md)). Os métodos com permissão recebem o us
   (RF01 a RF10), os não funcionais (RNF01 a RNF05) e as regras de negócio (RN01 a RN18).
 - **Testes:** [`docs/Testes.md`](docs/Testes.md), com os testes do fluxo principal, o critério de
   aceitação e o resultado de cada um, e os bugs encontrados.
-- **Decisões de arquitetura:** [`docs/ADRs/`](docs/ADRs/), no formato ADR. Lá está o histórico
-  inteiro, da versão 1.0 de 06/10/2026 até as decisões do Projeto Integrador. Quando uma
-  decisão muda, o ADR antigo não é apagado: ele é marcado como "Substituída por ADR-XXX".
+- **Decisões de arquitetura:** [`docs/ADRs/`](docs/ADRs/), no formato ADR, com o índice geral em
+  [`docs/ADR.md`](docs/ADR.md). Lá está o histórico inteiro, da versão 1.0 de 06/10/2026 até
+  as decisões do Projeto Integrador. Quando uma decisão muda, o ADR antigo não é apagado: ele
+  é marcado como "Substituída por ADR-XXX".
+- **Guia da pasta:** [`docs/README.md`](docs/README.md) explica o que tem em cada arquivo de
+  `docs/` e por onde começar a ler.
 - Para registrar uma nova decisão, use o [modelo de ADR](docs/ADRs/ADR-template.md). O próximo
-  número livre é o **ADR-085**.
+  número livre é o **ADR-095**.

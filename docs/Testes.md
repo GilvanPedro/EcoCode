@@ -7,18 +7,19 @@
 |---|---|
 | **Projeto** | EcoCode, Projeto Integrador |
 | **Equipe** | Gilvan Pedro, Sidney Emanuel, Guilherme Scarcela, João Paulo e Dários Suess |
-| **Última atualização** | 27/11/2026 |
-| **Classe de teste** | `backend_ecocode.Testes.Teste` (`src/main/java/backend_ecocode/Teste.java`) |
-| **Resultado da última rodada** | 199 testes: 198 passaram, 1 falhou (bug B05, ainda aberto) |
+| **Última atualização** | 28/11/2026 |
+| **Classes de teste** | `backend_ecocode.Testes.Teste` (geral, feita no JSON) e `TesteUsuarios`, `TesteResiduos`, `TesteSolicitacoes`, `TestePontosColeta` (no banco), todas em `src/main/java/backend_ecocode/Testes/` |
+| **Resultado da última rodada** | No banco (28/11): as 4 classes passaram, e a fila volta na ordem certa depois de reiniciar (B05 corrigido). Na `Teste` (JSON, 27/11): 199 testes, 198 passaram |
 
 ## Sumário
 
 1. [Como os testes funcionam](#como-os-testes-funcionam)
 2. [Como rodar](#como-rodar)
-3. [Testes do fluxo principal](#testes-do-fluxo-principal)
-4. [Todos os grupos de testes da classe Teste](#todos-os-grupos-de-testes-da-classe-teste)
-5. [Bugs encontrados](#bugs-encontrados)
-6. [Testes possíveis que ainda não foram feitos](#testes-possíveis-que-ainda-não-foram-feitos)
+3. [Testes no banco de dados](#testes-no-banco-de-dados)
+4. [Testes do fluxo principal](#testes-do-fluxo-principal)
+5. [Todos os grupos de testes da classe Teste](#todos-os-grupos-de-testes-da-classe-teste)
+6. [Bugs encontrados](#bugs-encontrados)
+7. [Testes possíveis que ainda não foram feitos](#testes-possíveis-que-ainda-não-foram-feitos)
 
 ---
 
@@ -40,7 +41,7 @@ Ela usa três ajudantes:
 Cada teste imprime `[OK]` ou `[FALHA]` com o nome, e no fim aparece o total. Um teste de
 rejeição só passa se o sistema **recusar** a ação: se a ação funcionar, o teste falha.
 
-Quatro pessoas de teste são usadas do começo ao fim:
+Na classe `Teste`, quatro pessoas de teste são usadas do começo ao fim:
 
 | Pessoa | Cargo | Bairro |
 | --- | --- | --- |
@@ -51,23 +52,102 @@ Quatro pessoas de teste são usadas do começo ao fim:
 
 ## Como rodar
 
-A partir da raiz do projeto, com o `.env` preenchido:
+A partir da raiz do projeto, com o MySQL rodando, o banco `EcoCode` criado e o `.env`
+preenchido (`DB_URL`, `DB_USUARIO`, `DB_SENHA` e as chaves da Cifra Afim):
 
 ```bash
 mvn compile
 mvn dependency:copy-dependencies
+
+# testes no banco, nesta ordem (cada um usa os dados do anterior)
+java -cp "target/classes:target/dependency/*" backend_ecocode.Testes.TesteUsuarios
+java -cp "target/classes:target/dependency/*" backend_ecocode.Testes.TesteResiduos
+java -cp "target/classes:target/dependency/*" backend_ecocode.Testes.TesteSolicitacoes
+java -cp "target/classes:target/dependency/*" backend_ecocode.TestePontosColeta
+
+# teste geral
 java -cp "target/classes:target/dependency/*" backend_ecocode.Testes.Teste
 ```
 
-No Windows, troque `:` por `;`. Pela IDE, basta rodar a classe `backend_ecocode.Testes.Teste`.
+No Windows, troque `:` por `;`. Pela IDE, basta rodar cada classe.
 
-> **Atenção:** o `Teste` usa os arquivos reais de `arquivos/`. Os usuários de teste criados no
-> grupo "Usuários" são removidos no fim, e os 5 ecopontos são reaproveitados se já existirem,
-> mas os resíduos e as solicitações de teste ficam salvos. Faça uma cópia da pasta `arquivos/`
-> antes, se quiser manter os dados como estavam.
+> **Atenção:** o `TestePontosColeta` ainda declara `package backend_ecocode;` (ponto P05), por
+> isso o nome dele no comando não tem `.Testes`. Quando o pacote for corrigido, o comando
+> passa a ser `backend_ecocode.Testes.TestePontosColeta`.
 
-A saída completa da última rodada está em `documentos/codigo/saida-Teste.txt`. O teste foi
-rodado três vezes seguidas sobre os mesmos arquivos, sempre com o mesmo resultado.
+> **Os testes gravam no banco de verdade.** As pessoas de teste e os ecopontos são
+> reaproveitados se já existirem, mas cada rodada do `TesteSolicitacoes` deixa quatro resíduos
+> e quatro pedidos novos. Se quiser começar do zero, recrie o banco com o script antes.
+
+A saída completa da última rodada da `Teste` (ainda no JSON) está em
+`documentos/codigo/saida-Teste.txt`.
+
+---
+
+## Testes no banco de dados
+
+Em 28/11 os dados passaram dos arquivos JSON para o MySQL ([ADR-085](ADRs/ADR-085.md)). Para
+conferir a troca, o grupo escreveu uma classe de teste por módulo
+([ADR-094](ADRs/ADR-094.md)). Elas usam o mesmo `Instanciador` da tela, então gravam e leem do
+banco como o sistema de verdade.
+
+As pessoas de teste ficam salvas no banco e são usadas pelos outros testes:
+
+| Pessoa | CPF | Cargo | Bairro |
+| --- | --- | --- | --- |
+| Ana Ribeiro | 390.533.447-05 | Gerente | Parque Amazônia |
+| Carlos Mendes | 111.444.777-35 | Funcionário | Setor Central |
+| Maria Souza | 529.982.247-25 | Usuário | Setor Bueno |
+| João Lima | 123.456.789-09 | Usuário | Jardim Curitiba |
+| Beatriz Alves | 714.602.380-01 | Usuário | Jardim São José |
+
+### TesteUsuarios (RF01, RN01, RN02, RN16, RNF02, RNF03)
+
+| ID | Cenário | Tipo | Critério de aceitação | Resultado |
+| --- | --- | --- | --- | --- |
+| BD01 | Cadastrar a gerente Ana e o funcionário Carlos pelo cadastro do gerente | Sucesso | Os dois aparecem no banco com o cargo certo | Passou |
+| BD02 | Cadastro aberto de Maria, João e Bia | Sucesso | Os três aparecem no banco com cargo `USUARIO` | Passou |
+| BD03 | Ler os usuários do banco | Sucesso (RNF02) | A senha salva aparece cifrada, nunca em texto puro | Passou |
+| BD04 | Login da Maria e da Ana com a senha certa | Sucesso | As duas entram | Passou |
+| BD05 | Login com senha errada e com e-mail que não existe | Rejeição | O sistema recusa, sem erro de execução | Passou |
+| BD06 | Cadastrar CPF repetido, e-mail repetido e sem bairro | Rejeição (RN01, RN02, RN16) | O sistema recusa com mensagem | Passou |
+
+### TesteResiduos (RF02, RN03, RN14)
+
+| ID | Cenário | Tipo | Critério de aceitação | Resultado |
+| --- | --- | --- | --- | --- |
+| BD07 | Cadastrar 5 resíduos de Maria, João e Bia | Sucesso | Cada um recebe código e dono, e aparece no banco | Passou |
+| BD08 | Maria edita o próprio notebook | Sucesso | Quantidade e descrição mudam no banco | Passou |
+| BD09 | João exclui o próprio celular | Sucesso | A linha some da tabela `residuos` | Passou |
+| BD10 | João edita e Bia exclui um resíduo da Maria | Rejeição (RN14) | O sistema recusa | Passou |
+| BD11 | Quantidade zero, sem tipo e sem dono | Rejeição | O sistema recusa | Passou |
+| BD12 | Listar o que ficou no banco com o nome do dono | Sucesso | Cada resíduo mostra código, tipo, quantidade, status e dono | Passou |
+
+### TesteSolicitacoes (RF05 a RF07, RN04, RN05, RN12, RN13)
+
+| ID | Cenário | Tipo | Critério de aceitação | Resultado |
+| --- | --- | --- | --- | --- |
+| BD13 | Maria, João e Bia pedem o descarte, com um segundo entre os pedidos | Sucesso | Os pedidos são gravados com data e hora | Passou |
+| BD14 | Posição de cada pedido na fila | Sucesso | Maria antes de João, João antes de Bia | Passou |
+| BD15 | Bia cancela o próprio pedido pendente | Sucesso | Vira `CANCELADA` e o resíduo volta a `DISPONIVEL` | Passou |
+| BD16 | **Reiniciar o programa** (segundo `Instanciador`) e ver a fila | Sucesso (RNF03) | As posições continuam na mesma ordem | Passou (confirma a correção do bug B05) |
+| BD17 | Carlos pega a próxima depois de reiniciar e conclui | Sucesso | Pega a mais antiga que estava na fila, e ela vira `CONCLUIDA` | Passou |
+| BD18 | Maria (usuária) tenta pegar solicitação | Rejeição (RN05) | O sistema recusa | Passou |
+| BD19 | João cancela pedido da Bia; Maria pede resíduo do João | Rejeição (RN04, RN14) | O sistema recusa | Passou |
+| BD20 | Pedir o mesmo resíduo duas vezes; cancelar pedido já cancelado | Rejeição (RN13) | O sistema recusa | Passou |
+| BD21 | Ana (gerente) cancela o pedido da Bia | Sucesso (RN12) | Vira `CANCELADA` | Passou |
+
+### TestePontosColeta (RF03, RF04, RN11, RN17)
+
+| ID | Cenário | Tipo | Critério de aceitação | Resultado |
+| --- | --- | --- | --- | --- |
+| BD22 | Ana cadastra os 5 ecopontos da Comurg | Sucesso | Os 5 aparecem no banco, sem duplicar se já existirem | Passou |
+| BD23 | Ana cria, edita e remove um ponto temporário | Sucesso | Nome e bairro mudam; depois a linha some da tabela | Passou |
+| BD24 | Carlos cadastra ponto; Maria edita e exclui ponto | Rejeição (RN17) | `AcessoNegadoException` | Passou |
+| BD25 | Ponto sem nome e sem bairro | Rejeição | O sistema recusa | Passou |
+| BD26 | Ponto mais próximo das 5 pessoas, com os dados lidos do banco | Sucesso | Maria e Ana: Setor Faiçalville; João e Carlos: Jardim Guanabara II; Bia: Jardim São José (mesmo bairro) | Passou |
+
+Os IDs desta seção começam com **BD** (banco de dados), para não confundir com os bugs B01 a B06.
 
 ---
 
@@ -130,7 +210,7 @@ antes de o Dijkstra existir.
 | T29 | Gerente tenta cancelar um pedido concluído | Rejeição (RN12) | O sistema recusa | Passou |
 | T30 | Usuário tenta cancelar um pedido em rota | Rejeição (RN04) | O sistema recusa | Passou |
 | T31 | Gerente cancela um pedido em rota | Sucesso (RN12) | Vira `CANCELADA`; o resíduo volta a `DISPONIVEL` | Passou |
-| T32 | A fila continua na ordem de chegada depois de reiniciar | Sucesso | Os 4 pedidos novos ficam na mesma ordem | **Falhou** (bug B05) |
+| T32 | A fila continua na ordem de chegada depois de reiniciar | Sucesso | Os 4 pedidos novos ficam na mesma ordem | Falhou no JSON (bug B05); **passou no banco** (BD16) |
 
 ### Usuários, cargos e log (RF01, RF08 a RF10, RN01, RN02, RN07 a RN09, RN18)
 
@@ -145,13 +225,15 @@ antes de o Dijkstra existir.
 | T39 | Gerente tenta mudar o próprio cargo ou se remover | Rejeição (RN09, RN18) | O sistema recusa | Passou |
 | T40 | Ações do gerente aparecem no log | Sucesso (RF08) | O mais novo no topo, com quem, quando, ação e alvo | Passou |
 | T41 | Usuário comum ou funcionário tenta ver o log | Rejeição (RF09) | `AcessoNegadoException` | Passou |
-| T42 | Reler o `log.json` | Sucesso (RN07) | O topo e a data e hora voltam iguais | Passou |
+| T42 | Reler o `log.json` | Sucesso (RN07) | O topo e a data e hora voltam iguais | Passou (no JSON) |
 
 ---
 
 ## Todos os grupos de testes da classe Teste
 
 A classe é dividida em grupos, um por parte do sistema, na ordem em que aparecem na saída.
+Os resultados abaixo são da rodada de 27/11, ainda com os arquivos JSON. A `Teste` ainda não
+foi rodada inteira sobre o banco.
 
 | Grupo na saída | O que testa | Testes | Resultado |
 | --- | --- | --- | --- |
@@ -189,16 +271,19 @@ Alguns destaques que valem para a apresentação:
 | B02 | Concluir uma solicitação que não estava em rota não era recusado como devia | Teste "concluir sem estar em rota dá erro" | Corrigido: o `concluir` procura só nas em rota e lança `IllegalArgumentException` |
 | B03 | O próprio teste usava a busca errada para achar o resíduo pelo `UUID` | Testes de resíduo falhando sem o sistema estar errado | Corrigido no `Teste`: agora usa `buscarPorId` |
 | B04 | O Gson não gravava `LocalDateTime`, e o log não era salvo | Primeira gravação do `log.json` | Corrigido com um adaptador no Gson ([ADR-081](ADRs/ADR-081.md)) |
-| B05 | **A fila perde a ordem de chegada quando o sistema reinicia.** O repository de solicitações guarda tudo num `HashMap`, que não mantém ordem, e o service remonta a fila ordenando pela data. Como a `Solicitacao` guarda só o dia (`LocalDate`), pedidos do mesmo dia voltam em qualquer ordem | Teste T32 | **Aberto.** Sugestão: guardar data e hora (`LocalDateTime`) na `Solicitacao`, ou usar `LinkedHashMap` no repository |
+| B05 | A fila perdia a ordem de chegada quando o sistema reiniciava. O repository de solicitações guarda tudo num `HashMap`, que não mantém ordem, e o service remonta a fila ordenando pela data. Como a `Solicitacao` guardava só o dia (`LocalDate`), pedidos do mesmo dia voltavam em qualquer ordem | Teste T32 | Corrigido: a `Solicitacao` guarda data e hora (`LocalDateTime`), gravada como `DATETIME` no banco ([ADR-087](ADRs/ADR-087.md)). Conferido no teste BD16 |
+| B06 | **Usuário removido volta depois de reiniciar.** O `PersistenciaBancoUsuario` só faz upsert e não tem `removerExcluidos`, então a linha continua no banco | Leitura do código, ao escrever o ADR-088 | **Aberto.** Fazer o `removerExcluidos` e decidir o que fazer com as chaves estrangeiras ([ADR-088](ADRs/ADR-088.md)) |
 
 Pontos que não são erro de execução, mas não batem com a documentação:
 
 | ID | O que foi visto | Onde |
 | --- | --- | --- |
 | P01 | A `Configuracao` ainda aplica `mod 26` nas chaves da Afim e recusa `a` par ou 13. Com o alfabeto de 62, deveria aplicar `mod 62` e recusar par ou 31. Hoje o sistema usa só 312 das 1.860 chaves | `Util/Configuracao`, `.env.example` ([ADR-084](ADRs/ADR-084.md)) |
-| P02 | A promoção grava no log o CPF e o cargo novo, mas não o cargo anterior, que a RN10 pede | `GerenciarUsuariosService.promoverUsuario` |
+| P02 | ~~A promoção não guardava o cargo anterior~~. Corrigido: o log agora grava `CPF: CARGO_ANTERIOR -> CARGO_NOVO` | `GerenciarUsuariosService.promoverUsuario` |
 | P03 | `EDITOU_USUARIO` existe no `AcaoLog`, mas a edição de usuário não grava log | `GerenciarUsuariosService.editar` ([ADR-080](ADRs/ADR-080.md)) |
 | P04 | A tela de listar resíduos ainda pergunta "ordem de cadastro ou de código", mas com a AVL as duas mostram pelo código | `TelaCadastroResiduoTerminal` ([ADR-078](ADRs/ADR-078.md)) |
+| P05 | O `TestePontosColeta` está na pasta `Testes/`, mas declara `package backend_ecocode;` | `Testes/TestePontosColeta` ([ADR-093](ADRs/ADR-093.md)) |
+| P06 | As constantes `CODIGO_PATH` e `SESSAO_PATH` continuam na `Constantes`, mas não são mais usadas | `Util/Constantes` ([ADR-089](ADRs/ADR-089.md), [ADR-090](ADRs/ADR-090.md)) |
 
 ---
 
@@ -206,8 +291,11 @@ Pontos que não são erro de execução, mas não batem com a documentação:
 
 | Teste | Por que ainda não | Quando fazer |
 | --- | --- | --- |
-| Sessão expira em 30 dias (RN06) | A sessão de 30 dias ainda não foi implementada | Junto com a sessão |
-| Dados continuam depois de reiniciar, no banco (RNF03) | O banco ainda não entrou; hoje é JSON | Quando o banco entrar ([ADR-065](ADRs/ADR-065.md)) |
+| Sessão expira em 30 dias (RN06) | A sessão foi feita ([ADR-090](ADRs/ADR-090.md)), mas o teste precisa de uma sessão com data vencida | Antes da entrega |
+| "Sair" apaga a sessão no banco e o `token.txt` | Só foi testado na mão, pelo terminal | Junto com o teste da expiração |
+| Rodar a `Teste` inteira sobre o banco | Os testes por módulo vieram primeiro | Antes da entrega, para atualizar o total |
+| Remover usuário e reiniciar | Hoje o usuário volta (bug B06) | Depois de corrigir o B06 |
+| Excluir um resíduo que já teve solicitação cancelada | Depende da chave estrangeira do banco ([ADR-087](ADRs/ADR-087.md)) | Antes da entrega |
 | Mensagens claras na interface (RNF01) | A interface web ainda não existe | Na etapa do Thymeleaf |
 | Tema claro e escuro (RNF05) | Opcional, depende da interface | Se sobrar tempo |
 | Dois funcionários pegando a fila ao mesmo tempo | O back-end roda num processo só, pelo terminal | Quando o servidor Spring entrar |

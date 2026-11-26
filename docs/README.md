@@ -1,88 +1,83 @@
-# Registro de decisões de arquitetura (ADRs) - EcoCode
+# Documentação do EcoCode
 
-Decisões de arquitetura do módulo de resíduos. Um ADR aceito não é editado depois: se a
-decisão mudar, cria-se um ADR novo, e o antigo passa a "Substituída por ADR-XXX".
+Esta pasta guarda tudo o que explica o EcoCode por fora do código: o que o sistema precisa
+fazer, por que ele foi feito do jeito que foi, como foi testado e de onde vieram os dados do
+mapa de Goiânia. O README da raiz do projeto conta o que o sistema é e como rodar. Aqui fica o
+resto.
 
-## Versão 1.0
+| | |
+| --- | --- |
+| **Projeto** | EcoCode, Projeto Integrador (Grupo 05) |
+| **Equipe** | Gilvan Pedro, Sidney Emanuel, Guilherme Scarcela, João Paulo e Dários Suess |
+| **Última atualização** | 28/11/2026 |
+| **Entrega** | 05/12/2026 |
+| **Apresentação** | 07/12/2026 |
 
-Decisões da versão 1.0, como está no commit "Adicionando versao 1.0" (2026-10-06), antes
-da refatoração em camadas. Os nomes de classes citados nestes ADRs são os da versão 1.0
-(por exemplo, `Cadastro`), não os atuais.
+## O que tem aqui
 
-Estes ADRs foram **reconstruídos a partir do código**. O que o código faz está descrito
-com precisão e foi conferido rodando o programa. Os motivos de cada decisão foram
-deduzidos do código e do enunciado da Missão 02: o grupo deve revisar a seção
-"Contexto" de cada um e corrigir onde o motivo real tiver sido outro.
-
-| ADR | Decisão | Status |
+| Arquivo ou pasta | O que é | Quando abrir |
 | --- | --- | --- |
-| [001](ADRs/ADR-001.md) | Aplicação de terminal em Java com Maven, sem dependências | Aceita |
-| [002](ADRs/ADR-002.md) | Concentrar tela, dados e geração de código na classe `Cadastro` | Substituída por [ADR-010](ADRs/ADR-010.md) |
-| [003](ADRs/ADR-003.md) | Guardar os resíduos numa `ArrayList` em memória | Substituída por [ADR-011](ADRs/ADR-011.md) |
-| [004](ADRs/ADR-004.md) | Gerar o código de forma que `código mod 5` caia na categoria do tipo | Aceita |
-| [005](ADRs/ADR-005.md) | Representar o código como `String` de 6 dígitos com zeros à esquerda | Substituída por [ADR-013](ADRs/ADR-013.md) |
-| [006](ADRs/ADR-006.md) | Receber o tipo do resíduo como texto livre, reconhecido por sinônimos | Substituída por [ADR-012](ADRs/ADR-012.md) |
-| [007](ADRs/ADR-007.md) | Classificar com uma classe utilitária estática | Substituída por [ADR-015](ADRs/ADR-015.md) |
-| [008](ADRs/ADR-008.md) | Carregar 12 registros de exemplo no construtor do `Cadastro` | Substituída por [ADR-018](ADRs/ADR-018.md) |
+| [`Requisitos.md`](Requisitos.md) | Requisitos funcionais (RF01 a RF10), não funcionais (RNF01 a RNF05) e regras de negócio (RN01 a RN18) | Para saber o que o sistema tem que fazer e qual regra cada parte cumpre |
+| [`ADR.md`](ADR.md) | Índice geral das decisões de arquitetura: linha do tempo, temas, decisões que mudaram e pendências | Para achar uma decisão ou montar a parte de arquitetura do relatório |
+| [`ADRs/`](ADRs/) | Os 94 ADRs, um arquivo por decisão, e o modelo [`ADR-template.md`](ADRs/ADR-template.md) | Para ler uma decisão inteira, com as alternativas e as consequências |
+| [`Testes.md`](Testes.md) | Testes do fluxo principal e do banco, com critério de aceitação, resultado, bugs e pendências | Para o entregável de testes e para conferir o que já foi validado |
+| [`GrafoBairros.md`](GrafoBairros.md) | Os 19 bairros, as 40 arestas com a distância de carro do Google Maps e as distâncias esperadas do Dijkstra | Para explicar o ponto de coleta mais próximo |
+| [`Referencias/`](Referencias/) | Enunciado do PI e materiais de apoio em PDF | Para conferir o que a disciplina pede |
+| [`Desing.md`](Desing.md) | Reservado para o relatório de Design de Software | Ainda vazio |
+| [`Diagramas.md`](Diagramas.md) | Reservado para os diagramas (classes, banco, casos de uso) | Ainda vazio |
 
-### backend_ecocode.Estrutura da versão 1.0
+## Por onde começar
+
+Depende de quem está lendo:
+
+- **Quem vai corrigir ou avaliar:** comece pelo [README da raiz](../README.md), depois
+  [`Requisitos.md`](Requisitos.md) e [`Testes.md`](Testes.md). Os ADRs explicam o porquê de
+  cada escolha.
+- **Quem vai mexer no código:** leia a parte de arquitetura do [README da raiz](../README.md) e
+  os ADRs do tema que vai mexer, pelo [índice por tema](ADR.md#adrs-por-tema).
+- **Quem vai apresentar:** a [linha do tempo das ADRs](ADR.md#linha-do-tempo) conta a história do
+  projeto, e os destaques do [`Testes.md`](Testes.md) (AVL, Dijkstra, Cifra Afim, fila depois de
+  reiniciar) são bons exemplos para mostrar ao vivo.
+
+## Como os documentos se ligam
 
 ```text
-src/main/java/
-├── backend_ecocode.Main.java                         menu do terminal
-├── Cadastro/Cadastro.java            telas, lista de resíduos, geração de código, seed
-├── Classificador/Classificador.java  tipo -> resto, código -> resto -> categoria
-└── Resíduo/Residuos.java             entidade (código, tipo, quantidade)
+Requisitos.md  ──  o que o sistema precisa fazer (RF, RNF, RN)
+      │
+      ├──>  ADRs/  ──  como e por que cada parte foi feita     (citam os RF, RNF e RN)
+      │       └──>  ADR.md   índice de todas
+      │
+      ├──>  Testes.md  ──  prova de que cada regra funciona    (cada teste cita o RF ou RN)
+      │
+      └──>  GrafoBairros.md  ──  os dados do grafo usados no ponto mais próximo (RF04)
 ```
 
-## Versão refatorada
+Um exemplo do caminho completo: a regra RN13 diz que um resíduo só pode estar numa solicitação
+aberta por vez. O [ADR-071](ADRs/ADR-071.md) explica como isso virou o status do resíduo, e os
+testes T16, T17 e BD20 do [`Testes.md`](Testes.md) mostram o sistema recusando o pedido
+repetido.
 
-Decisões tomadas a partir da refatoração em camadas (tela, service, repository).
+## Situação dos documentos
 
-| ADR | Decisão | Status |
-| --- | --- | --- |
-| [009](ADRs/ADR-009.md) | Adicionar uma descrição opcional aos resíduos | Aceita |
-| [010](ADRs/ADR-010.md) | Separar o módulo em camadas (tela, service, repository e domínio) | Aceita |
-| [011](ADRs/ADR-011.md) | Guardar os resíduos num `TreeMap` com o código como chave | Aceita, alterada por [ADR-024](ADRs/ADR-024.md) e [ADR-036](ADRs/ADR-036.md) |
-| [012](ADRs/ADR-012.md) | Representar o tipo do resíduo com o enum `TipoResiduo` | Aceita |
-| [013](ADRs/ADR-013.md) | Gerar o código com 4 dígitos numa classe própria e normalizar o código digitado | Aceita, alterada por [ADR-025](ADRs/ADR-025.md) e [ADR-032](ADRs/ADR-032.md) |
-| [014](ADRs/ADR-014.md) | Validar no objeto e no service, sinalizando erros com exceções | Aceita, alterada por [ADR-030](ADRs/ADR-030.md) |
-| [015](ADRs/ADR-015.md) | Calcular a classe pelo código no service, no lugar do `Classificador` | Aceita |
-| [016](ADRs/ADR-016.md) | Editar e excluir por código, com confirmação e sem alterar tipo nem código | Aceita |
-| [017](ADRs/ADR-017.md) | Filtrar a listagem por categoria no service | Aceita |
-| [018](ADRs/ADR-018.md) | Cadastrar os registros iniciais pelo service | Aceita |
-| [019](ADRs/ADR-019.md) | Implementar a Cifra de César sobre a correspondência A = 0 ... Z = 25 | Aceita, alterada por [ADR-021](ADRs/ADR-021.md) e [ADR-031](ADRs/ADR-031.md) |
-| [020](ADRs/ADR-020.md) | Ler a chave da cifra de um arquivo `.env` com `dotenv-java` | Aceita, alterada por [ADR-033](ADRs/ADR-033.md) |
-| [021](ADRs/ADR-021.md) | Preservar maiúsculas e minúsculas na cifra, deslocando cada caixa num sentido | Aceita, alterada por [ADR-031](ADRs/ADR-031.md) |
-| [022](ADRs/ADR-022.md) | Criar o módulo de usuários com CPF como chave e cadastro restrito a gerentes | Aceita |
-| [023](ADRs/ADR-023.md) | Guardar a senha do usuário cifrada com a Cifra de César | Aceita |
-| [024](ADRs/ADR-024.md) | Salvar os resíduos em arquivo JSON, com o `Map` em memória como fonte principal | Aceita |
-| [025](ADRs/ADR-025.md) | Gerar o código por sequência de cada tipo (último + 5), salvando o último em arquivo | Substituída por [ADR-032](ADRs/ADR-032.md) |
-| [026](ADRs/ADR-026.md) | Salvar os usuários em arquivo JSON, reaproveitando a persistência dos resíduos | Aceita |
-| [027](ADRs/ADR-027.md) | Guardar e buscar o CPF só com dígitos | Aceita |
-| [028](ADRs/ADR-028.md) | Reunir as validações do usuário na classe `ValidacoesUsuario` | Aceita |
-| [029](ADRs/ADR-029.md) | Data de nascimento em AAAA-MM-DD no arquivo e em DD/MM/AAAA para o usuário | Aceita |
-| [030](ADRs/ADR-030.md) | Reunir as validações do resíduo na classe `ValidacoesResiduos` | Aceita |
-| [031](ADRs/ADR-031.md) | Cifrar também os dígitos e concentrar a conta da cifra num único método | Aceita |
-| [032](ADRs/ADR-032.md) | Calcular o próximo código a partir do último gerado, de qualquer tipo | Aceita |
-| [033](ADRs/ADR-033.md) | Implementar a Cifra Afim com as chaves a e b no `.env` | Aceita, alterada por [ADR-035](ADRs/ADR-035.md) |
-| [034](ADRs/ADR-034.md) | Reunir MDC, MMC e inverso modular na classe `Aritmetica` | Aceita |
-| [035](ADRs/ADR-035.md) | Calcular o inverso da Cifra Afim pelo Euclides Estendido | Aceita |
-| [036](ADRs/ADR-036.md) | Listar os resíduos por ordem de cadastro ou por ordem de código | Aceita |
-| [037](ADRs/ADR-037.md) | Calcular as quantidades de resíduos no service | Aceita |
+| Documento | Situação |
+| --- | --- |
+| Requisitos | Completo, revisado em 25/11 |
+| ADRs | Atualizados até o ADR-094 (28/11). Próximo número livre: ADR-095 |
+| Testes | Atualizado em 28/11, com os testes no banco. Falta rodar a `Teste` inteira sobre o banco |
+| Grafo dos bairros | Completo (19 bairros, 40 arestas) |
+| Design de Software | A fazer |
+| Diagramas | A fazer: diagrama de classes, diagrama do banco (as 6 tabelas do [ADR-087](ADRs/ADR-087.md)) e casos de uso |
+| Script do banco | Ainda não está no repositório. Sugestão: `docs/banco/EcoCode.sql` |
 
-### backend_ecocode.Estrutura da versão refatorada
+## Regras para escrever aqui
 
-```text
-src/main/java/
-├── backend_ecocode.Main.java                                   menu do terminal
-├── backend_ecocode.TelaTerminal/TelaCadastroResiduoTerminal.java       leitura do teclado e exibição
-├── backend_ecocode.Service/                                    GerenciarResiduosService, GerenciarUsuariosService
-├── backend_ecocode.Repository/                                 GerenciarResiduosRepository, GerenciarUsuariosRepository
-├── backend_ecocode.Domain/                                     Residuo, TipoResiduo, Usuario, CargoUsuario e as interfaces
-├── backend_ecocode.Persistency/                                Persistencia e Files/PersistenciaArquivo
-├── backend_ecocode.Exceptions/                                 AcessoNegadoException
-└── backend_ecocode.Util/                                       GerarCodigoResiduo, CifraCesar, CifraAfim, Aritmetica, Configuracao, Constantes, ValidadorCpf, ValidarEmail, ValidacoesUsuario, ValidacoesResiduos
-```
-
-Dados salvos em `arquivos/` na raiz do projeto: `residuos.json`, `usuarios.json` e o arquivo do último código gerado (`CODIGO_PATH`).
+- Português, em frases simples, como se estivesse explicando para um colega.
+- Datas em DD/MM/AAAA no texto e AAAA-MM-DD no campo "Data" dos ADRs.
+- Nome dos integrantes sempre completo: Gilvan Pedro, Sidney Emanuel, Guilherme Scarcela, João
+  Paulo e Dários Suess.
+- Decisão nova vira ADR novo, a partir do [modelo](ADRs/ADR-template.md). ADR aceito não é
+  reescrito: o antigo passa a "Substituída por ADR-XXX". Depois, acrescente a linha no
+  [`ADR.md`](ADR.md).
+- Teste novo entra no [`Testes.md`](Testes.md) com cenário, tipo (sucesso ou rejeição),
+  critério de aceitação e resultado.
+- Ao citar uma regra, use o código dela (RF04, RN13), para dar para procurar.
