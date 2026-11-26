@@ -2,16 +2,14 @@ package backend_ecocode.Repository;
 
 import backend_ecocode.Domain.Interfaces.RepositoryUsuarioInterface;
 import backend_ecocode.Domain.Entities.Usuario;
-import backend_ecocode.Persistency.Files.PersistenciaArquivo;
+import backend_ecocode.Persistency.Banco.PersistenciaBancoUsuario;
 import backend_ecocode.Persistency.Persistencia;
-import backend_ecocode.Util.Constantes;
 
 import java.util.*;
 
 public class GerenciarUsuariosRepository implements RepositoryUsuarioInterface {
 
-    private final Persistencia<Usuario> persistencia =
-            new PersistenciaArquivo<>(Constantes.USUARIOS_PATH, Usuario.class);
+    private final Persistencia<Usuario> persistencia = new PersistenciaBancoUsuario();
 
     private final Map<String, Usuario> usuarios = new TreeMap<>();
 

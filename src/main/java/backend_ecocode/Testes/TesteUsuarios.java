@@ -1,8 +1,9 @@
-package backend_ecocode;
+package backend_ecocode.Testes;
 
 import backend_ecocode.Domain.Entities.Usuario;
 import backend_ecocode.Domain.Enums.Bairro;
 import backend_ecocode.Domain.Enums.CargoUsuario;
+import backend_ecocode.Instanciador;
 import backend_ecocode.Service.GerenciarUsuariosService;
 import backend_ecocode.Util.LogarUsuario;
 

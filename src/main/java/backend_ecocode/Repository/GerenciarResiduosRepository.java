@@ -3,15 +3,14 @@ package backend_ecocode.Repository;
 import backend_ecocode.Estrutura.ArvoreAVL;
 import backend_ecocode.Domain.Interfaces.RepositoryResiduosInterface;
 import backend_ecocode.Domain.Entities.Residuo;
-import backend_ecocode.Persistency.Files.PersistenciaArquivo;
+import backend_ecocode.Persistency.Banco.PersistenciaBancoResiduo;
 import backend_ecocode.Persistency.Persistencia;
-import backend_ecocode.Util.Constantes;
 
 import java.util.*;
 
 public class GerenciarResiduosRepository implements RepositoryResiduosInterface {
 
-    private final Persistencia<Residuo> persistencia = new PersistenciaArquivo<>(Constantes.RESIDUOS_PATH, Residuo.class);
+    private final Persistencia<Residuo> persistencia = new PersistenciaBancoResiduo();
 
     // antes: private final Map<String, Residuo> residuos = new LinkedHashMap<>();
     private final ArvoreAVL<String, Residuo> residuos = new ArvoreAVL<>();

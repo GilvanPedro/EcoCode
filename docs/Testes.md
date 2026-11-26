@@ -8,7 +8,7 @@
 | **Projeto** | EcoCode, Projeto Integrador |
 | **Equipe** | Gilvan Pedro, Sidney Emanuel, Guilherme Scarcela, João Paulo e Dários Suess |
 | **Última atualização** | 27/11/2026 |
-| **Classe de teste** | `backend_ecocode.Teste` (`src/main/java/backend_ecocode/Teste.java`) |
+| **Classe de teste** | `backend_ecocode.Testes.Teste` (`src/main/java/backend_ecocode/Teste.java`) |
 | **Resultado da última rodada** | 199 testes: 198 passaram, 1 falhou (bug B05, ainda aberto) |
 
 ## Sumário
@@ -56,10 +56,10 @@ A partir da raiz do projeto, com o `.env` preenchido:
 ```bash
 mvn compile
 mvn dependency:copy-dependencies
-java -cp "target/classes:target/dependency/*" backend_ecocode.Teste
+java -cp "target/classes:target/dependency/*" backend_ecocode.Testes.Teste
 ```
 
-No Windows, troque `:` por `;`. Pela IDE, basta rodar a classe `backend_ecocode.Teste`.
+No Windows, troque `:` por `;`. Pela IDE, basta rodar a classe `backend_ecocode.Testes.Teste`.
 
 > **Atenção:** o `Teste` usa os arquivos reais de `arquivos/`. Os usuários de teste criados no
 > grupo "Usuários" são removidos no fim, e os 5 ecopontos são reaproveitados se já existirem,

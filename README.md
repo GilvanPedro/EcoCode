@@ -71,7 +71,7 @@ próximo.
 
 ## Situação atual
 
-O back-end em Java puro está completo e testado pela classe `backend_ecocode.Teste`
+O back-end em Java puro está completo e testado pela classe `backend_ecocode.Testes.Teste`
 (199 testes, 198 passando; detalhes em [`docs/Testes.md`](docs/Testes.md)). Falta a interface
 web, o banco de dados e a sessão de 30 dias.
 
@@ -244,7 +244,7 @@ No Windows, troque `:` por `;` no classpath: `"target/classes;target/dependency/
 ### 3. Rodar os testes
 
 ```bash
-java -cp "target/classes:target/dependency/*" backend_ecocode.Teste
+java -cp "target/classes:target/dependency/*" backend_ecocode.Testes.Teste
 ```
 
 O `Teste` grava nos arquivos de `arquivos/`. Antes de rodar, faça uma cópia da pasta se quiser

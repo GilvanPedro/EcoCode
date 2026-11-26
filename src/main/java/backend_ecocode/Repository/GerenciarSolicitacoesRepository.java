@@ -2,14 +2,13 @@ package backend_ecocode.Repository;
 
 import backend_ecocode.Domain.Interfaces.RepositorySolicitacoesInterface;
 import backend_ecocode.Domain.Entities.Solicitacao;
-import backend_ecocode.Persistency.Files.PersistenciaArquivo;
+import backend_ecocode.Persistency.Banco.PersistenciaBancoSolicitacao;
 import backend_ecocode.Persistency.Persistencia;
-import backend_ecocode.Util.Constantes;
 
 import java.util.*;
 
 public class GerenciarSolicitacoesRepository implements RepositorySolicitacoesInterface {
-    private final Persistencia<Solicitacao> persistencia = new PersistenciaArquivo<>(Constantes.SOLICITACOES_PATH, Solicitacao.class);
+    private final Persistencia<Solicitacao> persistencia = new PersistenciaBancoSolicitacao();
     private final Map<UUID, Solicitacao> solicitacoes = new HashMap<>();
 
     public GerenciarSolicitacoesRepository() {

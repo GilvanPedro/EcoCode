@@ -1,4 +1,4 @@
-package backend_ecocode;
+package backend_ecocode.Testes;
 
 import backend_ecocode.Estrutura.ArvoreAVL;
 import backend_ecocode.Estrutura.Dijkstra;
@@ -12,6 +12,7 @@ import backend_ecocode.Domain.Entities.Solicitacao;
 import backend_ecocode.Domain.Entities.Usuario;
 import backend_ecocode.Domain.Enums.*;
 import backend_ecocode.Exceptions.AcessoNegadoException;
+import backend_ecocode.Instanciador;
 import backend_ecocode.Repository.GerenciarLogRepository;
 import backend_ecocode.Repository.GerenciarSolicitacoesRepository;
 import backend_ecocode.Service.*;

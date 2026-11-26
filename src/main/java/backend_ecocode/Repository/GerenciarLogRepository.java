@@ -3,9 +3,8 @@ package backend_ecocode.Repository;
 import backend_ecocode.Estrutura.PilhaEncadeada;
 import backend_ecocode.Domain.Entities.RegistroLog;
 import backend_ecocode.Domain.Interfaces.RepositoryLogInterface;
-import backend_ecocode.Persistency.Files.PersistenciaArquivo;
+import backend_ecocode.Persistency.Banco.PersistenciaBancoLog;
 import backend_ecocode.Persistency.Persistencia;
-import backend_ecocode.Util.Constantes;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -13,7 +12,7 @@ import java.util.List;
 
 public class GerenciarLogRepository implements RepositoryLogInterface {
 
-    private final Persistencia<RegistroLog> persistencia = new PersistenciaArquivo<>(Constantes.LOG_PATH, RegistroLog.class);
+    private final Persistencia<RegistroLog> persistencia = new PersistenciaBancoLog();
     private final PilhaEncadeada<RegistroLog> pilha = new PilhaEncadeada<>();
 
     public GerenciarLogRepository() {

@@ -18,11 +18,12 @@ import java.util.UUID;
 public class GerenciarResiduosService implements ServiceResiduosInterface {
 
     private final GerenciarResiduosRepository gerarResiduosRepository;
-    private final GerarCodigoResiduo gerarCodigoResiduo = new GerarCodigoResiduo();
+    private final GerarCodigoResiduo gerarCodigoResiduo;
     private final CalcularRestoResiduo calcularResto = new CalcularRestoResiduo();
 
     public GerenciarResiduosService(GerenciarResiduosRepository gerarResiduosRepository) {
         this.gerarResiduosRepository = gerarResiduosRepository;
+        this.gerarCodigoResiduo = new GerarCodigoResiduo(gerarResiduosRepository.listar());
     }
 
     @Override

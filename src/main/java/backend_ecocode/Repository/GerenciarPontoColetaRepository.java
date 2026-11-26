@@ -2,6 +2,7 @@ package backend_ecocode.Repository;
 
 import backend_ecocode.Domain.Entities.PontoColeta;
 import backend_ecocode.Domain.Interfaces.RepositoryPontoColetaInterface;
+import backend_ecocode.Persistency.Banco.PersistenciaBancoPontoColeta;
 import backend_ecocode.Persistency.Files.PersistenciaArquivo;
 import backend_ecocode.Persistency.Persistencia;
 import backend_ecocode.Util.Constantes;
@@ -10,7 +11,7 @@ import java.util.*;
 
 public class GerenciarPontoColetaRepository implements RepositoryPontoColetaInterface {
 
-    private final Persistencia<PontoColeta> persistencia = new PersistenciaArquivo<>(Constantes.PONTOS_COLETAS_PATH, PontoColeta.class);
+    private final Persistencia<PontoColeta> persistencia = new PersistenciaBancoPontoColeta();
 
     private final Map<UUID, PontoColeta> pontos = new HashMap<>();
 

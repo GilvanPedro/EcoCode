@@ -16,6 +16,12 @@ public class Sessao {
         this.expiraEm = LocalDateTime.now().plusDays(DIAS_VALIDADE);
     }
 
+    public Sessao(String token, UUID usuarioId, LocalDateTime expiraEm) {
+        this.token = token;
+        this.usuarioId = usuarioId;
+        this.expiraEm = expiraEm;
+    }
+
     public boolean estaVencida() {
         return LocalDateTime.now().isAfter(expiraEm);
     }
