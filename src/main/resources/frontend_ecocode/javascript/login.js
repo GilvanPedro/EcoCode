@@ -1,6 +1,3 @@
-// Login: por enquanto só confere se os campos foram preenchidos e vai para a tela principal.
-// O backend (feito à parte) vai conferir e-mail e senha depois.
-
 const form = document.getElementById("form-login");
 const erro = document.getElementById("erro-login");
 
@@ -18,7 +15,9 @@ form.addEventListener("submit", (e) => {
         return;
     }
 
-    // TODO (backend): enviar e-mail e senha. Se der erro, mostrar "E-mail ou senha incorretos." na caixa de erro.
-    
-    window.location.href = "inicio.html";
+    // Qual botão foi clicado: "usuario" ou "funcionario" (funcionário ou gerente).
+    const perfil = e.submitter ? e.submitter.dataset.perfil : "usuario";
+
+    //  enviar e-mail e senha. Se der erro, mostrar "E-mail ou senha incorretos." na caixa de erro.
+    window.location.href = perfil === "funcionario" ? "fila-coletas.html" : "inicio.html";
 });
