@@ -15,8 +15,8 @@ public class PersistenciaBancoSessao {
             "DELETE FROM sessoes WHERE token = ?";
 
     public void salvar(Sessao s) {
-        try (Connection c = ConexaoBanco.conectar();
-             PreparedStatement ps = c.prepareStatement(INSERT)) {
+        try (var acesso = ConexaoBanco.abrir();
+             PreparedStatement ps = acesso.conexao().prepareStatement(INSERT)) {
             ps.setString(1, s.getToken());
             ps.setString(2, s.getUsuarioId().toString());
             ps.setTimestamp(3, Timestamp.valueOf(s.getExpiraEm()));
@@ -27,8 +27,8 @@ public class PersistenciaBancoSessao {
     }
 
     public Sessao buscar(String token) {
-        try (Connection c = ConexaoBanco.conectar();
-             PreparedStatement ps = c.prepareStatement(SELECT)) {
+        try (var acesso = ConexaoBanco.abrir();
+             PreparedStatement ps = acesso.conexao().prepareStatement(SELECT)) {
             ps.setString(1, token);
             try (ResultSet rs = ps.executeQuery()) {
                 if (!rs.next()) return null;
@@ -44,8 +44,8 @@ public class PersistenciaBancoSessao {
     }
 
     public void apagar(String token) {
-        try (Connection c = ConexaoBanco.conectar();
-             PreparedStatement ps = c.prepareStatement(DELETE)) {
+        try (var acesso = ConexaoBanco.abrir();
+             PreparedStatement ps = acesso.conexao().prepareStatement(DELETE)) {
             ps.setString(1, token);
             ps.executeUpdate();
         } catch (SQLException e) {

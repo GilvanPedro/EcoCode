@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pedido #A3F9 · EcoCode</title>
+    <title>Pedido · EcoCode</title>
     <link rel="icon" type="image/png" href="../assets/icons/favicon.png">
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/inicio.css">
@@ -43,8 +43,8 @@
 
                 </div>
 
-                <p class="usuario-nome" id="usuario-nome">Mariana Alves</p>
-                <p class="usuario-info" id="usuario-info">Usuário · Setor Central</p>
+                <p class="usuario-nome" id="usuario-nome"></p>
+                <p class="usuario-info" id="usuario-info"></p>
                 <a href="login.html" id="sair" class="sair">Sair</a>
 
             </div>
@@ -61,14 +61,14 @@
 
                     <div class="titulo-linha">
 
-                        <h1>Pedido #A3F9</h1>
-                        <span class="etiqueta pendente" id="etiqueta-pedido">Pendente</span>
+                        <h1 id="titulo">Pedido</h1>
+                        <span class="etiqueta" id="etiqueta-pedido"></span>
 
                     </div>
 
                 </div>
 
-                <button type="button" class="btn-cancelar-pedido" id="botao-cancelar">Cancelar solicitação</button>
+                <button type="button" class="btn-cancelar-pedido" hidden id="botao-cancelar">Cancelar solicitação</button>
 
             </header>
 
@@ -80,120 +80,24 @@
 
                     <h2>Linha do tempo</h2>
 
-                    <ol class="linha-tempo">
-
-                        <li class="atual">
-
-                            <span class="passo-num">1</span>
-                            <p class="passo-titulo">Pendente</p>
-                            <p class="passo-desc">Pedido criado em 24/11 às 16:40. Aguardando na fila.</p>
-
-                        </li>
-
-                        <li>
-
-                            <span class="passo-num">2</span>
-                            <p class="passo-titulo">Em rota</p>
-                            <p class="passo-desc">Quando um coletor iniciar a rota até você.</p>
-
-                        </li>
-
-                        <li>
-
-                            <span class="passo-num">3</span>
-                            <p class="passo-titulo">Concluída</p>
-                            <p class="passo-desc">Quando os resíduos forem entregues no ponto de coleta.</p>
-
-                        </li>
-
-                    </ol>
+                    <ol class="linha-tempo" id="etapas"></ol>
 
                     <div class="itens-pedido">
 
                         <h3>Resíduos do pedido</h3>
 
-                        <ul>
-
-                            <li>
-
-                                <span><strong>0010</strong> Notebook Lenovo antigo</span>
-                                <span class="qtd">1 un.</span>
-
-                            </li>
-
-                            <li>
-
-                                <span><strong>0007</strong> Cabos HDMI de 2 metros</span>
-                                <span class="qtd">2 un.</span>
-
-                            </li>
-
-                        </ul>
+                        <ul id="materiais"></ul>
 
                     </div>
 
                 </section>
 
-                <div class="coluna-lateral">
-
-                    <section class="cartao cartao-fila" id="cartao-fila">
-
-                        <p class="fila-rotulo">Sua posição na fila</p>
-                        <p class="fila-numero">4º</p>
-                        <p class="fila-rotulo">3 pedidos na sua frente</p>
-
-                    </section>
-
-                    <section class="cartao detalhes-pedido">
-
-                        <div class="resumo-linha">
-
-                            <span>Ponto</span>
-                            <strong>EcoPonto Leste Universitário</strong>
-
-                        </div>
-
-                        <div class="resumo-linha">
-
-                            <span>Distância</span>
-                            <strong>2,0 km</strong>
-
-                        </div>
-
-                        <div class="resumo-linha">
-
-                            <span>Observação</span>
-                            <strong>Em casa depois das 14h</strong>
-
-                        </div>
-
-                    </section>
-
-                    <p class="nota-pequena" id="nota-cancelar">O botão de cancelar só aparece enquanto o pedido está Pendente.</p>
-
-                </div>
-
-            </div>
-
-        </main>
+                <div class="coluna-lateral"><section class="cartao detalhes-pedido" id="detalhes"></section></div></div></main>
 
     </div>
 
-    <dialog id="dialogo-cancelar" class="dialogo">
 
-        <h2>Cancelar pedido?</h2>
-        <p>O pedido <strong>#A3F9</strong> será cancelado e os resíduos dele voltam a ficar Disponíveis.</p>
-
-        <div class="acoes">
-
-            <button type="button" class="btn btn-secundario" id="voltar-cancelar">Voltar</button>
-            <button type="button" class="btn btn-perigo" id="confirmar-cancelar">Cancelar pedido</button>
-
-        </div>
-
-    </dialog>
-
-    <script src="../javascript/inicio.js"></script>
-    <script src="../javascript/pedido.js"></script>
+    <script src="/javascript/inicio.js"></script>
+    <script type="module" src="/javascript/web.js"></script>
 </body>
 </html>

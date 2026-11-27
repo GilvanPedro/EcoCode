@@ -7,8 +7,7 @@ cadastra o que quer descartar, descobre qual ponto de coleta fica mais perto e a
 pedido até a coleta. Do outro lado, a equipe atende os pedidos por uma fila, e o gerente
 cuida dos cargos de quem usa o sistema.
 
-O back-end é feito em Java puro, com os dados num banco MySQL. A interface web vem depois,
-com Spring Boot e Thymeleaf.
+O Spring Boot serve as telas HTML e a API. Os serviços Java consultam e gravam no MySQL via JDBC.
 
 | | |
 | --- | --- |
@@ -73,11 +72,7 @@ próximo.
 
 ## Situação atual
 
-O back-end em Java puro está completo, com os dados no MySQL e a sessão de 30 dias funcionando.
-Foi testado pela classe `backend_ecocode.Testes.Teste` (199 testes, 198 passando, ainda no
-JSON) e pelas quatro classes de teste do banco, que passaram (detalhes em
-[`docs/Testes.md`](docs/Testes.md)). Falta a interface web: o front já abre pelo Spring em
-`localhost:8080`, mas ainda não conversa com o back-end.
+O cadastro, o login, os resíduos, os pontos de coleta, os pedidos e as operações da equipe estão disponíveis na interface web. Cada resíduo selecionado gera uma solicitação independente. O ponto mais próximo é calculado pelo bairro da pessoa.
 
 ### Pronto
 
@@ -92,7 +87,7 @@ JSON) e pelas quatro classes de teste do banco, que passaram (detalhes em
 - Promoção de cargo pelo CPF: só o gerente promove, e ninguém troca o próprio cargo
 - Remoção pelo gerente, que não pode remover a si mesmo
 - CPF e e-mail únicos, conferidos no service; formato validado na entidade
-- Senha cifrada com a Cifra Afim de 62 caracteres ([ADR-084](docs/ADRs/ADR-084.md))
+- Senhas novas usam PBKDF2-HMAC-SHA256 com salt aleatório. O login também reconhece os registros anteriores com a Cifra Afim.
 
 **Resíduos**
 
@@ -161,12 +156,9 @@ JSON) e pelas quatro classes de teste do banco, que passaram (detalhes em
   ([ADR-084](docs/ADRs/ADR-084.md))
 - A edição de usuário não grava `EDITOU_USUARIO` no log
 - O `TestePontosColeta` declara o pacote errado ([ADR-093](docs/ADRs/ADR-093.md))
-- O script SQL do banco ainda não está no repositório ([ADR-087](docs/ADRs/ADR-087.md))
 
 ### Planejado
 
-- Interface web com Spring Boot e Thymeleaf, ligando as telas que já existem ao back-end
-  ([ADR-055](docs/ADRs/ADR-055.md))
 - Tabelas de bairros e arestas do grafo no banco, se sobrar tempo ([ADR-092](docs/ADRs/ADR-092.md))
 
 ## Categorias e código do resíduo
@@ -204,10 +196,9 @@ que também é a chave da `ArvoreAVL` ([ADR-078](docs/ADRs/ADR-078.md)).
 ## Cifras
 
 As duas cifras são **didáticas**: mostram a aritmética modular estudada na disciplina, mas não
-servem para proteger senhas de verdade. Um sistema real usaria um hash de senha, como o BCrypt
-([ADR-084](docs/ADRs/ADR-084.md)).
+servem para proteger senhas de verdade. As novas senhas usam PBKDF2-HMAC-SHA256.
 
-**Cifra Afim** (`Util/CifraAfim`), usada na senha desde o [ADR-084](docs/ADRs/ADR-084.md):
+**Cifra Afim** (`Util/CifraAfim`), usada nas senhas legadas conforme o [ADR-084](docs/ADRs/ADR-084.md):
 
 - Alfabeto único de 62 caracteres: A-Z (0 a 25), a-z (26 a 51) e 0-9 (52 a 61)
 - Cifrar: `E(x) = (a · x + b) mod 62`
@@ -229,8 +220,7 @@ servem para proteger senhas de verdade. Um sistema real usaria um hash de senha,
 - MySQL 8, acessado com JDBC pelo driver `mysql-connector-j`
 - [dotenv-java](https://github.com/cdimascio/dotenv-java) 3.0.0: leitura do `.env` (banco e chaves das cifras)
 - [Gson](https://github.com/google/gson) 2.12.1: arquivos JSON, hoje só no plano B
-- Spring Boot 4.0.6: já serve o front em `localhost:8080`, e vai ligar as telas ao back-end na
-  etapa do Thymeleaf
+- Spring Boot 4.0.6 para a API e os recursos estáticos
 
 ## Como executar
 
@@ -242,8 +232,12 @@ servem para proteger senhas de verdade. Um sistema real usaria um hash de senha,
 
 ### 1. Criar o banco
 
-Rode o script de criação do banco `EcoCode` no MySQL (pelo Workbench ou pelo terminal). Ele
-cria as seis tabelas descritas no [ADR-087](docs/ADRs/ADR-087.md).
+Na raiz do projeto, crie o banco de desenvolvimento e carregue as seis tabelas do [ADR-087](docs/ADRs/ADR-087.md).
+
+```bash
+mysql -u root -p -e 'CREATE DATABASE IF NOT EXISTS EcoCode CHARACTER SET utf8mb4'
+mysql -u root -p EcoCode < docs/banco/EcoCode.sql
+```
 
 ### 2. Configurar o `.env`
 
@@ -265,10 +259,20 @@ CIFRA_AFIM_B=3
 
 O `.env` não vai para o Git. Sem ele, o programa para avisando qual variável está faltando.
 
-> As chaves da Afim precisam ser as mesmas usadas quando as senhas do banco foram cifradas;
-> com outras chaves, nenhum login antigo funciona.
+> As contas legadas que usam a Cifra Afim precisam das chaves originais para entrar.
 
 ### 3. Compilar e rodar
+
+Para iniciar a interface web, execute na raiz do repositório:
+
+```bash
+mvn verify
+java -jar target/Projeto_APP_ReciclagemDeLixoEletronico-1.0-SNAPSHOT.jar
+```
+
+Abra `http://localhost:8080/` e crie uma conta. O servidor verifica o cargo salvo no banco em cada operação. Para demonstrar a equipe em um banco descartável, execute as quatro classes de teste abaixo antes de iniciar o servidor. Elas criam usuários de demonstração, resíduos e pontos de coleta. Use um processo de aplicação por banco, pois os serviços mantêm as coleções em memória.
+
+Para usar o terminal:
 
 Pela IDE, rode a classe `backend_ecocode.Main`.
 
@@ -293,7 +297,7 @@ java -cp "target/classes:target/dependency/*" backend_ecocode.Testes.TesteSolici
 java -cp "target/classes:target/dependency/*" backend_ecocode.TestePontosColeta
 ```
 
-O teste geral, com as estruturas e a cifra:
+Para o teste geral, aponte `DB_URL` para outro banco de teste vazio, inicializado com `docs/banco/EcoCode.sql`. Essa classe cria seus próprios usuários.
 
 ```bash
 java -cp "target/classes:target/dependency/*" backend_ecocode.Testes.Teste
@@ -366,7 +370,7 @@ TelaTerminal  →  Service  →  Repository  →  Persistência (MySQL com JDBC;
   do Java.
 - A classe **`Instanciador`** cria uma única instância de cada repository e de cada service e
   entrega cada dependência pelo construtor. Assim todo o sistema usa os mesmos dados em
-  memória ([ADR-058](docs/ADRs/ADR-058.md)). Quando o Spring entrar, ele assume esse papel.
+  memória ([ADR-058](docs/ADRs/ADR-058.md)). O controlador web compartilha esse conjunto de serviços entre as requisições.
 - Erros são sinalizados com exceções (`IllegalArgumentException`, `AcessoNegadoException`) e
   tratados na tela.
 

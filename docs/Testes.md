@@ -8,8 +8,28 @@
 | **Projeto** | EcoCode, Projeto Integrador |
 | **Equipe** | Gilvan Pedro, Sidney Emanuel, Guilherme Scarcela, João Paulo e Dários Suess |
 | **Última atualização** | 28/11/2026 |
-| **Classes de teste** | `backend_ecocode.Testes.Teste` (geral, feita no JSON) e `TesteUsuarios`, `TesteResiduos`, `TesteSolicitacoes`, `TestePontosColeta` (no banco), todas em `src/main/java/backend_ecocode/Testes/` |
-| **Resultado da última rodada** | No banco (28/11): as 4 classes passaram, e a fila volta na ordem certa depois de reiniciar (B05 corrigido). Na `Teste` (JSON, 27/11): 199 testes, 198 passaram |
+| **Classes de teste** | `backend_ecocode.Testes.Teste` (geral, em banco vazio) e `TesteUsuarios`, `TesteResiduos`, `TesteSolicitacoes`, `TestePontosColeta` (no banco), todas em `src/main/java/backend_ecocode/Testes/` |
+| **Resultado histórico anterior à integração web** | No banco (28/11): as 4 classes passaram, e a fila volta na ordem certa depois de reiniciar (B05 corrigido). Na `Teste` (JSON, 27/11): 199 testes, 198 passaram |
+
+## Validação da integração web
+
+O protótipo foi exercitado com Java 25, Spring Boot 4 e MySQL 8.4. O teste geral em um banco exclusivo passou nas 199 verificações. Os quatro testes JDBC por módulo registraram 49 verificações positivas, além das recusas de login esperadas.
+
+| Cenário | Critério de aceitação | Resultado observado |
+| --- | --- | --- |
+| Descarte no navegador | Após o cadastro e login, registrar e selecionar dois resíduos deve gerar dois pedidos independentes no histórico | O Chromium exibiu dois pedidos e abriu o detalhe do pedido selecionado pelo seu identificador |
+| Pedido duplicado | Um resíduo pendente só pode integrar uma solicitação ativa | A API respondeu HTTP 400 e o histórico manteve um único pedido para o resíduo |
+| Privacidade do histórico | Outra conta só pode visualizar e cancelar os próprios pedidos | O histórico da outra conta ficou vazio e a tentativa de cancelamento retornou HTTP 403 |
+| Cancelamento pelo dono | Cancelar um pedido pendente deve liberar o resíduo | O pedido passou para CANCELADA e o resíduo para DISPONIVEL |
+| Fila da equipe | Apenas a equipe pode iniciar e concluir coletas | O usuário recebeu HTTP 403 e a conta de gerência iniciou e concluiu uma coleta |
+| Falha de gravação | Uma falha ao inserir o pedido deve reverter a mudança de estado do resíduo | Uma restrição temporária no banco de teste impediu a inserção. O banco e a API mantiveram o resíduo disponível, e a repetição após retirar a restrição teve sucesso |
+| Encerrar sessão | Após sair, o navegador precisa autenticar novamente | A consulta de perfil retornou HTTP 401 |
+
+Para repetir o teste automatizado de API, inicie a aplicação em um banco de teste e execute na raiz do repositório. O teste cria duas contas e um resíduo com histórico de descarte.
+
+```bash
+ECOCODE_TEST_URL=http://localhost:8080 python3 tests/fluxo_web.py
+```
 
 ## Sumário
 
@@ -65,7 +85,8 @@ java -cp "target/classes:target/dependency/*" backend_ecocode.Testes.TesteResidu
 java -cp "target/classes:target/dependency/*" backend_ecocode.Testes.TesteSolicitacoes
 java -cp "target/classes:target/dependency/*" backend_ecocode.TestePontosColeta
 
-# teste geral
+# teste geral: use um segundo banco vazio com o esquema de docs/banco/EcoCode.sql
+# ajuste DB_URL para esse banco antes de executar
 java -cp "target/classes:target/dependency/*" backend_ecocode.Testes.Teste
 ```
 
@@ -79,8 +100,7 @@ No Windows, troque `:` por `;`. Pela IDE, basta rodar cada classe.
 > reaproveitados se já existirem, mas cada rodada do `TesteSolicitacoes` deixa quatro resíduos
 > e quatro pedidos novos. Se quiser começar do zero, recrie o banco com o script antes.
 
-A saída completa da última rodada da `Teste` (ainda no JSON) está em
-`documentos/codigo/saida-Teste.txt`.
+A rodada histórica em JSON antecede a integração web. No MySQL, a classe geral usa as seis tabelas do esquema versionado.
 
 ---
 

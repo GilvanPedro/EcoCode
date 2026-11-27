@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastrar resíduo · EcoCode</title>
-    <link rel="icon" type="image/png" href="/src/main/resources/frontend_ecocode/assets/icons/favicon.png">
-    <link rel="stylesheet" href="/src/main/resources/frontend_ecocode/css/style.css">
-    <link rel="stylesheet" href="/src/main/resources/frontend_ecocode/css/inicio.css">
-    <link rel="stylesheet" href="/src/main/resources/frontend_ecocode/css/cadastrar-residuo.css">
+    <link rel="icon" type="image/png" href="/assets/icons/favicon.png">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/inicio.css">
+    <link rel="stylesheet" href="/css/cadastrar-residuo.css">
 </head>
 <body>
 
@@ -43,8 +43,8 @@
 
                 </div>
 
-                <p class="usuario-nome" id="usuario-nome">Usuário</p>
-                <p class="usuario-info" id="usuario-info">Usuário · Setor Central</p>
+                <p class="usuario-nome" id="usuario-nome"></p>
+                <p class="usuario-info" id="usuario-info"></p>
                 <a href="login.html" id="sair" class="sair">Sair</a>
 
             </div>
@@ -66,7 +66,7 @@
 
             <div class="grade-residuo">
 
-                <form class="cartao form-residuo" id="form-residuo" novalidate>
+                <form method="post" class="cartao form-residuo" id="form-residuo">
 
                     <div class="campo">
 
@@ -75,11 +75,11 @@
                         <select id="categoria" required>
 
                             <option value="" selected disabled>Selecione a categoria</option>
-                            <option value="0">Computadores e Notebooks</option>
-                            <option value="1">Celulares e Tablets</option>
-                            <option value="2">Cabos e Periféricos</option>
-                            <option value="3">Pilhas e Baterias</option>
-                            <option value="4">Outros Eletrônicos</option>
+                            <option value="COMPUTADORES">Computadores e Notebooks</option>
+                            <option value="CELULARES">Celulares e Tablets</option>
+                            <option value="CABOS">Cabos e Periféricos</option>
+                            <option value="BATERIAS">Pilhas e Baterias</option>
+                            <option value="OUTROS">Outros Eletrônicos</option>
 
                         </select>
 
@@ -182,8 +182,7 @@
         </main>
 
     </div>
-
-    <script src="../javascript/inicio.js"></script>
-    <script src="../javascript/cadastrar-residuo.js"></script>
+    <script src="/javascript/inicio.js"></script>
+    <script type="module" src="/javascript/web.js"></script>
 </body>
 </html>

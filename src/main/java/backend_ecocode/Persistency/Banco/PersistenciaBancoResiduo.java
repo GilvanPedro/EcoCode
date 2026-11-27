@@ -23,8 +23,8 @@ public class PersistenciaBancoResiduo implements Persistencia<Residuo> {
     @Override
     public List<Residuo> carregar() {
         List<Residuo> residuos = new ArrayList<>();
-        try (Connection c = ConexaoBanco.conectar();
-             PreparedStatement ps = c.prepareStatement(SELECT_TODOS);
+        try (var acesso = ConexaoBanco.abrir();
+             PreparedStatement ps = acesso.conexao().prepareStatement(SELECT_TODOS);
              ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
@@ -38,9 +38,9 @@ public class PersistenciaBancoResiduo implements Persistencia<Residuo> {
 
     @Override
     public void salvar(List<Residuo> residuos) {
-        try (Connection c = ConexaoBanco.conectar()) {
-            removerExcluidos(c, residuos);
-            gravarTodos(c, residuos);
+        try (var acesso = ConexaoBanco.abrir()) {
+            removerExcluidos(acesso.conexao(), residuos);
+            gravarTodos(acesso.conexao(), residuos);
         } catch (SQLException e) {
             throw new RuntimeException("Erro ao salvar resíduos: " + e.getMessage(), e);
         }

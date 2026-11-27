@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Alterar cargo · EcoCode</title>
-    <link rel="icon" type="image/png" href="/src/main/resources/frontend_ecocode/assets/icons/favicon.png">
-    <link rel="stylesheet" href="/src/main/resources/frontend_ecocode/css/style.css">
-    <link rel="stylesheet" href="/src/main/resources/frontend_ecocode/css/inicio.css">
-    <link rel="stylesheet" href="/src/main/resources/frontend_ecocode/css/equipe.css">
+    <link rel="icon" type="image/png" href="/assets/icons/favicon.png">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/inicio.css">
+    <link rel="stylesheet" href="/css/equipe.css">
 </head>
 <body>
 
@@ -50,8 +50,8 @@
 
                 </div>
 
-                <p class="usuario-nome" id="usuario-nome">Usuário</p>
-                <p class="usuario-info" id="usuario-info">Gerente</p>
+                <p class="usuario-nome" id="usuario-nome"></p>
+                <p class="usuario-info" id="usuario-info"></p>
                 <a href="login.html" id="sair" class="sair">Sair</a>
 
             </div>
@@ -69,7 +69,7 @@
 
             <section class="cartao busca-cpf">
 
-                <form id="form-busca" novalidate>
+                <form method="post" id="form-busca">
 
                     <label for="cpf">CPF</label>
 
@@ -90,12 +90,12 @@
 
                     <div class="pessoa-id">
 
-                        <span class="avatar" id="avatar">RL</span>
+                        <span class="avatar" id="avatar"></span>
 
                         <div>
 
-                            <p class="pessoa-nome" id="pessoa-nome">Rafael Lima</p>
-                            <p class="pessoa-info" id="pessoa-info">rafael.lima@email.com · Setor Bueno</p>
+                            <p class="pessoa-nome" id="pessoa-nome"></p>
+                            <p class="pessoa-info" id="pessoa-info"></p>
 
                         </div>
 
@@ -105,7 +105,7 @@
 
                 </div>
 
-                <form id="form-cargo" novalidate>
+                <form method="post" id="form-cargo">
 
                     <fieldset class="novo-cargo">
 
@@ -115,21 +115,21 @@
 
                             <label class="cargo-opcao">
 
-                                <input type="radio" name="cargo" value="Usuário">
+                                <input type="radio" name="cargo" value="USUARIO">
                                 <span>Usuário</span>
 
                             </label>
 
                             <label class="cargo-opcao">
 
-                                <input type="radio" name="cargo" value="Funcionário">
+                                <input type="radio" name="cargo" value="FUNCIONARIO">
                                 <span>Funcionário</span>
 
                             </label>
 
                             <label class="cargo-opcao">
 
-                                <input type="radio" name="cargo" value="Gerente">
+                                <input type="radio" name="cargo" value="GERENTE">
                                 <span>Gerente</span>
 
                             </label>
@@ -155,8 +155,7 @@
         </main>
 
     </div>
-
-    <script src="/src/main/resources/frontend_ecocode/javascript/inicio.js"></script>
-    <script src="/src/main/resources/frontend_ecocode/javascript/alterar-cargo.js"></script>
+    <script src="/javascript/inicio.js"></script>
+    <script type="module" src="/javascript/web.js"></script>
 </body>
 </html>

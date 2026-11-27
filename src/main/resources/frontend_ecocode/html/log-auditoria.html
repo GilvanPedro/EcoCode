@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Log de auditoria · EcoCode</title>
-    <link rel="icon" type="image/png" href="/src/main/resources/frontend_ecocode/assets/icons/favicon.png">
-    <link rel="stylesheet" href="/src/main/resources/frontend_ecocode/css/style.css">
-    <link rel="stylesheet" href="/src/main/resources/frontend_ecocode/css/inicio.css">
-    <link rel="stylesheet" href="/src/main/resources/frontend_ecocode/css/equipe.css">
+    <link rel="icon" type="image/png" href="/assets/icons/favicon.png">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/inicio.css">
+    <link rel="stylesheet" href="/css/equipe.css">
 </head>
 <body>
 
@@ -50,8 +50,8 @@
 
                 </div>
 
-                <p class="usuario-nome" id="usuario-nome">Usuário</p>
-                <p class="usuario-info" id="usuario-info">Gerente</p>
+                <p class="usuario-nome" id="usuario-nome"></p>
+                <p class="usuario-info" id="usuario-info"></p>
                 <a href="login.html" id="sair" class="sair">Sair</a>
 
             </div>
@@ -71,21 +71,9 @@
 
                 <div class="controles">
 
-                    <select class="seletor" id="filtro-acao" aria-label="Filtrar por ação">
+                    <select class="seletor" id="filtro-acao" aria-label="Filtrar por ação"><option value="">Todas as ações</option></select>
 
-                        <option value="todas" selected>Todas as ações</option>
-                        <option value="alterou-cargo">Alterou cargo</option>
-                        <option value="cancelou-solicitacao">Cancelou solicitação</option>
-                        <option value="criou-solicitacao">Criou solicitação</option>
-                        <option value="cadastrou-residuo">Cadastrou resíduo</option>
-                        <option value="editou-ponto">Editou ponto</option>
-                        <option value="iniciou-rota">Iniciou rota</option>
-                        <option value="concluiu-coleta">Concluiu coleta</option>
-                        <option value="cadastrou-usuario">Cadastrou usuário</option>
-
-                    </select>
-
-                    <input type="search" class="busca" id="busca" placeholder="Buscar por nome ou CPF">
+                    <input type="search" class="busca" id="busca" placeholder="Buscar nos registros">
 
                 </div>
 
@@ -105,151 +93,13 @@
                                 <th>Quem</th>
                                 <th>Ação</th>
                                 <th>Alvo</th>
-                                <th>Detalhes</th>
+
 
                             </tr>
 
                         </thead>
 
-                        <tbody id="corpo-log">
-
-                            <tr data-acao="alterou-cargo">
-
-                                <td>24/11 17:05</td>
-
-                                <td>
-
-                                    <p class="quem-nome">Carlos Souza</p>
-                                    <p class="papel">Gerente</p>
-
-                                </td>
-
-                                <td><span class="etiqueta acao-roxa">Alterou cargo</span></td>
-                                <td>Rafael Lima</td>
-                                <td>Usuário para Funcionário</td>
-
-                            </tr>
-
-                            <tr data-acao="cancelou-solicitacao">
-
-                                <td>24/11 16:58</td>
-
-                                <td>
-
-                                    <p class="quem-nome">Carlos Souza</p>
-                                    <p class="papel">Gerente</p>
-
-                                </td>
-
-                                <td><span class="etiqueta acao-azul">Cancelou solicitação</span></td>
-                                <td>Pedido #7C21</td>
-                                <td>Status era Em rota</td>
-
-                            </tr>
-
-                            <tr data-acao="criou-solicitacao">
-
-                                <td>24/11 16:40</td>
-
-                                <td>
-
-                                    <p class="quem-nome">Mariana Alves</p>
-                                    <p class="papel">Usuário</p>
-
-                                </td>
-
-                                <td><span class="etiqueta acao-azul">Criou solicitação</span></td>
-                                <td>Pedido #A3F9</td>
-                                <td>2 resíduos, EcoPonto Leste Universitário</td>
-
-                            </tr>
-
-                            <tr data-acao="cadastrou-residuo">
-
-                                <td>24/11 16:31</td>
-
-                                <td>
-
-                                    <p class="quem-nome">Mariana Alves</p>
-                                    <p class="papel">Usuário</p>
-
-                                </td>
-
-                                <td><span class="etiqueta acao-verde">Cadastrou resíduo</span></td>
-                                <td>Resíduo 0010</td>
-                                <td>Computadores e Notebooks, 1 un.</td>
-
-                            </tr>
-
-                            <tr data-acao="editou-ponto">
-
-                                <td>24/11 11:20</td>
-
-                                <td>
-
-                                    <p class="quem-nome">Joana Prado</p>
-                                    <p class="papel funcionario">Funcionário</p>
-
-                                </td>
-
-                                <td><span class="etiqueta acao-amarela">Editou ponto</span></td>
-                                <td>EcoPonto Jaó</td>
-                                <td>Situação: Ativo para Inativo</td>
-
-                            </tr>
-
-                            <tr data-acao="iniciou-rota">
-
-                                <td>24/11 09:15</td>
-
-                                <td>
-
-                                    <p class="quem-nome">Joana Prado</p>
-                                    <p class="papel funcionario">Funcionário</p>
-
-                                </td>
-
-                                <td><span class="etiqueta acao-azul">Iniciou rota</span></td>
-                                <td>Pedido #7C21</td>
-                                <td>Pendente para Em rota</td>
-
-                            </tr>
-
-                            <tr data-acao="concluiu-coleta">
-
-                                <td>23/11 18:02</td>
-
-                                <td>
-
-                                    <p class="quem-nome">Joana Prado</p>
-                                    <p class="papel funcionario">Funcionário</p>
-
-                                </td>
-
-                                <td><span class="etiqueta acao-azul">Concluiu coleta</span></td>
-                                <td>Pedido #61AA</td>
-                                <td>Em rota para Concluída</td>
-
-                            </tr>
-
-                            <tr data-acao="cadastrou-usuario">
-
-                                <td>23/11 08:10</td>
-
-                                <td>
-
-                                    <p class="quem-nome">Carlos Souza</p>
-                                    <p class="papel">Gerente</p>
-
-                                </td>
-
-                                <td><span class="etiqueta acao-cinza">Cadastrou usuário</span></td>
-                                <td>Joana Prado</td>
-                                <td>Cargo inicial: Funcionário</td>
-
-                            </tr>
-
-                        </tbody>
+                        <tbody id="corpo-log"></tbody>
 
                     </table>
 
@@ -259,15 +109,14 @@
 
             </section>
 
-            <p class="nota" id="contagem">Mostrando 8 de 142 registros. Funcionários e gerentes podem consultar.</p>
+            <p class="nota" id="contagem"></p>
 
         </main>
 
     </div>
 
-    <script src="/src/main/resources/frontend_ecocode/javascript/inicio.js"></script>
-    <script src="/src/main/resources/frontend_ecocode/javascript/log-auditoria.js"></script>
 
-    
+    <script src="/javascript/inicio.js"></script>
+    <script type="module" src="/javascript/web.js"></script>
 </body>
 </html>

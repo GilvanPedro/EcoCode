@@ -6,7 +6,6 @@ import backend_ecocode.Service.GerenciarUsuariosService;
 public class LogarUsuario {
 
     private final GerenciarUsuariosService service;
-    private final CifraAfim cifraAfim = new CifraAfim();
 
     public LogarUsuario(GerenciarUsuariosService service) {
         this.service = service;
@@ -21,7 +20,7 @@ public class LogarUsuario {
 
         Usuario usuario = service.buscarEmail(email);   // lança exceção se não achar
 
-        if (!cifraAfim.cifraAfim(senha).equals(usuario.getSenhaCriptografada()))
+        if (!Senhas.confere(senha, usuario.getSenhaCriptografada()))
             throw new IllegalArgumentException("Senha incorreta");
 
         return usuario;

@@ -19,7 +19,7 @@
 
         </header>
 
-        <form class="cartao" id="form-cadastro" novalidate>
+        <form method="post" class="cartao" id="form-cadastro">
 
             <h1>Criar conta</h1>
             <p class="sub">Toda conta nova começa com o cargo Usuário.</p>
@@ -43,9 +43,8 @@
                 </div>
 
                 <div class="campo">
-                    <label for="telefone">Telefone</label>
-                    <input type="tel" id="telefone" autocomplete="tel" placeholder="(62) 99999-0000" maxlength="15" required>
-                    <span class="msg-erro">Informe um telefone com DDD.</span>
+                    <label for="nascimento">Data de nascimento</label>
+                    <input type="date" id="nascimento" required>
                 </div>
 
             </div>
@@ -63,26 +62,9 @@
             <div class="campo">
 
                 <label for="bairro">Bairro</label>
-                <select id="bairro" required>
-                    <option value="" selected disabled>Selecione seu bairro</option>
-                    <option>Setor Central</option>
-                    <option>Setor Bueno</option>
-                    <option>Setor Marista</option>
-                    <option>Setor Oeste</option>
-                    <option>Setor Sul</option>
-                    <option>Jardim Goiás</option>
-                    <option>Setor Universitário</option>
-                    <option>Setor Campinas</option>
-                    <option>Setor Leste Universitário</option>
-                    <option>Setor Pedro Ludovico</option>
-                    <option>Jardim América</option>
-                    <option>Setor Aeroporto</option>
-                    <option>Vila Nova</option>
-                    <option>Setor Norte Ferroviário</option>
-                    <option>Parque Amazônia</option>
-                </select>
+                <select id="bairro" required></select>
                 <span class="dica">Escolha o bairro mais perto de você entre os 15 atendidos. Ele é usado para achar o ponto de coleta mais próximo.</span>
-               
+
                 <span class="msg-erro">Escolha um bairro.</span>
 
             </div>
@@ -112,13 +94,12 @@
 
                 <a href="login.html" class="btn btn-secundario">Já tenho conta</a>
                 <button type="submit" class="btn btn-primario">Criar conta</button>
-                
+
             </div>
 
         </form>
 
     </main>
-
-    <script src="../javascript/cadastro.js"></script>
+    <script type="module" src="/javascript/web.js"></script>
 </body>
 </html>

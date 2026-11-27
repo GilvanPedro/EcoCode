@@ -43,8 +43,8 @@
 
                 </div>
 
-                <p class="usuario-nome" id="usuario-nome">Usuário</p>
-                <p class="usuario-info" id="usuario-info">Usuário · Setor Central</p>
+                <p class="usuario-nome" id="usuario-nome"></p>
+                <p class="usuario-info" id="usuario-info"></p>
                 <a href="login.html" id="sair" class="sair">Sair</a>
 
             </div>
@@ -62,31 +62,7 @@
 
                 </div>
 
-                <div class="partida">
-
-                    <label for="partida">Partindo de</label>
-
-                    <select id="partida">
-
-                        <option selected>Setor Central</option>
-                        <option>Setor Bueno</option>
-                        <option>Setor Marista</option>
-                        <option>Setor Oeste</option>
-                        <option>Setor Sul</option>
-                        <option>Jardim Goiás</option>
-                        <option>Setor Universitário</option>
-                        <option>Setor Campinas</option>
-                        <option>Setor Leste Universitário</option>
-                        <option>Setor Pedro Ludovico</option>
-                        <option>Jardim América</option>
-                        <option>Setor Aeroporto</option>
-                        <option>Vila Nova</option>
-                        <option>Setor Norte Ferroviário</option>
-                        <option>Cidade Jardim</option>
-
-                    </select>
-
-                </div>
+                <div class="partida"><span id="partida"></span></div>
 
             </header>
 
@@ -95,128 +71,20 @@
                 <div class="destaque-info">
 
                     <p class="selo">Mais próximo de você</p>
-                    <h2>EcoPonto Leste Universitário</h2>
-                    <p class="endereco">[Endereço do ponto] · Setor Leste Universitário · Seg a sex, 8h às 17h</p>
-
-                    <div class="rota">
-
-                        <span class="chip">Setor Central</span>
-                        <span class="seta">→</span>
-                        <span class="chip">Setor Leste Universitário</span>
-
-                    </div>
-
-                </div>
-
-                <div class="destaque-distancia">
-
-                    <p class="km-grande">2,0 km</p>
-                    <p class="km-legenda">distância de carro pelo grafo dos bairros</p>
-
-                    <a href="solicitar-descarte" class="btn btn-primario">Solicitar descarte aqui</a>
-
-                </div>
-
-            </section>
+                    <h2 id="proximo"></h2><p class="endereco" id="endereco"></p></div></section>
 
             <section class="cartao outros">
 
-                <h2>Outros pontos, do mais perto para o mais longe</h2>
+                <h2>Pontos de coleta</h2>
 
-                <ul>
-
-                    <li>
-
-                        <div>
-
-                            <p class="ponto-nome">EcoPonto Marista</p>
-
-                            <div class="rota">
-
-                                <span class="chip">Setor Central</span>
-                                <span class="seta">→</span>
-                                <span class="chip">Setor Marista</span>
-
-                            </div>
-
-                        </div>
-
-                        <p class="ponto-km">4,7 km</p>
-
-                    </li>
-
-                    <li>
-
-                        <div>
-
-                            <p class="ponto-nome">EcoPonto Campinas</p>
-
-                            <div class="rota">
-
-                                <span class="chip">Setor Central</span>
-                                <span class="seta">→</span>
-                                <span class="chip">Setor Campinas</span>
-
-                            </div>
-
-                        </div>
-
-                        <p class="ponto-km">5,8 km</p>
-
-                    </li>
-
-                    <li>
-
-                        <div>
-
-                            <p class="ponto-nome">EcoPonto Jardim América</p>
-
-                            <div class="rota">
-
-                                <span class="chip">Setor Central</span>
-                                <span class="seta">→</span>
-                                <span class="chip">Setor Bueno</span>
-                                <span class="seta">→</span>
-                                <span class="chip">Jardim América</span>
-
-                            </div>
-
-                        </div>
-
-                        <p class="ponto-km">7,7 km</p>
-
-                    </li>
-
-                    <li>
-
-                        <div>
-
-                            <p class="ponto-nome">EcoPonto Cidade Jardim</p>
-
-                            <div class="rota">
-
-                                <span class="chip">Setor Central</span>
-                                <span class="seta">→</span>
-                                <span class="chip">Setor Campinas</span>
-                                <span class="seta">→</span>
-                                <span class="chip">Cidade Jardim</span>
-
-                            </div>
-
-                        </div>
-
-                        <p class="ponto-km">10,5 km</p>
-
-                    </li>
-
-                </ul>
+                <ul id="pontos"></ul>
 
             </section>
 
         </main>
 
     </div>
-
-    <script src="../javascript/inicio.js"></script>
+    <script src="/javascript/inicio.js"></script>
+    <script type="module" src="/javascript/web.js"></script>
 </body>
 </html>

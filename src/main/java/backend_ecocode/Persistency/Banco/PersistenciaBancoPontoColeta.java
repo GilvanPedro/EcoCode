@@ -21,8 +21,8 @@ public class PersistenciaBancoPontoColeta implements Persistencia<PontoColeta> {
     @Override
     public List<PontoColeta> carregar() {
         List<PontoColeta> pontos = new ArrayList<>();
-        try (Connection c = ConexaoBanco.conectar();
-             PreparedStatement ps = c.prepareStatement(SELECT_TODOS);
+        try (var acesso = ConexaoBanco.abrir();
+             PreparedStatement ps = acesso.conexao().prepareStatement(SELECT_TODOS);
              ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
@@ -36,9 +36,9 @@ public class PersistenciaBancoPontoColeta implements Persistencia<PontoColeta> {
 
     @Override
     public void salvar(List<PontoColeta> pontos) {
-        try (Connection c = ConexaoBanco.conectar()) {
-            removerExcluidos(c, pontos);
-            gravarTodos(c, pontos);
+        try (var acesso = ConexaoBanco.abrir()) {
+            removerExcluidos(acesso.conexao(), pontos);
+            gravarTodos(acesso.conexao(), pontos);
         } catch (SQLException e) {
             throw new RuntimeException("Erro ao salvar pontos de coleta: " + e.getMessage(), e);
         }

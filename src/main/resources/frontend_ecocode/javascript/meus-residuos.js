@@ -1,3 +1,4 @@
+import {acao, api, elemento, linha, situacoes} from "./api.js";
 
 
 const corpo = document.getElementById("corpo-tabela");
@@ -84,8 +85,8 @@ cancelar.addEventListener("click", () => {
     dialogo.close();
 });
 
-confirmar.addEventListener("click", () => {
-    // TODO (backend): pedir a exclusão do resíduo e só tirar da tela se der certo.
+acao(confirmar, "click", async () => {
+    await api("residuos/" + linhaParaExcluir.dataset.codigo, "DELETE");
     if (linhaParaExcluir) linhaParaExcluir.remove();
     linhaParaExcluir = null;
     dialogo.close();
@@ -94,4 +95,16 @@ confirmar.addEventListener("click", () => {
     aplicarFiltro();
 });
 
-atualizarResumo();
+export async function iniciar() {
+    for (const r of await api("residuos")) {
+        const excluir = elemento("button", "Excluir", "btn-acao perigo");
+        excluir.disabled = r.status !== "DISPONIVEL";
+        const tr = linha(corpo, [r.codigo, r.categoriaResiduo, r.descricao, r.quantidade, situacoes[r.status], excluir]);
+        Object.assign(tr.dataset, {
+            codigo: r.codigo, qtd: r.quantidade, categoria: r.residuo.toLowerCase(),
+            situacao: {DISPONIVEL: "disponivel", EM_SOLICITACAO: "solicitacao", DESCARTADO: "descartado"}[r.status]
+        });
+    }
+    atualizarResumo();
+    aplicarFiltro();
+}

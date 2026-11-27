@@ -43,8 +43,8 @@
 
                 </div>
 
-                <p class="usuario-nome" id="usuario-nome">Mariana Alves</p>
-                <p class="usuario-info" id="usuario-info">Usuário · Setor Central</p>
+                <p class="usuario-nome" id="usuario-nome"></p>
+                <p class="usuario-info" id="usuario-info"></p>
                 <a href="login.html" id="sair" class="sair">Sair</a>
 
             </div>
@@ -58,7 +58,7 @@
                 <div class="titulo-pagina">
 
                     <h1>Solicitar descarte</h1>
-                    <p class="sub">Escolha os resíduos e o ponto. O pedido entra no fim da fila de coletas.</p>
+                    <p class="sub">Cada resíduo selecionado gera uma solicitação na fila de coletas.</p>
 
                 </div>
 
@@ -66,54 +66,24 @@
 
             <div class="grade-duas">
 
-                <form class="cartao form-solicitacao" id="form-solicitacao" novalidate>
+                <form method="post" class="cartao form-solicitacao" id="form-solicitacao">
 
                     <div class="campo" id="grupo-residuos">
 
                         <p class="rotulo-passo">1. Quais resíduos vão no pedido?</p>
 
-                        <label class="residuo-opcao selecionado">
-
-                            <input type="checkbox" name="residuo" value="0005" data-qtd="1" checked>
-                            <span class="residuo-codigo">0005</span>
-                            <span class="residuo-nome">Notebook Dell Inspiron</span>
-                            <span class="residuo-qtd">1 un.</span>
-
-                        </label>
-
-                        <span class="msg-erro">Escolha pelo menos um resíduo.</span>
-
-                        <p class="aviso-info">
-                            4 resíduos não aparecem aqui porque já estão em uma solicitação: 0006, 0007 e 0010
-                            em pedidos abertos, e 0008 já descartado. <a href="meus-residuos">Ver em Meus resíduos</a>
-                        </p>
-
+                        <div id="itens"></div>
                         <a href="cadastrar-residuo.html" class="link-sublinhado">Cadastrar outro resíduo</a>
 
                     </div>
 
                     <div class="campo">
 
-                        <label for="ponto">2. Ponto de coleta</label>
-
-                        <select id="ponto">
-
-                            <option value="leste" data-resumo="Leste Universitário" selected>EcoPonto Leste Universitário (2,0 km, o mais próximo)</option>
-                            <option value="marista" data-resumo="Marista">EcoPonto Marista (4,7 km)</option>
-                            <option value="campinas" data-resumo="Campinas">EcoPonto Campinas (5,8 km)</option>
-                            <option value="jardim-america" data-resumo="Jardim América">EcoPonto Jardim América (7,7 km)</option>
-                            <option value="cidade-jardim" data-resumo="Cidade Jardim">EcoPonto Cidade Jardim (10,5 km)</option>
-
-                        </select>
+                        <p class="rotulo-passo">2. Ponto mais próximo</p><p id="proximo"></p>
 
                     </div>
 
-                    <div class="campo">
 
-                        <label for="observacao">3. Observação para a equipe (opcional)</label>
-                        <textarea id="observacao" rows="4" placeholder="Ex.: Estou em casa depois das 14h."></textarea>
-
-                    </div>
 
                     <div class="acoes">
 
@@ -131,14 +101,14 @@
                     <div class="resumo-linha">
 
                         <span>Resíduos</span>
-                        <strong id="resumo-residuos">1 item, 1 un.</strong>
+                        <strong id="resumo-residuos">0</strong>
 
                     </div>
 
                     <div class="resumo-linha">
 
                         <span>Ponto</span>
-                        <strong id="resumo-ponto">Leste Universitário</strong>
+                        <strong id="resumo-ponto">—</strong>
 
                     </div>
 
@@ -149,12 +119,7 @@
 
                     </div>
 
-                    <div class="resumo-linha">
 
-                        <span>Posição prevista</span>
-                        <strong>5º na fila</strong>
-
-                    </div>
 
                     <p class="nota-pequena">
                         Você pode cancelar enquanto o pedido estiver Pendente. Um resíduo só entra em um pedido
@@ -169,8 +134,7 @@
 
     </div>
 
-    <script src="../javascript/inicio.js"></script>
-    <script src="../javascript/solicitar-descarte.js"></script>
-
+    <script src="/javascript/inicio.js"></script>
+    <script type="module" src="/javascript/web.js"></script>
 </body>
 </html>

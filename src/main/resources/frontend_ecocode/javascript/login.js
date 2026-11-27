@@ -1,23 +1,8 @@
-const form = document.getElementById("form-login");
-const erro = document.getElementById("erro-login");
+import {acao, api, campo, valor} from "./api.js";
 
-form.addEventListener("input", () => erro.classList.remove("visivel"));
-
-form.addEventListener("submit", (e) => {
-    e.preventDefault();
-
-    const email = document.getElementById("email");
-    const senha = document.getElementById("senha");
-
-    if (!email.value.trim() || !email.checkValidity() || !senha.value) {
-        erro.textContent = "Preencha o e-mail e a senha.";
-        erro.classList.add("visivel");
-        return;
-    }
-
-    // Qual botão foi clicado: "usuario" ou "funcionario" (funcionário ou gerente).
-    const perfil = e.submitter ? e.submitter.dataset.perfil : "usuario";
-
-    //  enviar e-mail e senha. Se der erro, mostrar "E-mail ou senha incorretos." na caixa de erro.
-    window.location.href = perfil === "funcionario" ? "fila-coletas.html" : "inicio.html";
-});
+export function iniciar() {
+    acao(campo("form-login"), "submit", async () => {
+        const usuario = await api("login", "POST", {email: valor("email"), senha: valor("senha"), manter: campo("manter").checked});
+        location.assign(usuario.cargo === "USUARIO" ? "inicio.html" : "fila-coletas.html");
+    });
+}

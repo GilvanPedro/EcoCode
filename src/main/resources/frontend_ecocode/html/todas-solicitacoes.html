@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Todas as solicitações · EcoCode</title>
-    <link rel="icon" type="image/png" href="/src/main/resources/frontend_ecocode/assets/icons/favicon.png">
-    <link rel="stylesheet" href="/src/main/resources/frontend_ecocode/css/style.css">
-    <link rel="stylesheet" href="/src/main/resources/frontend_ecocode/css/inicio.css">
-    <link rel="stylesheet" href="/src/main/resources/frontend_ecocode/css/equipe.css">
+    <link rel="icon" type="image/png" href="/assets/icons/favicon.png">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/inicio.css">
+    <link rel="stylesheet" href="/css/equipe.css">
 </head>
 <body>
 
@@ -50,8 +50,8 @@
 
                 </div>
 
-                <p class="usuario-nome" id="usuario-nome">Usuário</p>
-                <p class="usuario-info" id="usuario-info">Gerente</p>
+                <p class="usuario-nome" id="usuario-nome"></p>
+                <p class="usuario-info" id="usuario-info"></p>
                 <a href="login.html" id="sair" class="sair">Sair</a>
 
             </div>
@@ -79,7 +79,7 @@
 
                 </div>
 
-                <input type="search" class="busca" id="busca" placeholder="Buscar por pedido ou CPF">
+                <input type="search" class="busca" id="busca" placeholder="Buscar por pedido ou solicitante">
 
             </div>
 
@@ -95,7 +95,7 @@
 
                                 <th>Pedido</th>
                                 <th>Solicitante</th>
-                                <th>Ponto</th>
+                                <th>Resíduo</th>
                                 <th>Aberto em</th>
                                 <th>Status</th>
                                 <th>Ação</th>
@@ -104,86 +104,7 @@
 
                         </thead>
 
-                        <tbody id="corpo-solicitacoes">
-
-                            <tr data-pedido="7C21" data-situacao="em-rota">
-
-                                <td><strong>#7C21</strong></td>
-                                <td>Mariana Alves</td>
-                                <td>EcoPonto Marista</td>
-                                <td>18/11</td>
-                                <td><span class="etiqueta em-rota">Em rota</span></td>
-                                <td><button type="button" class="btn-acao perigo">Cancelar</button></td>
-
-                            </tr>
-
-                            <tr data-pedido="2B44" data-situacao="pendente">
-
-                                <td><strong>#2B44</strong></td>
-                                <td>Rafael Lima</td>
-                                <td>EcoPonto Jardim América</td>
-                                <td>21/11</td>
-                                <td><span class="etiqueta pendente">Pendente</span></td>
-                                <td><button type="button" class="btn-acao perigo">Cancelar</button></td>
-
-                            </tr>
-
-                            <tr data-pedido="9D10" data-situacao="pendente">
-
-                                <td><strong>#9D10</strong></td>
-                                <td>Ana Paula Rocha</td>
-                                <td>EcoPonto Marista</td>
-                                <td>22/11</td>
-                                <td><span class="etiqueta pendente">Pendente</span></td>
-                                <td><button type="button" class="btn-acao perigo">Cancelar</button></td>
-
-                            </tr>
-
-                            <tr data-pedido="E871" data-situacao="pendente">
-
-                                <td><strong>#E871</strong></td>
-                                <td>Bruno Castro</td>
-                                <td>EcoPonto Campinas</td>
-                                <td>23/11</td>
-                                <td><span class="etiqueta pendente">Pendente</span></td>
-                                <td><button type="button" class="btn-acao perigo">Cancelar</button></td>
-
-                            </tr>
-
-                            <tr data-pedido="A3F9" data-situacao="pendente">
-
-                                <td><strong>#A3F9</strong></td>
-                                <td>Mariana Alves</td>
-                                <td>EcoPonto Leste Universitário</td>
-                                <td>24/11</td>
-                                <td><span class="etiqueta pendente">Pendente</span></td>
-                                <td><button type="button" class="btn-acao perigo">Cancelar</button></td>
-
-                            </tr>
-
-                            <tr data-pedido="19BD" data-situacao="concluida">
-
-                                <td><strong>#19BD</strong></td>
-                                <td>Mariana Alves</td>
-                                <td>EcoPonto Leste Universitário</td>
-                                <td>08/11</td>
-                                <td><span class="etiqueta concluida">Concluída</span></td>
-                                <td><span class="sem-acao">Sem ação</span></td>
-
-                            </tr>
-
-                            <tr data-pedido="5E02" data-situacao="cancelada">
-
-                                <td><strong>#5E02</strong></td>
-                                <td>Mariana Alves</td>
-                                <td>EcoPonto Campinas</td>
-                                <td>13/11</td>
-                                <td><span class="etiqueta cancelada">Cancelada</span></td>
-                                <td><span class="sem-acao">Sem ação</span></td>
-
-                            </tr>
-
-                        </tbody>
+                        <tbody id="corpo-solicitacoes"></tbody>
 
                     </table>
 
@@ -193,30 +114,13 @@
 
             </section>
 
-            <section class="painel-confirmacao" id="painel-confirmacao" hidden>
 
-                <div>
-
-                    <p class="painel-titulo" id="painel-titulo">Confirmar cancelamento do pedido?</p>
-                    <p class="painel-texto" id="painel-texto"></p>
-
-                </div>
-
-                <div class="painel-acoes">
-
-                    <button type="button" class="btn btn-secundario" id="painel-voltar">Voltar</button>
-                    <button type="button" class="btn-acao perigo" id="painel-confirmar">Sim, cancelar</button>
-
-                </div>
-
-            </section>
 
         </main>
 
     </div>
 
-    <script src="/src/main/resources/frontend_ecocode/javascript/inicio.js"></script>
-    <script src="/src/main/resources/frontend_ecocode/javascript/todas-solicitacoes.js"></script>
-    
+    <script src="/javascript/inicio.js"></script>
+    <script type="module" src="/javascript/web.js"></script>
 </body>
 </html>

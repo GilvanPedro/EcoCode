@@ -28,8 +28,8 @@ public class PersistenciaBancoUsuario implements Persistencia<Usuario> {
     @Override
     public List<Usuario> carregar() {
         List<Usuario> usuarios = new ArrayList<>();
-        try (Connection c = ConexaoBanco.conectar();
-             PreparedStatement ps = c.prepareStatement(SELECT_TODOS);
+        try (var acesso = ConexaoBanco.abrir();
+             PreparedStatement ps = acesso.conexao().prepareStatement(SELECT_TODOS);
              ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
@@ -43,8 +43,8 @@ public class PersistenciaBancoUsuario implements Persistencia<Usuario> {
 
     @Override
     public void salvar(List<Usuario> usuarios) {
-        try (Connection c = ConexaoBanco.conectar();
-             PreparedStatement ps = c.prepareStatement(UPSERT)) {
+        try (var acesso = ConexaoBanco.abrir();
+             PreparedStatement ps = acesso.conexao().prepareStatement(UPSERT)) {
 
             for (Usuario u : usuarios) {
                 preencher(ps, u);

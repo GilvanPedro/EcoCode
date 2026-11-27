@@ -38,7 +38,7 @@
 
         <section class="lado-form">
 
-            <form class="form-login" id="form-login" novalidate>
+            <form method="post" class="form-login" id="form-login">
 
                 <h2>Entrar</h2>
                 <p class="sub">Use o e-mail e a senha da sua conta.</p>
@@ -54,18 +54,17 @@
 
                     <label for="senha">Senha</label>
                     <input type="password" id="senha" name="senha" autocomplete="current-password" required>
-                
+
                 </div>
 
                 <label class="manter">
 
                     <input type="checkbox" id="manter" checked>
                     Manter conectado por 30 dias
-                    
+
                 </label>
 
-                <button type="submit" class="btn btn-primario" data-perfil="usuario">Entrar como usuário</button>
-                <button type="submit" class="btn btn-secundario" data-perfil="funcionario">Entrar como funcionário ou gerente</button>
+                <button type="submit" class="btn btn-primario">Entrar</button>
 
                 <div class="alerta-erro" id="erro-login" role="alert">E-mail ou senha incorretos.</div>
 
@@ -76,7 +75,6 @@
         </section>
 
     </main>
-
-    <script src="../javascript/login.js"></script>
+    <script type="module" src="/javascript/web.js"></script>
 </body>
 </html>

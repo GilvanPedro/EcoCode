@@ -43,8 +43,8 @@
 
                 </div>
 
-                <p class="usuario-nome" id="usuario-nome">Usuário</p>
-                <p class="usuario-info" id="usuario-info">Usuário · Setor Central</p>
+                <p class="usuario-nome" id="usuario-nome"></p>
+                <p class="usuario-info" id="usuario-info"></p>
                 <a href="login.html" id="sair" class="sair">Sair</a>
 
             </div>
@@ -58,7 +58,7 @@
                 <div class="titulo-pagina">
 
                     <h1>Meus resíduos</h1>
-                    <p class="sub" id="resumo">5 resíduos cadastrados: 1 disponível, 3 em solicitação e 1 já descartado.</p>
+                    <p class="sub" id="resumo"></p>
 
                 </div>
 
@@ -74,7 +74,7 @@
                     <button type="button" class="filtro" data-categoria="computadores">Computadores e Notebooks</button>
                     <button type="button" class="filtro" data-categoria="celulares">Celulares e Tablets</button>
                     <button type="button" class="filtro" data-categoria="cabos">Cabos e Periféricos</button>
-                    <button type="button" class="filtro" data-categoria="pilhas">Pilhas e Baterias</button>
+                    <button type="button" class="filtro" data-categoria="baterias">Pilhas e Baterias</button>
                     <button type="button" class="filtro" data-categoria="outros">Outros Eletrônicos</button>
 
                 </div>
@@ -110,7 +110,7 @@
                                 <th>Categoria</th>
                                 <th>Descrição</th>
                                 <th>Qtd.</th>
-                                <th>Cadastro</th>
+
                                 <th>Situação</th>
                                 <th>Ações</th>
 
@@ -118,145 +118,7 @@
 
                         </thead>
 
-                        <tbody id="corpo-tabela">
-
-                            <tr data-categoria="computadores" data-codigo="0005" data-qtd="1" data-situacao="disponivel">
-
-                                <td class="codigo">0005</td>
-                                <td>Computadores e Notebooks</td>
-                                <td>Notebook Dell Inspiron com tela quebrada</td>
-                                <td>1</td>
-                                <td>12/11</td>
-
-                                <td>
-
-                                    <span class="etiqueta disponivel">Disponível</span>
-                                    <p class="pedido-info">Pedido #5E02 foi cancelado</p>
-
-                                </td>
-
-                                <td>
-
-                                    <div class="botoes-acao">
-
-                                        <a href="#" class="btn-acao">Editar</a>
-                                        <button type="button" class="btn-acao perigo">Excluir</button>
-
-                                    </div>
-
-                                </td>
-
-                            </tr>
-
-                            <tr data-categoria="celulares" data-codigo="0006" data-qtd="1" data-situacao="solicitacao">
-
-                                <td class="codigo">0006</td>
-                                <td>Celulares e Tablets</td>
-                                <td>Celular Samsung A10</td>
-                                <td>1</td>
-                                <td>15/11</td>
-
-                                <td>
-
-                                    <span class="etiqueta em-solicitacao">Em solicitação</span>
-                                    <p class="pedido-info">Pedido #7C21, Em rota</p>
-
-                                </td>
-
-                                <td>
-
-                                    <div class="botoes-acao">
-
-                                        <a href="solicitacoes" class="btn-acao">Ver pedido</a>
-
-                                    </div>
-
-                                </td>
-
-                            </tr>
-
-                            <tr data-categoria="cabos" data-codigo="0007" data-qtd="2" data-situacao="solicitacao">
-
-                                <td class="codigo">0007</td>
-                                <td>Cabos e Periféricos</td>
-                                <td>Cabos HDMI de 2 metros</td>
-                                <td>2</td>
-                                <td>15/11</td>
-
-                                <td>
-
-                                    <span class="etiqueta em-solicitacao">Em solicitação</span>
-                                    <p class="pedido-info">Pedido #A3F9, Pendente</p>
-
-                                </td>
-
-                                <td>
-
-                                    <div class="botoes-acao">
-
-                                        <a href="solicitacoes" class="btn-acao">Ver pedido</a>
-
-                                    </div>
-
-                                </td>
-
-                            </tr>
-
-                            <tr data-categoria="pilhas" data-codigo="0008" data-qtd="12" data-situacao="descartado">
-
-                                <td class="codigo">0008</td>
-                                <td>Pilhas e Baterias</td>
-                                <td>Pilhas AA usadas</td>
-                                <td>12</td>
-                                <td>08/11</td>
-
-                                <td>
-
-                                    <span class="etiqueta descartado">Descartado</span>
-                                    <p class="pedido-info">Pedido #19BD, Concluída</p>
-
-                                </td>
-
-                                <td>
-
-                                    <div class="botoes-acao">
-
-                                        <a href="solicitacoes" class="btn-acao">Ver pedido</a>
-
-                                    </div>
-
-                                </td>
-
-                            </tr>
-
-                            <tr data-categoria="computadores" data-codigo="0010" data-qtd="1" data-situacao="solicitacao">
-
-                                <td class="codigo">0010</td>
-                                <td>Computadores e Notebooks</td>
-                                <td>Notebook Lenovo antigo, não liga mais</td>
-                                <td>1</td>
-                                <td>24/11</td>
-
-                                <td>
-
-                                    <span class="etiqueta em-solicitacao">Em solicitação</span>
-                                    <p class="pedido-info">Pedido #A3F9, Pendente</p>
-
-                                </td>
-
-                                <td>
-
-                                    <div class="botoes-acao">
-
-                                        <a href="solicitacoes" class="btn-acao">Ver pedido</a>
-
-                                    </div>
-
-                                </td>
-
-                            </tr>
-
-                        </tbody>
+                        <tbody id="corpo-tabela"></tbody>
 
                     </table>
 
@@ -289,8 +151,7 @@
         </div>
 
     </dialog>
-
-    <script src="../javascript/inicio.js"></script>
-    <script src="../javascript/meus-residuos.js"></script>
+    <script src="/javascript/inicio.js"></script>
+    <script type="module" src="/javascript/web.js"></script>
 </body>
 </html>

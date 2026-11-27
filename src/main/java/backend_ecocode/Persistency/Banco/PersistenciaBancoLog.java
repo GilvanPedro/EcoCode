@@ -22,8 +22,8 @@ public class PersistenciaBancoLog implements Persistencia<RegistroLog> {
     @Override
     public List<RegistroLog> carregar() {
         List<RegistroLog> registros = new ArrayList<>();
-        try (Connection c = ConexaoBanco.conectar();
-             PreparedStatement ps = c.prepareStatement(SELECT_TODOS);
+        try (var acesso = ConexaoBanco.abrir();
+             PreparedStatement ps = acesso.conexao().prepareStatement(SELECT_TODOS);
              ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
@@ -37,8 +37,8 @@ public class PersistenciaBancoLog implements Persistencia<RegistroLog> {
 
     @Override
     public void salvar(List<RegistroLog> registros) {
-        try (Connection c = ConexaoBanco.conectar();
-             PreparedStatement ps = c.prepareStatement(INSERT)) {
+        try (var acesso = ConexaoBanco.abrir();
+             PreparedStatement ps = acesso.conexao().prepareStatement(INSERT)) {
 
             for (RegistroLog r : registros) {
                 preencher(ps, r);

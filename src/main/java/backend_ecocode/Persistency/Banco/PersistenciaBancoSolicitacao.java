@@ -21,8 +21,8 @@ public class PersistenciaBancoSolicitacao implements Persistencia<Solicitacao> {
     @Override
     public List<Solicitacao> carregar() {
         List<Solicitacao> solicitacoes = new ArrayList<>();
-        try (Connection c = ConexaoBanco.conectar();
-             PreparedStatement ps = c.prepareStatement(SELECT_TODOS);
+        try (var acesso = ConexaoBanco.abrir();
+             PreparedStatement ps = acesso.conexao().prepareStatement(SELECT_TODOS);
              ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
@@ -36,8 +36,8 @@ public class PersistenciaBancoSolicitacao implements Persistencia<Solicitacao> {
 
     @Override
     public void salvar(List<Solicitacao> solicitacoes) {
-        try (Connection c = ConexaoBanco.conectar();
-             PreparedStatement ps = c.prepareStatement(UPSERT)) {
+        try (var acesso = ConexaoBanco.abrir();
+             PreparedStatement ps = acesso.conexao().prepareStatement(UPSERT)) {
 
             for (Solicitacao s : solicitacoes) {
                 preencher(ps, s);

@@ -43,8 +43,8 @@
 
                 </div>
 
-                <p class="usuario-nome" id="usuario-nome">Mariana Alves</p>
-                <p class="usuario-info" id="usuario-info">Usuário · Setor Central</p>
+                <p class="usuario-nome" id="usuario-nome"></p>
+                <p class="usuario-info" id="usuario-info"></p>
                 <a href="login.html" id="sair" class="sair">Sair</a>
 
             </div>
@@ -64,12 +64,12 @@
 
             <div class="grade-perfil">
 
-                <form class="cartao form-perfil" id="form-perfil" novalidate>
+                <form method="post" class="cartao form-perfil" id="form-perfil">
 
                     <div class="campo">
 
                         <label for="nome">Nome completo</label>
-                        <input type="text" id="nome" value="Mariana Alves" autocomplete="name" required>
+                        <input type="text" id="nome" autocomplete="name" required>
                         <span class="msg-erro">Informe seu nome completo.</span>
 
                     </div>
@@ -79,7 +79,7 @@
                         <div class="campo">
 
                             <label for="cpf">CPF</label>
-                            <input type="text" id="cpf" value="123.456.789-09" readonly tabindex="-1">
+                            <input type="text" id="cpf" readonly tabindex="-1">
                             <span class="dica">O CPF não pode ser alterado.</span>
 
                         </div>
@@ -87,7 +87,7 @@
                         <div class="campo">
 
                             <label for="cargo">Cargo</label>
-                            <input type="text" id="cargo" value="Usuário" readonly tabindex="-1">
+                            <input type="text" id="cargo" readonly tabindex="-1">
                             <span class="dica">Só um gerente muda cargos.</span>
 
                         </div>
@@ -97,7 +97,7 @@
                     <div class="campo">
 
                         <label for="email">E-mail</label>
-                        <input type="email" id="email" value="mariana.alves@email.com" autocomplete="email" required>
+                        <input type="email" id="email" autocomplete="email" required>
                         <span class="msg-erro">Informe um e-mail válido.</span>
 
                     </div>
@@ -106,25 +106,7 @@
 
                         <label for="bairro">Bairro</label>
 
-                        <select id="bairro" required>
-
-                            <option selected>Setor Central</option>
-                            <option>Setor Bueno</option>
-                            <option>Setor Marista</option>
-                            <option>Setor Oeste</option>
-                            <option>Setor Sul</option>
-                            <option>Jardim Goiás</option>
-                            <option>Setor Universitário</option>
-                            <option>Setor Campinas</option>
-                            <option>Setor Leste Universitário</option>
-                            <option>Setor Pedro Ludovico</option>
-                            <option>Jardim América</option>
-                            <option>Setor Aeroporto</option>
-                            <option>Vila Nova</option>
-                            <option>Setor Norte Ferroviário</option>
-                            <option>Cidade Jardim</option>
-
-                        </select>
+                        <select id="bairro" required></select>
 
                     </div>
 
@@ -178,7 +160,7 @@
 
                         <h2>Sessão</h2>
 
-                        <p>Conectado desde 20/11. A sessão expira em 20/12, 30 dias depois do login.</p>
+                        <p>Sair encerra a sessão deste navegador.</p>
 
                         <a href="login.html" class="link-sublinhado">Sair da conta</a>
 
@@ -191,8 +173,7 @@
         </main>
 
     </div>
-
-    <script src="../javascript/inicio.js"></script>
-    <script src="../javascript/perfil.js"></script>
+    <script src="/javascript/inicio.js"></script>
+    <script type="module" src="/javascript/web.js"></script>
 </body>
 </html>

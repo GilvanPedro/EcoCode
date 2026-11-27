@@ -43,8 +43,8 @@
 
                 </div>
 
-                <p class="usuario-nome" id="usuario-nome">Mariana Alves</p>
-                <p class="usuario-info" id="usuario-info">Usuário · Setor Central</p>
+                <p class="usuario-nome" id="usuario-nome"></p>
+                <p class="usuario-info" id="usuario-info"></p>
                 <a href="login.html" id="sair" class="sair">Sair</a>
 
             </div>
@@ -68,118 +68,17 @@
 
             <div class="filtros" role="group" aria-label="Filtrar por situação">
 
-                <button type="button" class="filtro ativo" data-situacao="todas" data-rotulo="Todas">Todas (4)</button>
-                <button type="button" class="filtro" data-situacao="pendente" data-rotulo="Pendente">Pendente (1)</button>
-                <button type="button" class="filtro" data-situacao="em-rota" data-rotulo="Em rota">Em rota (1)</button>
-                <button type="button" class="filtro" data-situacao="concluida" data-rotulo="Concluída">Concluída (1)</button>
-                <button type="button" class="filtro" data-situacao="cancelada" data-rotulo="Cancelada">Cancelada (1)</button>
+                <button type="button" class="filtro ativo" data-situacao="todas" data-rotulo="Todas">Todas</button>
+                <button type="button" class="filtro" data-situacao="pendente" data-rotulo="Pendente">Pendente</button>
+                <button type="button" class="filtro" data-situacao="em-rota" data-rotulo="Em rota">Em rota</button>
+                <button type="button" class="filtro" data-situacao="concluida" data-rotulo="Concluída">Concluída</button>
+                <button type="button" class="filtro" data-situacao="cancelada" data-rotulo="Cancelada">Cancelada</button>
 
             </div>
 
             <section class="cartao lista-pedidos">
 
-                <ul id="lista-pedidos">
-
-                    <li data-situacao="pendente" data-pedido="A3F9">
-
-                        <div class="pedido-dados">
-
-                            <div class="pedido-linha">
-
-                                <p class="pedido-nome">Pedido #A3F9</p>
-                                <span class="etiqueta pendente">Pendente</span>
-
-                            </div>
-
-                            <p class="pedido-itens">Notebook Lenovo antigo, Cabos HDMI de 2 metros</p>
-                            <p class="pedido-meta">EcoPonto Leste Universitário · aberto em 24/11 às 16:40</p>
-
-                        </div>
-
-                        <div class="pedido-acoes">
-
-                            <span class="fila-pos">4º na fila</span>
-                            <a href="pedido.html" class="btn-acao">Acompanhar</a>
-                            <button type="button" class="btn-acao perigo">Cancelar</button>
-
-                        </div>
-
-                    </li>
-
-                    <li data-situacao="em-rota" data-pedido="7C21">
-
-                        <div class="pedido-dados">
-
-                            <div class="pedido-linha">
-
-                                <p class="pedido-nome">Pedido #7C21</p>
-                                <span class="etiqueta em-rota">Em rota</span>
-
-                            </div>
-
-                            <p class="pedido-itens">Celular Samsung A10</p>
-                            <p class="pedido-meta">EcoPonto Marista · coletor saiu em 24/11 às 09:15</p>
-
-                        </div>
-
-                        <div class="pedido-acoes">
-
-                            <span class="aviso-trava">Não pode mais ser cancelado por você</span>
-                            <a href="pedido.html" class="btn-acao">Acompanhar</a>
-
-                        </div>
-
-                    </li>
-
-                    <li data-situacao="concluida" data-pedido="19BD">
-
-                        <div class="pedido-dados">
-
-                            <div class="pedido-linha">
-
-                                <p class="pedido-nome">Pedido #19BD</p>
-                                <span class="etiqueta concluida">Concluída</span>
-
-                            </div>
-
-                            <p class="pedido-itens">Pilhas AA usadas (12 un.)</p>
-                            <p class="pedido-meta">EcoPonto Leste Universitário · concluído em 10/11</p>
-
-                        </div>
-
-                        <div class="pedido-acoes">
-
-                            <a href="pedido.html" class="btn-acao">Ver detalhes</a>
-
-                        </div>
-
-                    </li>
-
-                    <li data-situacao="cancelada" data-pedido="5E02">
-
-                        <div class="pedido-dados">
-
-                            <div class="pedido-linha">
-
-                                <p class="pedido-nome">Pedido #5E02</p>
-                                <span class="etiqueta cancelada">Cancelada</span>
-
-                            </div>
-
-                            <p class="pedido-itens">Notebook Dell Inspiron</p>
-                            <p class="pedido-meta cancelado">Cancelado por você em 14/11</p>
-
-                        </div>
-
-                        <div class="pedido-acoes">
-
-                            <a href="pedido.html" class="btn-acao">Ver detalhes</a>
-
-                        </div>
-
-                    </li>
-
-                </ul>
+                <ul id="lista-pedidos"></ul>
 
                 <p class="sem-resultados" id="sem-resultados" hidden>Nenhuma solicitação nesta situação.</p>
 
@@ -202,8 +101,7 @@
         </div>
 
     </dialog>
-
-    <script src="../javascript/inicio.js"></script>
-    <script src="../javascript/solicitacoes.js"></script>
+    <script src="/javascript/inicio.js"></script>
+    <script type="module" src="/javascript/web.js"></script>
 </body>
 </html>

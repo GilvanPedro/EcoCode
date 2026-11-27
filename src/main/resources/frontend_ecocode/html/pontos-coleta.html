@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pontos de coleta · EcoCode</title>
-    <link rel="icon" type="image/png" href="/src/main/resources/frontend_ecocode/assets/icons/favicon.png">
-    <link rel="stylesheet" href="/src/main/resources/frontend_ecocode/css/style.css">
-    <link rel="stylesheet" href="/src/main/resources/frontend_ecocode/css/inicio.css">
-    <link rel="stylesheet" href="/src/main/resources/frontend_ecocode/css/equipe.css">
+    <link rel="icon" type="image/png" href="/assets/icons/favicon.png">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/inicio.css">
+    <link rel="stylesheet" href="/css/equipe.css">
 </head>
 <body>
 
@@ -50,8 +50,8 @@
 
                 </div>
 
-                <p class="usuario-nome" id="usuario-nome">Usuário</p>
-                <p class="usuario-info" id="usuario-info">Gerente</p>
+                <p class="usuario-nome" id="usuario-nome"></p>
+                <p class="usuario-info" id="usuario-info"></p>
                 <a href="login.html" id="sair" class="sair">Sair</a>
 
             </div>
@@ -63,7 +63,7 @@
             <header class="titulo-pagina">
 
                 <h1>Pontos de coleta</h1>
-                <p class="sub">Cada ponto fica em um dos 15 bairros do grafo. É isso que a busca do ponto mais próximo usa.</p>
+                <p class="sub">Cada ponto fica em um dos 19 bairros do grafo. É isso que a busca do ponto mais próximo usa.</p>
 
             </header>
 
@@ -81,77 +81,15 @@
 
                                     <th>Nome</th>
                                     <th>Bairro</th>
-                                    <th>Horário</th>
-                                    <th>Situação</th>
+                                    <th>Endereço</th>
+
                                     <th></th>
 
                                 </tr>
 
                             </thead>
 
-                            <tbody id="corpo-pontos">
-
-                                <tr data-endereco="">
-
-                                    <td class="ponto-nome">EcoPonto Leste Universitário</td>
-                                    <td>Setor Leste Universitário</td>
-                                    <td>Seg a sex, 8h às 17h</td>
-                                    <td><span class="etiqueta ponto-ativo">Ativo</span></td>
-                                    <td><button type="button" class="btn-acao">Editar</button></td>
-
-                                </tr>
-
-                                <tr data-endereco="">
-
-                                    <td class="ponto-nome">EcoPonto Marista</td>
-                                    <td>Setor Marista</td>
-                                    <td>Seg a sáb, 8h às 18h</td>
-                                    <td><span class="etiqueta ponto-ativo">Ativo</span></td>
-                                    <td><button type="button" class="btn-acao">Editar</button></td>
-
-                                </tr>
-
-                                <tr data-endereco="">
-
-                                    <td class="ponto-nome">EcoPonto Campinas</td>
-                                    <td>Setor Campinas</td>
-                                    <td>Seg a sex, 7h às 16h</td>
-                                    <td><span class="etiqueta ponto-ativo">Ativo</span></td>
-                                    <td><button type="button" class="btn-acao">Editar</button></td>
-
-                                </tr>
-
-                                <tr data-endereco="">
-
-                                    <td class="ponto-nome">EcoPonto Jardim América</td>
-                                    <td>Jardim América</td>
-                                    <td>Seg a sex, 8h às 17h</td>
-                                    <td><span class="etiqueta ponto-ativo">Ativo</span></td>
-                                    <td><button type="button" class="btn-acao">Editar</button></td>
-
-                                </tr>
-
-                                <tr data-endereco="">
-
-                                    <td class="ponto-nome">EcoPonto Cidade Jardim</td>
-                                    <td>Cidade Jardim</td>
-                                    <td>Ter a sáb, 9h às 17h</td>
-                                    <td><span class="etiqueta ponto-ativo">Ativo</span></td>
-                                    <td><button type="button" class="btn-acao">Editar</button></td>
-
-                                </tr>
-
-                                <tr data-endereco="">
-
-                                    <td class="ponto-nome">EcoPonto Jaó</td>
-                                    <td>Setor Jaó</td>
-                                    <td>Em reforma</td>
-                                    <td><span class="etiqueta ponto-inativo">Inativo</span></td>
-                                    <td><button type="button" class="btn-acao">Editar</button></td>
-
-                                </tr>
-
-                            </tbody>
+                            <tbody id="corpo-pontos"></tbody>
 
                         </table>
 
@@ -159,7 +97,7 @@
 
                 </section>
 
-                <form class="cartao form-ponto" id="form-ponto" novalidate>
+                <form method="post" class="cartao form-ponto" id="form-ponto">
 
                     <h2 id="titulo-form">Novo ponto de coleta</h2>
 
@@ -175,28 +113,9 @@
 
                         <label for="bairro">Bairro</label>
 
-                        <select id="bairro" required>
+                        <select id="bairro" required></select>
 
-                            <option value="" selected disabled>Selecione o bairro</option>
-                            <option>Setor Central</option>
-                            <option>Setor Bueno</option>
-                            <option>Setor Marista</option>
-                            <option>Setor Oeste</option>
-                            <option>Setor Sul</option>
-                            <option>Jardim Goiás</option>
-                            <option>Setor Universitário</option>
-                            <option>Setor Campinas</option>
-                            <option>Setor Leste Universitário</option>
-                            <option>Setor Pedro Ludovico</option>
-                            <option>Jardim América</option>
-                            <option>Setor Aeroporto</option>
-                            <option>Vila Nova</option>
-                            <option>Setor Norte Ferroviário</option>
-                            <option>Cidade Jardim</option>
-
-                        </select>
-
-                        <span class="dica">Só os 15 bairros cadastrados.</span>
+                        <span class="dica">Só os 19 bairros cadastrados.</span>
                         <span class="msg-erro">Escolha um bairro.</span>
 
                     </div>
@@ -204,24 +123,9 @@
                     <div class="campo">
 
                         <label for="endereco">Endereço</label>
-                        <input type="text" id="endereco" placeholder="Rua, número">
+                        <input type="text" id="endereco" placeholder="Rua, número" required>
 
                     </div>
-
-                    <div class="campo">
-
-                        <label for="horario">Horário de funcionamento</label>
-                        <input type="text" id="horario" placeholder="Seg a sex, 8h às 17h" required>
-                        <span class="msg-erro">Informe o horário de funcionamento.</span>
-
-                    </div>
-
-                    <label class="check-ativo">
-
-                        <input type="checkbox" id="ativo" checked>
-                        Ponto ativo
-
-                    </label>
 
                     <button type="submit" class="btn btn-primario">Salvar ponto</button>
 
@@ -233,9 +137,8 @@
 
     </div>
 
-    <script src="/src/main/resources/frontend_ecocode/javascript/inicio.js"></script>
-    <script src="/src/main/resources/frontend_ecocode/javascript/pontos-coleta.js"></script>
-
+    <script src="/javascript/inicio.js"></script>
+    <script type="module" src="/javascript/web.js"></script>
 </body>
 
 </html>

@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fila de coletas · EcoCode</title>
-    <link rel="icon" type="image/png" href="/src/main/resources/frontend_ecocode/assets/icons/favicon.png">
-    <link rel="stylesheet" href="/src/main/resources/frontend_ecocode/css/style.css">
-    <link rel="stylesheet" href="/src/main/resources/frontend_ecocode/css/inicio.css">
-    <link rel="stylesheet" href="/src/main/resources/frontend_ecocode/css/equipe.css">
+    <link rel="icon" type="image/png" href="/assets/icons/favicon.png">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/inicio.css">
+    <link rel="stylesheet" href="/css/equipe.css">
 </head>
 <body>
 
@@ -50,8 +50,8 @@
 
                 </div>
 
-                <p class="usuario-nome" id="usuario-nome">Usuário</p>
-                <p class="usuario-info" id="usuario-info">Gerente</p>
+                <p class="usuario-nome" id="usuario-nome"></p>
+                <p class="usuario-info" id="usuario-info"></p>
                 <a href="login.html" id="sair" class="sair">Sair</a>
 
             </div>
@@ -63,7 +63,7 @@
             <header class="titulo-pagina">
 
                 <h1>Fila de coletas</h1>
-                <p class="sub">Quem pediu primeiro é atendido primeiro. 4 pendentes, 1 em rota.</p>
+                <p class="sub">Quem pediu primeiro é atendido primeiro.</p>
 
             </header>
 
@@ -73,22 +73,11 @@
 
                     <p class="selo">Próxima da fila</p>
 
-                    <div class="proximo-titulo">
-
-                        <h2>Pedido #2B44</h2>
-                        <span class="etiqueta pendente">Pendente</span>
-
-                    </div>
-
-                    <p class="proximo-nome">Rafael Lima · Setor Bueno</p>
-                    <p class="proximo-meta">Monitor LG 21", teclado e mouse · EcoPonto Jardim América · na fila desde 21/11 às 10:02</p>
-
-                </div>
-
+                    <div class="proximo-titulo"><h2 id="primeiro"></h2></div></div>
                 <div class="proximo-acoes">
 
-                    <a href="#" class="btn btn-secundario">Ver detalhes</a>
-                    <button type="button" class="btn btn-primario">Iniciar rota</button>
+
+                    <button type="button" id="proxima" class="btn btn-primario">Iniciar rota</button>
 
                 </div>
 
@@ -98,98 +87,13 @@
 
                 <h2>Em rota agora</h2>
 
-                <div class="bloco-linha" id="linha-em-rota">
-
-                    <div class="linha-info">
-
-                        <span class="etiqueta em-rota">Em rota</span>
-
-                        <div>
-
-                            <p class="linha-titulo">Pedido #7C21 · Mariana Alves</p>
-                            <p class="linha-meta">Celular Samsung A10 · Setor Central para EcoPonto Marista · saiu às 09:15</p>
-
-                        </div>
-
-                    </div>
-
-                    <div class="linha-acoes">
-
-                        <button type="button" class="btn btn-primario btn-linha" id="concluir-coleta">Concluir coleta</button>
-                        <button type="button" class="btn-acao perigo" id="cancelar-rota">Cancelar</button>
-
-                    </div>
-
-                </div>
-
-                <p class="vazio" id="sem-em-rota" hidden>Nenhuma coleta em rota agora.</p>
-
-            </section>
+                <ul id="rotas"></ul></section>
 
             <section class="cartao bloco">
 
                 <h2>Aguardando na fila</h2>
 
-                <ul>
-
-                    <li class="bloco-linha">
-
-                        <div class="linha-info">
-
-                            <span class="numero-fila">2</span>
-
-                            <div>
-
-                                <p class="linha-titulo">Pedido #9D10 · Ana Paula Rocha</p>
-                                <p class="linha-meta">Impressora HP · Jardim Goiás · 22/11 às 14:20</p>
-
-                            </div>
-
-                        </div>
-
-                        <a href="#" class="btn-acao">Detalhes</a>
-
-                    </li>
-
-                    <li class="bloco-linha">
-
-                        <div class="linha-info">
-
-                            <span class="numero-fila">3</span>
-
-                            <div>
-
-                                <p class="linha-titulo">Pedido #E871 · Bruno Castro</p>
-                                <p class="linha-meta">Baterias de notebook (3 un.) · Setor Campinas · 23/11 às 08:47</p>
-
-                            </div>
-
-                        </div>
-
-                        <a href="#" class="btn-acao">Detalhes</a>
-
-                    </li>
-
-                    <li class="bloco-linha">
-
-                        <div class="linha-info">
-
-                            <span class="numero-fila">4</span>
-
-                            <div>
-
-                                <p class="linha-titulo">Pedido #A3F9 · Mariana Alves</p>
-                                <p class="linha-meta">Notebook Lenovo, cabos HDMI · Setor Central · 24/11 às 16:40</p>
-
-                            </div>
-
-                        </div>
-
-                        <a href="#" class="btn-acao">Detalhes</a>
-
-                    </li>
-
-                </ul>
+                <ul id="pendentes"></ul>
 
             </section>
 
@@ -199,22 +103,9 @@
 
     </div>
 
-    <dialog id="dialogo-cancelar-rota" class="dialogo">
 
-        <h2>Cancelar coleta em rota?</h2>
-        <p>O pedido <strong>#7C21</strong> está Em rota. O coletor será avisado e a ação vai para o log.</p>
 
-        <div class="acoes">
-
-            <button type="button" class="btn btn-secundario" id="voltar-cancelar">Voltar</button>
-            <button type="button" class="btn btn-perigo" id="confirmar-cancelar">Sim, cancelar</button>
-
-        </div>
-
-    </dialog>
-
-    <script src="/src/main/resources/frontend_ecocode/javascript/inicio.js"></script>
-    <script src="/src/main/resources/frontend_ecocode/javascript/fila-coletas.js"></script>
-
+    <script src="/javascript/inicio.js"></script>
+    <script type="module" src="/javascript/web.js"></script>
 </body>
 </html>

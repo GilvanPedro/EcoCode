@@ -1,3 +1,4 @@
+import {acao, api, elemento, link, situacoes} from "./api.js";
 
 
 const lista = document.getElementById("lista-pedidos");
@@ -61,33 +62,21 @@ voltar.addEventListener("click", () => {
     dialogo.close();
 });
 
-confirmar.addEventListener("click", () => {
-
-    // pedir o cancelamento e só mudar a tela se der certo.
-    
-    if (pedidoParaCancelar) {
-        const hoje = new Date();
-        const data = `${String(hoje.getDate()).padStart(2, "0")}/${String(hoje.getMonth() + 1).padStart(2, "0")}`;
-
-        pedidoParaCancelar.dataset.situacao = "cancelada";
-
-        const etiqueta = pedidoParaCancelar.querySelector(".etiqueta");
-        etiqueta.className = "etiqueta cancelada";
-        etiqueta.textContent = "Cancelada";
-
-        const meta = pedidoParaCancelar.querySelector(".pedido-meta");
-        meta.className = "pedido-meta cancelado";
-        meta.textContent = `Cancelado por você em ${data}`;
-
-        pedidoParaCancelar.querySelector(".pedido-acoes").innerHTML =
-            '<a href="pedido.html" class="btn-acao">Ver detalhes</a>';
-    }
-
-    pedidoParaCancelar = null;
-    dialogo.close();
-
-    atualizarContagens();
-    aplicarFiltro();
+acao(confirmar, "click", async () => {
+    await api("pedidos/" + pedidoParaCancelar.dataset.pedido + "/cancelar", "POST");
+    location.reload();
 });
 
-atualizarContagens();
+export async function iniciar() {
+    for (const p of await api("pedidos")) {
+        const item = elemento("li");
+        item.dataset.pedido = p.id;
+        item.dataset.situacao = p.status.toLowerCase().replace("_", "-");
+        item.append(link("Pedido " + p.id.slice(0,8), "pedido.html?id=" + p.id),
+            elemento("span", situacoes[p.status], "etiqueta " + item.dataset.situacao));
+        if (p.status === "PENDENTE") item.append(elemento("button", "Cancelar", "btn-acao perigo"));
+        lista.append(item);
+    }
+    atualizarContagens();
+    aplicarFiltro();
+}

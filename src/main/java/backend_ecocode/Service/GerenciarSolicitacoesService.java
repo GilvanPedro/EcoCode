@@ -161,6 +161,12 @@ public class GerenciarSolicitacoesService implements ServiceSolicitacoesInterfac
         return solicitacao;
     }
 
+    public List<Solicitacao> listarParaEquipe(Usuario quem) {
+        if (quem.getCargoUsuario() == CargoUsuario.USUARIO)
+            throw new AcessoNegadoException("Acesso restrito à equipe");
+        return repository.listar();
+    }
+
     @Override
     public List<Solicitacao> listarDoUsuario(UUID usuarioId) {
         List<Solicitacao> doUsuario = new ArrayList<>();

@@ -13,6 +13,7 @@ import backend_ecocode.Domain.Entities.Usuario;
 import backend_ecocode.Domain.Enums.*;
 import backend_ecocode.Exceptions.AcessoNegadoException;
 import backend_ecocode.Instanciador;
+import backend_ecocode.Persistency.Banco.PersistenciaBancoUsuario;
 import backend_ecocode.Repository.GerenciarLogRepository;
 import backend_ecocode.Repository.GerenciarSolicitacoesRepository;
 import backend_ecocode.Service.*;
@@ -20,6 +21,7 @@ import backend_ecocode.Util.Aritmetica;
 import backend_ecocode.Util.CifraAfim;
 import backend_ecocode.Util.GrafoBairros;
 import backend_ecocode.Util.LogarUsuario;
+import backend_ecocode.Util.Senhas;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,24 +32,28 @@ public class Teste {
     static int ok = 0, falhou = 0;
 
     public static void main(String[] args) {
+        // Os quatro usuários precisam existir no banco antes dos resíduos e dos registros de auditoria.
+        Usuario maria = new Usuario("Maria Souza", "529.982.247-25",
+                "maria@teste.com", Senhas.proteger("senha123"), CargoUsuario.USUARIO, "10/05/2000",
+                Bairro.SETOR_BUENO);
+        Usuario joao = new Usuario("João Lima", "123.456.789-09",
+                "joao@teste.com", Senhas.proteger("senha123"), CargoUsuario.USUARIO, "02/02/1998",
+                Bairro.JARDIM_CURITIBA);
+        Usuario coletor = new Usuario("Carlos Coletor", "111.444.777-35",
+                "carlos@teste.com", Senhas.proteger("senha123"), CargoUsuario.FUNCIONARIO, "15/08/1995",
+                Bairro.SETOR_CENTRAL);
+        Usuario gerente = new Usuario("Ana Gerente", "390.533.447-05",
+                "ana@teste.com", Senhas.proteger("senha123"), CargoUsuario.GERENTE, "20/03/1990",
+                Bairro.PARQUE_AMAZONIA);
+
+        PersistenciaBancoUsuario banco = new PersistenciaBancoUsuario();
+        if (!banco.carregar().isEmpty())
+            throw new IllegalStateException("Execute o teste geral em um banco de teste vazio");
+        banco.salvar(List.of(maria, joao, coletor, gerente));
         Instanciador inst = new Instanciador();
         GerenciarResiduosService residuos = inst.getResiduosService();
         GerenciarSolicitacoesService solicitacoes = inst.getSolicitacoesService();
         GerenciarPontoColetaService pontos = inst.getPontoColetaService();
-
-        // usuários de teste (não vão pro JSON de usuários)
-        Usuario maria = new Usuario("Maria Souza", "529.982.247-25",
-                "maria@teste.com", "senha123", CargoUsuario.USUARIO, "10/05/2000",
-                Bairro.SETOR_BUENO);
-        Usuario joao = new Usuario("João Lima", "123.456.789-09",
-                "joao@teste.com", "senha123", CargoUsuario.USUARIO, "02/02/1998",
-                Bairro.JARDIM_CURITIBA);
-        Usuario coletor = new Usuario("Carlos Coletor", "111.444.777-35",
-                "carlos@teste.com", "senha123", CargoUsuario.FUNCIONARIO, "15/08/1995",
-                Bairro.SETOR_CENTRAL);
-        Usuario gerente = new Usuario("Ana Gerente", "390.533.447-05",
-                "ana@teste.com", "senha123", CargoUsuario.GERENTE, "20/03/1990",
-                Bairro.PARQUE_AMAZONIA);
 
         // ================================================================
         System.out.println("=== RESÍDUOS ===");
@@ -383,8 +389,8 @@ public class Teste {
         // relê o arquivo: testa o adaptador de LocalDateTime e a ordem da pilha
         RegistroLog topoAntes = logService.listar(gerente).get(0);
         RegistroLog topoRelido = new GerenciarLogRepository().listar().get(0);
-        conferir("depois de reler o log.json, o topo é o mesmo", topoRelido.getId().equals(topoAntes.getId()));
-        conferir("a data e hora volta igual do JSON", topoRelido.getDataRegistro().equals(topoAntes.getDataRegistro()));
+        conferir("depois de reler o banco, o topo é o mesmo", topoRelido.getId().equals(topoAntes.getId()));
+        conferir("a data e hora volta igual do MySQL", topoRelido.getDataRegistro().equals(topoAntes.getDataRegistro()));
 
         // limpa os usuários de teste (o gerente remove)
         usuarios.remover(gerente, funcionario.getCpf());
@@ -498,6 +504,7 @@ public class Teste {
 
         System.out.println();
         System.out.println("Passaram: " + ok + " | Falharam: " + falhou);
+        if (falhou > 0) throw new AssertionError("Há verificações com falha");
     }
 
     // ---------------- ajudantes ----------------

@@ -7,7 +7,7 @@ import backend_ecocode.Domain.Interfaces.ServiceUsuarioInterface;
 import backend_ecocode.Domain.Entities.Usuario;
 import backend_ecocode.Exceptions.AcessoNegadoException;
 import backend_ecocode.Repository.GerenciarUsuariosRepository;
-import backend_ecocode.Util.CifraAfim;
+import backend_ecocode.Util.Senhas;
 import backend_ecocode.Util.ValidadorCpf;
 import backend_ecocode.Util.ValidarEmail;
 
@@ -16,7 +16,6 @@ import java.util.UUID;
 
 public class GerenciarUsuariosService implements ServiceUsuarioInterface {
     private final GerenciarUsuariosRepository gerenciarUsuariosRepository;
-    private final CifraAfim cifraAfim = new CifraAfim();
     private final GerenciarLogService log;
 
     public GerenciarUsuariosService(GerenciarUsuariosRepository gerenciarUsuariosRepository, GerenciarLogService log) {
@@ -70,7 +69,7 @@ public class GerenciarUsuariosService implements ServiceUsuarioInterface {
         }
 
         if(senhaEditada != null && !senhaEditada.isBlank()) {
-            usuarioEditado.setSenhaCriptografada(cifraAfim.cifraAfim(senhaEditada));
+            usuarioEditado.setSenhaCriptografada(Senhas.proteger(senhaEditada));
         }
 
         if(bairro != null) {
@@ -177,7 +176,7 @@ public class GerenciarUsuariosService implements ServiceUsuarioInterface {
         }
 
         Usuario novoUsuario = new Usuario(
-                nomeCompleto, cpf, email, cifraAfim.cifraAfim(senha), cargoUsuario, dataNascimento, bairro
+                nomeCompleto, cpf, email, Senhas.proteger(senha), cargoUsuario, dataNascimento, bairro
         );
 
         gerenciarUsuariosRepository.cadastrar(novoUsuario);

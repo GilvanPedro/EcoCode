@@ -3,6 +3,7 @@ package backend_ecocode.Domain.Entities;
 import backend_ecocode.Domain.Enums.AcaoLog;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.UUID;
 
 public class RegistroLog {
@@ -17,7 +18,7 @@ public class RegistroLog {
         this.id = UUID.randomUUID();
         this.usuarioId = usuarioId;
         this.nomeUsuario = nomeUsuario;
-        this.dataRegistro = LocalDateTime.now();
+        this.dataRegistro = LocalDateTime.now().truncatedTo(ChronoUnit.MICROS);
         this.acaoLog = acaoLog;
         this.alvo = alvo;
     }
